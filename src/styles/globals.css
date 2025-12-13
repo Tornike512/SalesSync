@@ -7,10 +7,16 @@
     "GRAD" 25;
 
   /* COLORS */
-  --foreground-100: #000000; /* Black */
-  --foreground-200: #121212; /* Dark gray */
-  --background-100: #ffffff; /* White */
-  --background-200: #f8f9fa; /* Off-white */
+  --color-yellow: #f6c453;
+  --color-cream: #fefbe9;
+  --color-orange: #f0a04b;
+  --color-dark-green: #183a1d;
+  --color-sage: #e1eedd;
+  
+  --foreground-100: #183a1d; /* Dark green */
+  --foreground-200: #f0a04b; /* Orange */
+  --background-100: #fefbe9; /* Cream */
+  --background-200: #e1eedd; /* Light sage */
 
   /* FONT WEIGHT */
   --fw-thin: 100;
