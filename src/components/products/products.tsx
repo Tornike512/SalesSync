@@ -180,18 +180,12 @@ export function Products() {
     : products;
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ backgroundColor: "var(--color-cream)" }}
-    >
+    <div className="min-h-screen bg-[var(--color-cream)]">
       <FilterBar />
 
       {/* Product Grid */}
       <div className="mx-auto max-w-7xl p-6">
-        <div
-          className="mb-4 text-sm"
-          style={{ color: "var(--color-dark-green)" }}
-        >
+        <div className="mb-4 text-[var(--color-dark-green)] text-sm">
           Showing {filteredProducts.length} product
           {filteredProducts.length !== 1 ? "s" : ""}
         </div>
@@ -208,10 +202,7 @@ export function Products() {
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <div
-      className="overflow-hidden rounded-lg shadow-md transition-shadow hover:shadow-xl"
-      style={{ backgroundColor: "var(--color-sage)" }}
-    >
+    <div className="overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
       {/* Product Image with Store Badge */}
       <div className="relative aspect-square overflow-hidden bg-white">
         <Image
@@ -221,12 +212,7 @@ function ProductCard({ product }: { product: Product }) {
           className="object-cover"
         />
         {/* Store Logo Badge */}
-        <div
-          className="absolute top-2 right-2 h-10 w-10 overflow-hidden rounded-full shadow-lg ring-2 ring-[var(--color-dark-green)]"
-          style={{
-            backgroundColor: "white",
-          }}
-        >
+        <div className="absolute top-2 right-2 h-10 w-10 overflow-hidden rounded-full bg-white shadow-lg ring-2 ring-[var(--color-dark-green)]">
           <Image
             src={product.storeLogo}
             alt="Store"
@@ -238,46 +224,28 @@ function ProductCard({ product }: { product: Product }) {
 
       {/* Product Info */}
       <div className="p-4">
-        <h3
-          className="mb-2 line-clamp-2 font-semibold text-base"
-          style={{ color: "var(--color-dark-green)" }}
-        >
+        <h3 className="mb-2 line-clamp-2 font-semibold text-[var(--color-dark-green)] text-base">
           {product.name}
         </h3>
 
         {/* Pricing */}
         <div className="mb-2 flex items-baseline gap-2">
-          <span
-            className="font-bold text-2xl"
-            style={{ color: "var(--color-orange)" }}
-          >
+          <span className="font-bold text-2xl text-[var(--color-orange)]">
             ${product.salePrice.toFixed(2)}
           </span>
-          <span
-            className="text-sm line-through opacity-60"
-            style={{ color: "var(--color-dark-green)" }}
-          >
+          <span className="text-[var(--color-dark-green)] text-sm line-through opacity-60">
             ${product.originalPrice.toFixed(2)}
           </span>
         </div>
 
         {/* Discount Badge */}
         <div className="flex items-center justify-between">
-          <span
-            className="rounded-full px-3 py-1 font-bold text-xs"
-            style={{
-              backgroundColor: "var(--color-orange)",
-              color: "white",
-            }}
-          >
+          <span className="rounded-full bg-[var(--color-orange)] px-3 py-1 font-bold text-white text-xs">
             {product.discountPercentage}% OFF
           </span>
 
           {product.daysLeft && (
-            <span
-              className="font-medium text-xs"
-              style={{ color: "var(--color-dark-green)" }}
-            >
+            <span className="font-medium text-[var(--color-dark-green)] text-xs">
               {product.daysLeft} days left
             </span>
           )}

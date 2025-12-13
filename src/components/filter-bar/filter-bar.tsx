@@ -52,18 +52,9 @@ export function FilterBar() {
   const [selectedStore, setSelectedStore] = useState<string | null>(null);
 
   return (
-    <div
-      className="sticky top-0 z-10 border-b-2 p-4"
-      style={{
-        backgroundColor: "var(--color-yellow)",
-        borderColor: "var(--color-dark-green)",
-      }}
-    >
+    <div className="sticky top-0 z-10 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-4">
       <div className="mx-auto max-w-7xl">
-        <h2
-          className="mb-3 font-semibold text-lg"
-          style={{ color: "var(--color-dark-green)" }}
-        >
+        <h2 className="mb-3 font-semibold text-[var(--color-dark-green)] text-lg">
           Filter by Store
         </h2>
         <div className="flex gap-2 overflow-x-auto pb-2">
@@ -71,18 +62,10 @@ export function FilterBar() {
           <Button
             onClick={() => setSelectedStore(null)}
             className={`flex items-center gap-2 rounded-full px-4 py-2 font-medium text-sm outline-none transition-all focus:outline-none ${
-              selectedStore === null ? "" : "opacity-70 hover:opacity-100"
+              selectedStore === null
+                ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
+                : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
             }`}
-            style={{
-              backgroundColor:
-                selectedStore === null
-                  ? "var(--color-dark-green)"
-                  : "var(--color-cream)",
-              color:
-                selectedStore === null
-                  ? "var(--color-cream)"
-                  : "var(--color-dark-green)",
-            }}
           >
             All Stores
           </Button>
@@ -93,18 +76,10 @@ export function FilterBar() {
               key={store.id}
               onClick={() => setSelectedStore(store.id)}
               className={`flex items-center gap-2 rounded-full px-4 py-2 outline-none transition-all focus:outline-none ${
-                selectedStore === store.id ? "" : "opacity-70 hover:opacity-100"
+                selectedStore === store.id
+                  ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
+                  : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
               }`}
-              style={{
-                backgroundColor:
-                  selectedStore === store.id
-                    ? "var(--color-dark-green)"
-                    : "var(--color-cream)",
-                color:
-                  selectedStore === store.id
-                    ? "var(--color-cream)"
-                    : "var(--color-dark-green)",
-              }}
             >
               <div className="relative h-6 w-6 overflow-hidden rounded-full bg-white p-0.5">
                 <Image
