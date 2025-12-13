@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "../styles/globals.css";
+import { Sidebar } from "@/components/sidebar";
 import { AppProviders } from "@/providers";
 import { cn } from "@/utils/cn";
 
@@ -21,7 +22,10 @@ export default async function RootLayout({
         )}
       >
         <AppProviders>
-          <main className="grid h-full">{children}</main>
+          <div className="flex h-full">
+            <Sidebar />
+            <main className="flex-1 overflow-y-auto">{children}</main>
+          </div>
         </AppProviders>
       </body>
     </html>
