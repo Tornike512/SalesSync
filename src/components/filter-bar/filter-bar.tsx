@@ -3,7 +3,7 @@ import { useState } from "react";
 import agrohubLogo from "../../../public/images/agrohub.png";
 import europroductLogo from "../../../public/images/europroduct.jpg";
 import goodwillLogo from "../../../public/images/goodwill.jpg";
-import magnitiLogo from "../../../public/images/magniti.avif";
+import magnitiLogo from "../../../public/images/magniti.webp";
 import nikoraLogo from "../../../public/images/nikora.png";
 import sparLogo from "../../../public/images/spar.jpeg";
 import { Button } from "../button";
