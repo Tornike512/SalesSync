@@ -15,7 +15,9 @@ import {
   Salad,
   Wheat,
 } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
+import salesSyncLogo from "../../../public/images/salesync-icon.webp";
 import { Button } from "../button";
 
 interface Category {
@@ -46,6 +48,22 @@ export function Sidebar() {
   return (
     <aside className="sidebar-scroll w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)]">
       <div className="p-6">
+        {/* Logo */}
+        {/* Logo */}
+        <div className="mb-6 flex items-center gap-3 border-background-200 border-b pb-4">
+          <Image
+            src={salesSyncLogo}
+            alt="SalesSync logo"
+            width={40}
+            height={40}
+            className="rounded-md"
+            priority
+          />
+          <span className="font-bold text-foreground-100 text-xl">
+            SalesSync
+          </span>
+        </div>
+
         <h2 className="mb-6 font-bold text-2xl text-foreground-100">
           Categories
         </h2>
@@ -74,10 +92,8 @@ export function Sidebar() {
                 </div>
 
                 <div className="flex-1 text-left">
-                  <div className="font-medium text-foreground-100">
-                    {category.name}
-                  </div>
-                  <div className="text-foreground-100 text-sm opacity-70">
+                  <div className="font-medium">{category.name}</div>
+                  <div className="text-sm opacity-70">
                     {category.count} items
                   </div>
                 </div>
