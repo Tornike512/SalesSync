@@ -44,9 +44,11 @@ export function Sidebar() {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
 
   return (
-    <aside className="w-80 overflow-y-auto border-[#e1eedd] border-r bg-[#fefbe9]">
+    <aside className="sidebar-scroll w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)]">
       <div className="p-6">
-        <h2 className="mb-6 font-bold text-2xl text-[#183a1d]">Categories</h2>
+        <h2 className="mb-6 font-bold text-2xl text-foreground-100">
+          Categories
+        </h2>
 
         <nav className="space-y-2">
           {categories.map((category) => {
@@ -57,31 +59,31 @@ export function Sidebar() {
               <Button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-[#183a1d] transition-all duration-200 ${
+                className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-foreground-100 transition-all duration-200 ${
                   isActive
-                    ? "bg-[#e1eedd]"
-                    : "bg-transparent hover:bg-[#e1eedd] hover:bg-opacity-70"
+                    ? "bg-background-200"
+                    : "bg-transparent hover:bg-background-200 hover:bg-opacity-70"
                 }`}
               >
                 <div
                   className={`rounded-md p-2 ${
-                    isActive ? "bg-[#f0a04b]" : "bg-[#f6c453]"
+                    isActive ? "bg-foreground-200" : "bg-[var(--color-yellow)]"
                   }`}
                 >
-                  <Icon size={20} className="text-[#183a1d]" />
+                  <Icon size={20} className="text-foreground-100" />
                 </div>
 
                 <div className="flex-1 text-left">
-                  <div className="font-medium text-[#183a1d]">
+                  <div className="font-medium text-foreground-100">
                     {category.name}
                   </div>
-                  <div className="text-[#183a1d] text-sm opacity-70">
+                  <div className="text-foreground-100 text-sm opacity-70">
                     {category.count} items
                   </div>
                 </div>
 
                 {isActive && (
-                  <div className="h-8 w-1 rounded-full bg-[#f0a04b]" />
+                  <div className="h-8 w-1 rounded-full bg-foreground-200" />
                 )}
               </Button>
             );
