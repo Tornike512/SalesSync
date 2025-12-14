@@ -58,7 +58,7 @@ export function FilterBar() {
   const [selectedStore, setSelectedStore] = useState<string | null>(null);
 
   return (
-    <div className="sticky top-0 z-10 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-4">
+    <div className="sticky top-0 z-10 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-4 shadow-[4px_5px_12px_rgba(24,58,29,0.15)]">
       <div className="mx-auto max-w-7xl">
         <h2 className="mb-3 font-semibold text-[var(--color-dark-green)] text-lg">
           Filter by Store

@@ -46,7 +46,7 @@ export function Sidebar() {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
 
   return (
-    <aside className="sidebar-scroll w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)]">
+    <aside className="sidebar-scroll relative z-10 w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)]">
       <div className="p-6">
         {/* Logo */}
         {/* Logo */}
