@@ -3,7 +3,7 @@ import { useState } from "react";
 import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
-import goodwillLogo from "../../../public/images/goodwill.jpg";
+import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
 import nikoraLogo from "../../../public/images/nikora.png";
 import sparLogo from "../../../public/images/spar.jpeg";
@@ -29,8 +29,8 @@ const stores: Store[] = [
   },
   {
     id: "3",
-    name: "Goodwill",
-    logo: goodwillLogo,
+    name: "Ioli",
+    logo: ioliLogo,
   },
   {
     id: "4",
