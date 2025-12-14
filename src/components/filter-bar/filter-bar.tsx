@@ -1,6 +1,7 @@
 import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
 import agrohubLogo from "../../../public/images/agrohub.png";
+import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
 import goodwillLogo from "../../../public/images/goodwill.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
@@ -45,6 +46,11 @@ const stores: Store[] = [
     id: "6",
     name: "Spar",
     logo: sparLogo,
+  },
+  {
+    id: "7",
+    name: "Carrefour",
+    logo: carrefourLogo,
   },
 ];
 
