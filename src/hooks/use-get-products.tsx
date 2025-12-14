@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api-client";
+import { API_URL } from "@/config";
 
 export type Product = {
   id: number;
@@ -32,17 +32,26 @@ export type GetProductsParams = {
 async function getProducts(
   params?: GetProductsParams,
 ): Promise<ProductsResponse> {
-  return api.get<ProductsResponse>("/api/v1/products", {
-    params: {
-      store_id: params?.store_id,
-      store_name: params?.store_name,
-      category: params?.category,
-      min_discount: params?.min_discount,
-      sort: params?.sort,
-      limit: params?.limit ?? 16,
-      offset: params?.offset ?? 0,
-    },
-  });
+  const searchParams = new URLSearchParams();
+
+  if (params?.store_id != null)
+    searchParams.set("store_id", String(params.store_id));
+  if (params?.store_name) searchParams.set("store_name", params.store_name);
+  if (params?.category) searchParams.set("category", params.category);
+  if (params?.min_discount != null)
+    searchParams.set("min_discount", String(params.min_discount));
+  if (params?.sort) searchParams.set("sort", params.sort);
+  searchParams.set("limit", String(params?.limit ?? 16));
+  searchParams.set("offset", String(params?.offset ?? 0));
+
+  const url = `${API_URL}/api/v1/products?${searchParams.toString()}`;
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch products");
+  }
+
+  return response.json() as Promise<ProductsResponse>;
 }
 
 export function useGetProducts(params?: GetProductsParams) {
