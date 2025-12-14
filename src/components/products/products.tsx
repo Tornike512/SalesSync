@@ -1,14 +1,58 @@
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
+import { useEffect, useRef } from "react";
 import { type Product, useGetProducts } from "@/hooks/use-get-products";
+import agrohubLogo from "../../../public/images/agrohub.png";
+import carrefourLogo from "../../../public/images/carrefour.webp";
+import europroductLogo from "../../../public/images/europroduct.jpg";
+import ioliLogo from "../../../public/images/ioli.jpg";
+import magnitiLogo from "../../../public/images/magniti.webp";
+import nikoraLogo from "../../../public/images/nikora.png";
+import sparLogo from "../../../public/images/spar.jpeg";
 import { FilterBar } from "../filter-bar";
 
-export function Products() {
-  const { data, isLoading, error } = useGetProducts();
+const storeLogos: Record<number, StaticImageData> = {
+  1: agrohubLogo,
+  2: europroductLogo,
+  3: ioliLogo,
+  4: magnitiLogo,
+  5: nikoraLogo,
+  6: sparLogo,
+  7: carrefourLogo,
+};
 
-  const products = data?.products ?? [];
-  const total = data?.total ?? 0;
+export function Products() {
+  const {
+    data,
+    isLoading,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetProducts();
+
+  const loaderRef = useRef<HTMLDivElement>(null);
+
+  const products = data?.pages.flatMap((page) => page.products) ?? [];
+  const total = data?.pages[0]?.total ?? 0;
+
+  useEffect(() => {
+    const loader = loaderRef.current;
+    if (!loader) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    observer.observe(loader);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="min-h-screen bg-[var(--color-cream)]">
@@ -34,6 +78,13 @@ export function Products() {
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
+
+            {/* Infinite scroll loader */}
+            <div ref={loaderRef} className="flex justify-center py-8">
+              {isFetchingNextPage && (
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
+              )}
+            </div>
           </>
         )}
       </div>
@@ -42,6 +93,8 @@ export function Products() {
 }
 
 function ProductCard({ product }: { product: Product }) {
+  const storeLogo = storeLogos[product.store_id];
+
   return (
     <div className="overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
       {/* Product Image */}
@@ -52,6 +105,17 @@ function ProductCard({ product }: { product: Product }) {
           fill
           className="object-cover"
         />
+        {/* Store Logo Badge */}
+        {storeLogo && (
+          <div className="absolute top-2 right-2 h-10 w-10 overflow-hidden rounded-full bg-white shadow-lg ring-2 ring-[var(--color-dark-green)]">
+            <Image
+              src={storeLogo}
+              alt="Store"
+              fill
+              className="rounded-full object-contain p-1"
+            />
+          </div>
+        )}
       </div>
 
       {/* Product Info */}

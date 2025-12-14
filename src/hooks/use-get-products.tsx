@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { API_URL } from "@/config";
 
 export type Product = {
@@ -54,9 +54,17 @@ async function getProducts(
   return response.json() as Promise<ProductsResponse>;
 }
 
-export function useGetProducts(params?: GetProductsParams) {
-  return useQuery({
+export function useGetProducts(params?: Omit<GetProductsParams, "offset">) {
+  const limit = params?.limit ?? 16;
+
+  return useInfiniteQuery({
     queryKey: ["products", params],
-    queryFn: () => getProducts(params),
+    queryFn: ({ pageParam = 0 }) =>
+      getProducts({ ...params, limit, offset: pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      const totalFetched = allPages.length * limit;
+      return totalFetched < lastPage.total ? totalFetched : undefined;
+    },
   });
 }
