@@ -10,6 +10,7 @@ export type Product = {
   category: string;
   image_url: string;
   store_id: number;
+  store_name: string;
   source_url: string;
   scraped_at: string;
 };

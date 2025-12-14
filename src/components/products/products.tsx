@@ -6,20 +6,22 @@ import { type Product, useGetProducts } from "@/hooks/use-get-products";
 import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
+import goodwillLogo from "../../../public/images/goodwill.jpg";
 import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
 import nikoraLogo from "../../../public/images/nikora.png";
 import sparLogo from "../../../public/images/spar.jpeg";
 import { FilterBar } from "../filter-bar";
 
-const storeLogos: Record<number, StaticImageData> = {
-  1: agrohubLogo,
-  2: europroductLogo,
-  3: ioliLogo,
-  4: magnitiLogo,
-  5: nikoraLogo,
-  6: sparLogo,
-  7: carrefourLogo,
+const storeLogos: Record<string, StaticImageData> = {
+  agrohub: agrohubLogo,
+  europroduct: europroductLogo,
+  goodwill: goodwillLogo,
+  ioli: ioliLogo,
+  magniti: magnitiLogo,
+  nikora: nikoraLogo,
+  spar: sparLogo,
+  carrefour: carrefourLogo,
 };
 
 export function Products() {
@@ -74,8 +76,8 @@ export function Products() {
             </div>
 
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {products.map((product, index) => (
+                <ProductCard key={`${product.id}-${index}`} product={product} />
               ))}
             </div>
 
@@ -93,10 +95,30 @@ export function Products() {
 }
 
 function ProductCard({ product }: { product: Product }) {
-  const storeLogo = storeLogos[product.store_id];
+  const getStoreLogo = (storeName: string | undefined) => {
+    if (!storeName) return null;
+    const name = storeName.toLowerCase();
+    if (storeLogos[name]) return storeLogos[name];
+    // Handle cases like "Carrefour Vekua" -> "carrefour"
+    const firstWord = name.split(" ")[0];
+    return storeLogos[firstWord] ?? null;
+  };
+
+  const storeLogo = getStoreLogo(product.store_name);
 
   return (
-    <div className="overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
+    <div className="relative overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
+      {/* Store Logo Badge */}
+      {storeLogo && (
+        <div className="absolute top-2 right-3 h-10 w-10 overflow-hidden rounded-full bg-white shadow-md">
+          <Image
+            src={storeLogo}
+            alt="Store"
+            fill
+            className="z-11 rounded-full object-contain shadow-md"
+          />
+        </div>
+      )}
       {/* Product Image */}
       <div className="relative aspect-square overflow-hidden bg-white">
         <Image
@@ -105,17 +127,6 @@ function ProductCard({ product }: { product: Product }) {
           fill
           className="object-cover"
         />
-        {/* Store Logo Badge */}
-        {storeLogo && (
-          <div className="absolute top-2 right-2 h-10 w-10 overflow-hidden rounded-full bg-white shadow-lg ring-2 ring-[var(--color-dark-green)]">
-            <Image
-              src={storeLogo}
-              alt="Store"
-              fill
-              className="rounded-full object-contain p-1"
-            />
-          </div>
-        )}
       </div>
 
       {/* Product Info */}
@@ -127,17 +138,17 @@ function ProductCard({ product }: { product: Product }) {
         {/* Pricing */}
         <div className="mb-2 flex items-baseline gap-2">
           <span className="font-bold text-2xl text-[var(--color-orange)]">
-            ₾{product.current_price.toFixed(2)}
+            ₾{(product.current_price ?? 0).toFixed(2)}
           </span>
           <span className="text-[var(--color-dark-green)] text-sm line-through opacity-60">
-            ₾{product.original_price.toFixed(2)}
+            ₾{(product.original_price ?? 0).toFixed(2)}
           </span>
         </div>
 
         {/* Discount Badge */}
         <div className="flex items-center justify-between">
           <span className="rounded-full bg-[var(--color-orange)] px-3 py-1 font-bold text-white text-xs">
-            {product.discount_percent}% OFF
+            {product.discount_percent ?? 0}% OFF
           </span>
         </div>
       </div>
