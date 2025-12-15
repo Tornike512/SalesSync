@@ -20,12 +20,20 @@ export type ProductsResponse = {
   products: Product[];
 };
 
+export type SortOption =
+  | "price_asc"
+  | "price_desc"
+  | "discount_percent_asc"
+  | "discount_percent_desc"
+  | "discount_amount_asc"
+  | "discount_amount_desc";
+
 export type GetProductsParams = {
   store_id?: number | null;
   store_name?: string | null;
   category?: string | null;
   min_discount?: number | null;
-  sort?: "price_asc" | "price_desc" | null;
+  sort?: SortOption | null;
   limit?: number;
   offset?: number;
 };

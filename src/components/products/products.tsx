@@ -1,8 +1,20 @@
 "use client";
 
+import {
+  ArrowDown01,
+  ArrowDown10,
+  ChevronDown,
+  type LucideIcon,
+  Percent,
+  PiggyBank,
+} from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { type Product, useGetProducts } from "@/hooks/use-get-products";
+import {
+  type Product,
+  type SortOption,
+  useGetProducts,
+} from "@/hooks/use-get-products";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
 import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
@@ -12,6 +24,7 @@ import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
 import nikoraLogo from "../../../public/images/nikora.png";
 import sparLogo from "../../../public/images/spar.jpeg";
+import { Button } from "../button";
 import { FilterBar } from "../filter-bar";
 
 const storeLogos: Record<string, StaticImageData> = {
@@ -25,8 +38,34 @@ const storeLogos: Record<string, StaticImageData> = {
   carrefour: carrefourLogo,
 };
 
+const sortOptions: { value: SortOption; label: string; icon: LucideIcon }[] = [
+  { value: "price_asc", label: "Price: Low to High", icon: ArrowDown01 },
+  { value: "price_desc", label: "Price: High to Low", icon: ArrowDown10 },
+  {
+    value: "discount_percent_desc",
+    label: "Discount: High to Low",
+    icon: Percent,
+  },
+  {
+    value: "discount_percent_asc",
+    label: "Discount: Low to High",
+    icon: Percent,
+  },
+  {
+    value: "discount_amount_desc",
+    label: "Savings: High to Low",
+    icon: PiggyBank,
+  },
+  {
+    value: "discount_amount_asc",
+    label: "Savings: Low to High",
+    icon: PiggyBank,
+  },
+];
+
 export function Products() {
   const [selectedStore, setSelectedStore] = useState<string | null>(null);
+  const [selectedSort, setSelectedSort] = useState<SortOption>("price_asc");
   const { selectedCategory } = useCategoryFilter();
 
   const {
@@ -40,6 +79,7 @@ export function Products() {
   } = useGetProducts({
     store_name: selectedStore,
     category: selectedCategory,
+    sort: selectedSort,
   });
 
   const showCenterSpinner = isLoading || (isFetching && !isFetchingNextPage);
@@ -79,9 +119,15 @@ export function Products() {
 
         {!error && (
           <>
-            <div className="mb-4 text-[var(--color-dark-green)] text-sm">
-              Showing {products.length} of {total} product
-              {total !== 1 ? "s" : ""}
+            <div className="mb-4 flex items-center justify-between">
+              <div className="text-[var(--color-dark-green)] text-sm">
+                Showing {products.length} of {total} product
+                {total !== 1 ? "s" : ""}
+              </div>
+              <SortDropdown
+                selectedSort={selectedSort}
+                onSortChange={setSelectedSort}
+              />
             </div>
 
             <div className="relative min-h-[400px]">
@@ -172,6 +218,77 @@ function ProductCard({ product }: { product: Product }) {
           </span>
         </div>
       </div>
+    </div>
+  );
+}
+
+function SortDropdown({
+  selectedSort,
+  onSortChange,
+}: {
+  selectedSort: SortOption;
+  onSortChange: (sort: SortOption) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const selectedOption = sortOptions.find((opt) => opt.value === selectedSort);
+  const SelectedIcon = selectedOption?.icon ?? ArrowDown01;
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={dropdownRef} className="relative">
+      <Button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center gap-2 rounded-lg border-2 border-[var(--color-dark-green)] bg-white px-3 py-2 font-medium text-[var(--color-dark-green)] text-sm transition-colors hover:bg-[var(--color-sage)]"
+      >
+        <SelectedIcon size={16} />
+        <span>{selectedOption?.label}</span>
+        <ChevronDown
+          size={16}
+          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+        />
+      </Button>
+
+      {isOpen && (
+        <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-lg border-2 border-[var(--color-dark-green)] bg-white shadow-lg">
+          {sortOptions.map((option) => {
+            const Icon = option.icon;
+            const isSelected = option.value === selectedSort;
+
+            return (
+              <Button
+                key={option.value}
+                onClick={() => {
+                  onSortChange(option.value);
+                  setIsOpen(false);
+                }}
+                className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors ${
+                  isSelected
+                    ? "bg-[var(--color-sage)] font-semibold text-[var(--color-dark-green)]"
+                    : "text-[var(--color-dark-green)] hover:bg-[var(--color-cream)]"
+                }`}
+              >
+                <Icon size={18} />
+                <span>{option.label}</span>
+              </Button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
