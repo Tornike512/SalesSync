@@ -1,3 +1,4 @@
+import { Search } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
@@ -69,12 +70,34 @@ const stores: Store[] = [
 interface FilterBarProps {
   selectedStore: string | null;
   onStoreChange: (storeName: string | null) => void;
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
-export function FilterBar({ selectedStore, onStoreChange }: FilterBarProps) {
+export function FilterBar({
+  selectedStore,
+  onStoreChange,
+  searchQuery,
+  onSearchChange,
+}: FilterBarProps) {
   return (
     <div className="sticky top-0 z-50 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-4 shadow-[4px_5px_12px_rgba(24,58,29,0.15)]">
       <div className="mx-auto max-w-7xl">
+        {/* Search Input */}
+        <div className="relative mb-4">
+          <Search
+            className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)]"
+            size={20}
+          />
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="w-full rounded-full border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] py-2 pr-4 pl-10 text-[var(--color-dark-green)] placeholder-[var(--color-dark-green)]/50 transition-colors focus:bg-white focus:outline-none"
+          />
+        </div>
+
         <h2 className="mb-3 font-semibold text-[var(--color-dark-green)] text-lg">
           Filter by Store
         </h2>

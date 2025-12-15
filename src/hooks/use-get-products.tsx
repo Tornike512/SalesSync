@@ -34,6 +34,7 @@ export type GetProductsParams = {
   category?: string | null;
   min_discount?: number | null;
   sort?: SortOption | null;
+  search?: string | null;
   limit?: number;
   offset?: number;
 };
@@ -50,6 +51,7 @@ async function getProducts(
   if (params?.min_discount != null)
     searchParams.set("min_discount", String(params.min_discount));
   if (params?.sort) searchParams.set("sort", params.sort);
+  if (params?.search) searchParams.set("search", params.search);
   searchParams.set("limit", String(params?.limit ?? 16));
   searchParams.set("offset", String(params?.offset ?? 0));
 

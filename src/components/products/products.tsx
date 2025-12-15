@@ -63,10 +63,29 @@ const sortOptions: { value: SortOption; label: string; icon: LucideIcon }[] = [
   },
 ];
 
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 export function Products() {
   const [selectedStore, setSelectedStore] = useState<string | null>(null);
   const [selectedSort, setSelectedSort] = useState<SortOption>("price_asc");
+  const [searchQuery, setSearchQuery] = useState("");
   const { selectedCategory } = useCategoryFilter();
+
+  const debouncedSearch = useDebounce(searchQuery, 300);
 
   const {
     data,
@@ -80,6 +99,7 @@ export function Products() {
     store_name: selectedStore,
     category: selectedCategory,
     sort: selectedSort,
+    search: debouncedSearch || null,
   });
 
   const showCenterSpinner = isLoading || (isFetching && !isFetchingNextPage);
@@ -111,6 +131,8 @@ export function Products() {
       <FilterBar
         selectedStore={selectedStore}
         onStoreChange={setSelectedStore}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
 
       {/* Product Grid */}
