@@ -5,8 +5,8 @@ import { AppProviders } from "@/providers";
 import { cn } from "@/utils/cn";
 
 export const metadata: Metadata = {
-  title: "Nextjs starter",
-  description: "A Next.js starter template",
+  title: "SalesSync",
+  description: "SalesSync",
 };
 
 export default async function RootLayout({
