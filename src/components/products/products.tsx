@@ -3,6 +3,7 @@
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { type Product, useGetProducts } from "@/hooks/use-get-products";
+import { useCategoryFilter } from "@/providers/category-filter-provider";
 import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
@@ -26,17 +27,22 @@ const storeLogos: Record<string, StaticImageData> = {
 
 export function Products() {
   const [selectedStore, setSelectedStore] = useState<string | null>(null);
+  const { selectedCategory } = useCategoryFilter();
 
   const {
     data,
     isLoading,
+    isFetching,
     error,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   } = useGetProducts({
     store_name: selectedStore,
+    category: selectedCategory,
   });
+
+  const showCenterSpinner = isLoading || (isFetching && !isFetchingNextPage);
 
   const loaderRef = useRef<HTMLDivElement>(null);
 
@@ -69,23 +75,30 @@ export function Products() {
 
       {/* Product Grid */}
       <div className="mx-auto max-w-7xl p-6">
-        {isLoading && (
-          <div className="text-[var(--color-dark-green)]">Loading...</div>
-        )}
-
         {error && <div className="text-red-500">Failed to load products</div>}
 
-        {!isLoading && !error && (
+        {!error && (
           <>
             <div className="mb-4 text-[var(--color-dark-green)] text-sm">
               Showing {products.length} of {total} product
               {total !== 1 ? "s" : ""}
             </div>
 
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {products.map((product, index) => (
-                <ProductCard key={`${product.id}-${index}`} product={product} />
-              ))}
+            <div className="relative min-h-[400px]">
+              {showCenterSpinner && (
+                <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-cream)]/80">
+                  <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
+                </div>
+              )}
+
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {products.map((product, index) => (
+                  <ProductCard
+                    key={`${product.id}-${index}`}
+                    product={product}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Infinite scroll loader */}

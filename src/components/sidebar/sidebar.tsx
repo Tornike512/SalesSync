@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { useGetCategories } from "@/hooks/use-get-categories";
+import { useCategoryFilter } from "@/providers/category-filter-provider";
 import salesSyncLogo from "../../../public/images/salesync-icon.webp";
 import { Button } from "../button";
 
@@ -41,6 +42,11 @@ const categoryIcons: Record<string, LucideIcon> = {
 
 export function Sidebar() {
   const { data: categories, isLoading } = useGetCategories();
+  const { selectedCategory, setSelectedCategory } = useCategoryFilter();
+
+  const handleCategoryClick = (category: string) => {
+    setSelectedCategory(category);
+  };
 
   return (
     <aside className="sidebar-scroll relative z-10 w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)]">
@@ -70,19 +76,35 @@ export function Sidebar() {
           ) : (
             categories?.map((category) => {
               const Icon = categoryIcons[category] || Package;
+              const isActive = selectedCategory === category;
 
               return (
                 <Button
                   key={category}
-                  className="flex w-full items-center gap-3 rounded-lg bg-transparent px-4 py-3 text-foreground-100 transition-all duration-200 hover:bg-background-200 hover:bg-opacity-70"
+                  onClick={() => handleCategoryClick(category)}
+                  className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-foreground-100 transition-all duration-200 ${
+                    isActive
+                      ? "bg-background-200"
+                      : "bg-transparent hover:bg-background-200 hover:bg-opacity-70"
+                  }`}
                 >
-                  <div className="rounded-md bg-[var(--color-yellow)] p-2">
+                  <div
+                    className={`rounded-md p-2 ${
+                      isActive
+                        ? "bg-foreground-200"
+                        : "bg-[var(--color-yellow)]"
+                    }`}
+                  >
                     <Icon size={20} className="text-foreground-100" />
                   </div>
 
                   <div className="flex-1 text-left">
                     <div className="font-medium">{category}</div>
                   </div>
+
+                  {isActive && (
+                    <div className="h-8 w-1 rounded-full bg-foreground-200" />
+                  )}
                 </Button>
               );
             })
