@@ -1,62 +1,77 @@
 import Image, { type StaticImageData } from "next/image";
-import { useState } from "react";
-import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
+import goodwillLogo from "../../../public/images/goodwill.jpg";
 import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
-import nikoraLogo from "../../../public/images/nikora.png";
 import sparLogo from "../../../public/images/spar.jpeg";
 import { Button } from "../button";
 
 interface Store {
   id: string;
   name: string;
+  filterValue: string;
   logo: StaticImageData;
 }
 
-// Sample stores
+// Partial match, case-insensitive filtering
 const stores: Store[] = [
   {
-    id: "1",
-    name: "Agrohub",
-    logo: agrohubLogo,
-  },
-  {
-    id: "2",
+    id: "europroduct",
     name: "Europroduct",
+    filterValue: "europroduct",
     logo: europroductLogo,
   },
   {
-    id: "3",
-    name: "Ioli",
-    logo: ioliLogo,
-  },
-  {
-    id: "4",
-    name: "Magniti",
-    logo: magnitiLogo,
-  },
-  {
-    id: "5",
-    name: "Nikora",
-    logo: nikoraLogo,
-  },
-  {
-    id: "6",
+    id: "spar",
     name: "Spar",
+    filterValue: "spar",
     logo: sparLogo,
   },
   {
-    id: "7",
+    id: "goodwill",
+    name: "Goodwill",
+    filterValue: "goodwill",
+    logo: goodwillLogo,
+  },
+  {
+    id: "ioli",
+    name: "Ioli",
+    filterValue: "ioli",
+    logo: ioliLogo,
+  },
+  {
+    id: "magniti",
+    name: "Magniti",
+    filterValue: "magniti",
+    logo: magnitiLogo,
+  },
+  // {
+  //   id: "nikora",
+  //   name: "Nikora",
+  //   filterValue: "nikora",
+  //   logo: nikoraLogo,
+  // },
+  // {
+  //   id: "agrohub",
+  //   name: "Agrohub",
+  //   filterValue: "agrohub",
+  //   logo: agrohubLogo,
+  // },
+  {
+    id: "carrefour",
     name: "Carrefour",
+    filterValue: "carrefour",
     logo: carrefourLogo,
   },
 ];
 
-export function FilterBar() {
-  const [selectedStore, setSelectedStore] = useState<string | null>(null);
+interface FilterBarProps {
+  selectedStore: string | null;
+  onStoreChange: (storeName: string | null) => void;
+}
 
+export function FilterBar({ selectedStore, onStoreChange }: FilterBarProps) {
   return (
     <div className="sticky top-0 z-50 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-4 shadow-[4px_5px_12px_rgba(24,58,29,0.15)]">
       <div className="mx-auto max-w-7xl">
@@ -66,7 +81,7 @@ export function FilterBar() {
         <div className="flex gap-2 overflow-x-auto pb-2">
           {/* All Stores Button */}
           <Button
-            onClick={() => setSelectedStore(null)}
+            onClick={() => onStoreChange(null)}
             className={`flex items-center gap-2 rounded-full px-4 py-2 font-medium text-sm outline-none transition-all focus:outline-none ${
               selectedStore === null
                 ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
@@ -80,9 +95,9 @@ export function FilterBar() {
           {stores.map((store) => (
             <Button
               key={store.id}
-              onClick={() => setSelectedStore(store.id)}
+              onClick={() => onStoreChange(store.filterValue)}
               className={`flex items-center gap-2 rounded-full px-4 py-2 outline-none transition-all focus:outline-none ${
-                selectedStore === store.id
+                selectedStore === store.filterValue
                   ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                   : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
               }`}

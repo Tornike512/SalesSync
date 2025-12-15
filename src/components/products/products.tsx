@@ -1,7 +1,7 @@
 "use client";
 
 import Image, { type StaticImageData } from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { type Product, useGetProducts } from "@/hooks/use-get-products";
 import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
@@ -25,6 +25,8 @@ const storeLogos: Record<string, StaticImageData> = {
 };
 
 export function Products() {
+  const [selectedStore, setSelectedStore] = useState<string | null>(null);
+
   const {
     data,
     isLoading,
@@ -32,7 +34,9 @@ export function Products() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGetProducts();
+  } = useGetProducts({
+    store_name: selectedStore,
+  });
 
   const loaderRef = useRef<HTMLDivElement>(null);
 
@@ -58,7 +62,10 @@ export function Products() {
 
   return (
     <div className="min-h-screen bg-[var(--color-cream)]">
-      <FilterBar />
+      <FilterBar
+        selectedStore={selectedStore}
+        onStoreChange={setSelectedStore}
+      />
 
       {/* Product Grid */}
       <div className="mx-auto max-w-7xl p-6">
