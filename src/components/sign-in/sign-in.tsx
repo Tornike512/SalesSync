@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../button";
@@ -77,12 +78,12 @@ export function SignIn() {
 
           {/* Forgot password */}
           <div className="text-right">
-            <Button
-              type="button"
+            <Link
+              href={"/forgot-password"}
               className="font-medium text-[var(--foreground-100)] text-sm underline-offset-4 hover:underline"
             >
               Forgot password?
-            </Button>
+            </Link>
           </div>
 
           {/* Submit */}
