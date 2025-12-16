@@ -81,7 +81,9 @@ function useDebounce<T>(value: T, delay: number): T {
 
 export function Products() {
   const [selectedStore, setSelectedStore] = useState<string | null>(null);
-  const [selectedSort, setSelectedSort] = useState<SortOption>("price_asc");
+  const [selectedSort, setSelectedSort] = useState<SortOption>(
+    "discount_percent_desc",
+  );
   const [searchQuery, setSearchQuery] = useState("");
   const { selectedCategory, selectedSubcategory } = useCategoryFilter();
 
