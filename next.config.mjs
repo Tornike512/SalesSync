@@ -18,6 +18,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'consumer-static-assets.wolt.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'wolt-menu-images-cdn.wolt.com',
+      },
     ],
   },
 };

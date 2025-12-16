@@ -93,7 +93,7 @@ export function FilterBar({
           {/* Mobile Menu Button */}
           <Button
             onClick={open}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-dark-green)] hover:text-[var(--color-cream)] active:scale-95 md:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 md:hidden"
             aria-label="Open categories menu"
           >
             <Menu size={22} />
