@@ -128,33 +128,44 @@ export function Sidebar() {
                 </Button>
 
                 {/* Subcategories */}
-                {hasSubcategories && isExpanded && (
-                  <div className="mt-1 ml-6 space-y-1 border-foreground-200 border-l pl-4">
-                    {subcategories.map((subcategory) => {
-                      const isSubcategoryActive =
-                        isCategoryActive && selectedSubcategory === subcategory;
+                {hasSubcategories && (
+                  <div
+                    className={`grid transition-all duration-300 ease-in-out ${
+                      isExpanded
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0"
+                    }`}
+                  >
+                    <div className="overflow-hidden">
+                      <div className="mt-1 ml-6 space-y-1 border-foreground-200 border-l pl-4">
+                        {subcategories.map((subcategory) => {
+                          const isSubcategoryActive =
+                            isCategoryActive &&
+                            selectedSubcategory === subcategory;
 
-                      return (
-                        <Button
-                          key={subcategory}
-                          onClick={() =>
-                            handleSubcategoryClick(category, subcategory)
-                          }
-                          className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-foreground-100 text-sm transition-all duration-200 ${
-                            isSubcategoryActive
-                              ? "bg-background-200"
-                              : "bg-transparent hover:bg-background-200 hover:bg-opacity-70"
-                          }`}
-                        >
-                          <span className="flex-1 text-left">
-                            {subcategory}
-                          </span>
-                          {isSubcategoryActive && (
-                            <div className="h-5 w-1 rounded-full bg-foreground-200" />
-                          )}
-                        </Button>
-                      );
-                    })}
+                          return (
+                            <Button
+                              key={subcategory}
+                              onClick={() =>
+                                handleSubcategoryClick(category, subcategory)
+                              }
+                              className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-foreground-100 text-sm transition-all duration-200 ${
+                                isSubcategoryActive
+                                  ? "bg-background-200"
+                                  : "bg-transparent hover:bg-background-200 hover:bg-opacity-70"
+                              }`}
+                            >
+                              <span className="flex-1 text-left">
+                                {subcategory}
+                              </span>
+                              {isSubcategoryActive && (
+                                <div className="h-5 w-1 rounded-full bg-foreground-200" />
+                              )}
+                            </Button>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
                 )}
               </div>
