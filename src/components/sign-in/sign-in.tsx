@@ -94,6 +94,13 @@ export function SignIn() {
           >
             {isSubmitting ? "Signing in..." : "Sign In"}
           </Button>
+
+          <p className="text-center text-[var(--foreground-100)] text-xs">
+            Don&apos;t have an account?{" "}
+            <Link href="/sign-up" className="font-bold hover:underline">
+              Sign Up
+            </Link>
+          </p>
         </form>
       </div>
     </div>

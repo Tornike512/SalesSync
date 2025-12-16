@@ -6,7 +6,8 @@
       "Bash(ren \"C:\\Users\\User\\Desktop\\sales-frontend-nextjs\\.local.env\" \".env.local\")",
       "Bash(mv:*)",
       "Bash(npx tsc:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(findstr:*)"
     ]
   }
 }

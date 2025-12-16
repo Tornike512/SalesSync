@@ -2,8 +2,10 @@
 
 import { Menu, Search, X } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
+import Link from "next/link";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
 import { useMobileSidebar } from "@/providers/mobile-sidebar-provider";
+import { useSession } from "@/providers/session-provider";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
 import goodwillLogo from "../../../public/images/goodwill.jpg";
@@ -85,6 +87,7 @@ export function FilterBar({
   onSearchChange,
 }: FilterBarProps) {
   const { open } = useMobileSidebar();
+  const { status } = useSession();
   const {
     selectedCategory,
     selectedSubcategory,
@@ -148,6 +151,15 @@ export function FilterBar({
               className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none sm:text-base"
             />
           </div>
+
+          {status === "unauthenticated" && (
+            <Link
+              href="/sign-in"
+              className="flex h-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-dark-green)] px-4 font-medium text-[var(--color-cream)] text-sm shadow-md transition-all hover:bg-[var(--color-dark-green)]/90 active:scale-95"
+            >
+              Sign In
+            </Link>
+          )}
         </div>
 
         <h2 className="mb-2 font-semibold text-[var(--color-dark-green)] text-sm sm:mb-3 sm:text-lg">

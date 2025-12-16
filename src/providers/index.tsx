@@ -2,15 +2,18 @@
 import { CategoryFilterProvider } from "./category-filter-provider";
 import { ErrorBoundaryProvider } from "./error-boundary-provider";
 import { MobileSidebarProvider } from "./mobile-sidebar-provider";
+import { SessionProvider } from "./session-provider";
 import { TanstackQueryProvider } from "./tanstack-query-provider";
 
 export const AppProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <ErrorBoundaryProvider>
       <TanstackQueryProvider>
-        <MobileSidebarProvider>
-          <CategoryFilterProvider>{children}</CategoryFilterProvider>
-        </MobileSidebarProvider>
+        <SessionProvider>
+          <MobileSidebarProvider>
+            <CategoryFilterProvider>{children}</CategoryFilterProvider>
+          </MobileSidebarProvider>
+        </SessionProvider>
       </TanstackQueryProvider>
     </ErrorBoundaryProvider>
   );
