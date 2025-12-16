@@ -1,5 +1,8 @@
-import { Search } from "lucide-react";
+"use client";
+
+import { Menu, Search } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
+import { useMobileSidebar } from "@/providers/mobile-sidebar-provider";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
 import goodwillLogo from "../../../public/images/goodwill.jpg";
@@ -80,22 +83,35 @@ export function FilterBar({
   searchQuery,
   onSearchChange,
 }: FilterBarProps) {
+  const { open } = useMobileSidebar();
+
   return (
-    <div className="sticky top-0 z-50 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
+    <div className="sticky top-0 z-30 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
       <div className="mx-auto max-w-7xl">
-        {/* Search Input */}
-        <div className="relative mb-3 sm:mb-4">
-          <Search
-            className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)]"
-            size={20}
-          />
-          <input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full rounded-full border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] py-2 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/50 transition-colors focus:bg-white focus:outline-none sm:text-base"
-          />
+        {/* Search Input with Menu Button */}
+        <div className="relative mb-3 flex items-center gap-2 sm:mb-4">
+          {/* Mobile Menu Button */}
+          <Button
+            onClick={open}
+            className="flex items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] p-2 text-[var(--color-dark-green)] transition-colors hover:bg-white md:hidden"
+            aria-label="Open categories menu"
+          >
+            <Menu size={20} />
+          </Button>
+
+          <div className="relative flex-1">
+            <Search
+              className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)]"
+              size={20}
+            />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full rounded-full border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] py-2 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/50 transition-colors focus:bg-white focus:outline-none sm:text-base"
+            />
+          </div>
         </div>
 
         <h2 className="mb-2 font-semibold text-[var(--color-dark-green)] text-sm sm:mb-3 sm:text-lg">
