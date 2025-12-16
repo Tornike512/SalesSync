@@ -89,27 +89,27 @@ export function FilterBar({
     <div className="sticky top-0 z-30 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
       <div className="mx-auto max-w-7xl">
         {/* Search Input with Menu Button */}
-        <div className="relative mb-3 flex items-center gap-2 sm:mb-4">
+        <div className="relative mb-3 flex items-center gap-3 sm:mb-4">
           {/* Mobile Menu Button */}
           <Button
             onClick={open}
-            className="flex items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] p-2 text-[var(--color-dark-green)] transition-colors hover:bg-white md:hidden"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-dark-green)] hover:text-[var(--color-cream)] active:scale-95 md:hidden"
             aria-label="Open categories menu"
           >
-            <Menu size={20} />
+            <Menu size={22} />
           </Button>
 
           <div className="relative flex-1">
             <Search
-              className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)]"
-              size={20}
+              className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)] opacity-60"
+              size={18}
             />
             <input
               type="text"
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-full border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] py-2 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/50 transition-colors focus:bg-white focus:outline-none sm:text-base"
+              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none sm:text-base"
             />
           </div>
         </div>
