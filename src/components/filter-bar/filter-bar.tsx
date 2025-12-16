@@ -1,7 +1,8 @@
 "use client";
 
-import { Menu, Search } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
+import { useCategoryFilter } from "@/providers/category-filter-provider";
 import { useMobileSidebar } from "@/providers/mobile-sidebar-provider";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
@@ -84,6 +85,19 @@ export function FilterBar({
   onSearchChange,
 }: FilterBarProps) {
   const { open } = useMobileSidebar();
+  const {
+    selectedCategory,
+    selectedSubcategory,
+    setSelectedCategory,
+    setSelectedSubcategory,
+  } = useCategoryFilter();
+
+  const handleClearCategoryFilter = () => {
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+  };
+
+  const hasActiveCategoryFilter = selectedCategory !== null;
 
   return (
     <div className="z-30 shrink-0 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
@@ -98,6 +112,28 @@ export function FilterBar({
           >
             <Menu size={22} />
           </Button>
+
+          {/* Mobile Clear Category Filter Button */}
+          <div
+            className={`grid transition-all duration-300 ease-in-out md:hidden ${
+              hasActiveCategoryFilter
+                ? "grid-cols-[1fr] opacity-100"
+                : "grid-cols-[0fr] opacity-0"
+            }`}
+          >
+            <div className="overflow-hidden">
+              <Button
+                onClick={handleClearCategoryFilter}
+                className="flex h-10 shrink-0 items-center gap-1.5 rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-dark-green)] px-3 text-[var(--color-cream)] text-xs shadow-md transition-all hover:bg-[var(--color-dark-green)]/90 active:scale-95"
+                aria-label="Clear category filter"
+              >
+                <X size={14} />
+                <span className="max-w-24 truncate">
+                  {selectedSubcategory || selectedCategory}
+                </span>
+              </Button>
+            </div>
+          </div>
 
           <div className="relative flex-1">
             <Search

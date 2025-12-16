@@ -58,6 +58,14 @@ export function Sidebar() {
     close();
   };
 
+  const handleClearFilter = () => {
+    setSelectedCategory(null);
+    setSelectedSubcategory(null);
+    setExpandedCategories(new Set());
+  };
+
+  const hasActiveFilter = selectedCategory !== null;
+
   const sidebarContent = (
     <>
       {/* Logo */}
@@ -73,9 +81,28 @@ export function Sidebar() {
         <span className="font-bold text-foreground-100 text-xl">SalesSync</span>
       </div>
 
-      <h2 className="mb-6 font-bold text-2xl text-foreground-100">
-        Categories
-      </h2>
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="font-bold text-2xl text-foreground-100">Categories</h2>
+
+        {/* Clear filter button */}
+        <div
+          className={`grid transition-all duration-300 ease-in-out ${
+            hasActiveFilter
+              ? "grid-cols-[1fr] opacity-100"
+              : "grid-cols-[0fr] opacity-0"
+          }`}
+        >
+          <div className="overflow-hidden">
+            <Button
+              onClick={handleClearFilter}
+              className="flex items-center gap-1 rounded-md bg-background-200 px-2 py-1 text-foreground-100 text-sm transition-all duration-200 hover:bg-foreground-200"
+            >
+              <X size={14} />
+              <span>Clear</span>
+            </Button>
+          </div>
+        </div>
+      </div>
 
       <nav className="space-y-1">
         {isLoading ? (
