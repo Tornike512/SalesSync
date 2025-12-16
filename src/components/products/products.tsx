@@ -87,9 +87,6 @@ export function Products() {
 
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // Use subcategory if selected, otherwise use the main category
-  const categoryFilter = selectedSubcategory ?? selectedCategory;
-
   const {
     data,
     isLoading,
@@ -100,7 +97,8 @@ export function Products() {
     isFetchingNextPage,
   } = useGetProducts({
     store_name: selectedStore,
-    category: categoryFilter,
+    category: selectedCategory,
+    subcategory: selectedSubcategory,
     sort: selectedSort,
     search: debouncedSearch || null,
   });
@@ -214,12 +212,14 @@ function ProductCard({ product }: { product: Product }) {
       )}
       {/* Product Image */}
       <div className="relative aspect-square overflow-hidden bg-white">
-        <Image
-          src={product.image_url}
-          alt={product.name}
-          fill
-          className="object-cover"
-        />
+        {product.image_url && (
+          <Image
+            src={product.image_url}
+            alt={product.name}
+            fill
+            className="object-cover"
+          />
+        )}
       </div>
 
       {/* Product Info */}

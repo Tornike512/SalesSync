@@ -32,6 +32,7 @@ export type GetProductsParams = {
   store_id?: number | null;
   store_name?: string | null;
   category?: string | null;
+  subcategory?: string | null;
   min_discount?: number | null;
   sort?: SortOption | null;
   search?: string | null;
@@ -48,6 +49,7 @@ async function getProducts(
     searchParams.set("store_id", String(params.store_id));
   if (params?.store_name) searchParams.set("store_name", params.store_name);
   if (params?.category) searchParams.set("category", params.category);
+  if (params?.subcategory) searchParams.set("subcategory", params.subcategory);
   if (params?.min_discount != null)
     searchParams.set("min_discount", String(params.min_discount));
   if (params?.sort) searchParams.set("sort", params.sort);
