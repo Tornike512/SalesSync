@@ -30,6 +30,13 @@ type ChangePasswordData = {
   newPassword: string;
 };
 
+type VerifyResponse = {
+  id: number;
+  full_name: string;
+  email: string;
+  is_active: boolean;
+};
+
 type ActionResult<T = void> =
   | { success: true; data: T }
   | { success: false; error: string };
@@ -111,6 +118,23 @@ export async function signOut(): Promise<ActionResult> {
     return {
       success: false,
       error: error instanceof Error ? error.message : "Failed to sign out",
+    };
+  }
+}
+
+export async function verifyToken(
+  token: string,
+): Promise<ActionResult<VerifyResponse>> {
+  try {
+    const response = await api.post<VerifyResponse>("/api/v1/auth/verify", {
+      token,
+    });
+
+    return { success: true, data: response };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to verify token",
     };
   }
 }

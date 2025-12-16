@@ -12,10 +12,19 @@ import {
   signIn as signInAction,
   signOut as signOutAction,
   signUp as signUpAction,
+  verifyToken,
 } from "@/lib/actions";
+
+type User = {
+  id: number;
+  full_name: string;
+  email: string;
+  is_active: boolean;
+};
 
 type Session = {
   accessToken: string;
+  user: User;
 } | null;
 
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
@@ -56,11 +65,16 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         if (response.ok) {
           const data = (await response.json()) as { access_token?: string };
           if (data.access_token) {
-            setSessionState({
-              accessToken: data.access_token,
-            });
-            setStatus("authenticated");
-            return;
+            const verifyResult = await verifyToken(data.access_token);
+
+            if (verifyResult.success) {
+              setSessionState({
+                accessToken: data.access_token,
+                user: verifyResult.data,
+              });
+              setStatus("authenticated");
+              return;
+            }
           }
         }
 
@@ -89,9 +103,18 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const result = await signInAction(data);
 
     if (result.success) {
-      setSessionState({ accessToken: result.data.access_token });
-      setStatus("authenticated");
-      return { success: true };
+      const verifyResult = await verifyToken(result.data.access_token);
+
+      if (verifyResult.success) {
+        setSessionState({
+          accessToken: result.data.access_token,
+          user: verifyResult.data,
+        });
+        setStatus("authenticated");
+        return { success: true };
+      }
+
+      return { success: false, error: verifyResult.error };
     }
 
     return { success: false, error: result.error };
@@ -101,9 +124,18 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     const result = await signUpAction(data);
 
     if (result.success) {
-      setSessionState({ accessToken: result.data.access_token });
-      setStatus("authenticated");
-      return { success: true };
+      const verifyResult = await verifyToken(result.data.access_token);
+
+      if (verifyResult.success) {
+        setSessionState({
+          accessToken: result.data.access_token,
+          user: verifyResult.data,
+        });
+        setStatus("authenticated");
+        return { success: true };
+      }
+
+      return { success: false, error: verifyResult.error };
     }
 
     return { success: false, error: result.error };
