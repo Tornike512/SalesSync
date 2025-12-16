@@ -212,13 +212,17 @@ function ProductCard({ product }: { product: Product }) {
       )}
       {/* Product Image */}
       <div className="relative aspect-square overflow-hidden bg-white">
-        {product.image_url && (
+        {product.image_url !== null ? (
           <Image
             src={product.image_url}
             alt={product.name}
             fill
             className="object-cover"
           />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-[var(--color-dark-green)] opacity-50">
+            No Image
+          </div>
         )}
       </div>
 
