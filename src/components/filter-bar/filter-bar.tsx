@@ -86,7 +86,7 @@ export function FilterBar({
   const { open } = useMobileSidebar();
 
   return (
-    <div className="sticky top-0 z-30 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
+    <div className="z-30 shrink-0 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
       <div className="mx-auto max-w-7xl">
         {/* Search Input with Menu Button */}
         <div className="relative mb-3 flex items-center gap-3 sm:mb-4">

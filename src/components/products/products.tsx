@@ -130,7 +130,7 @@ export function Products() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="min-h-screen bg-[var(--color-cream)]">
+    <div className="flex h-screen flex-col bg-[var(--color-cream)]">
       <FilterBar
         selectedStore={selectedStore}
         onStoreChange={setSelectedStore}
@@ -138,48 +138,50 @@ export function Products() {
         onSearchChange={setSearchQuery}
       />
 
-      {/* Product Grid */}
-      <div className="mx-auto max-w-7xl p-6">
-        {error && <div className="text-red-500">Failed to load products</div>}
+      {/* Product Grid - Scrollable */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-7xl p-6">
+          {error && <div className="text-red-500">Failed to load products</div>}
 
-        {!error && (
-          <>
-            <div className="mb-4 flex items-center justify-between">
-              <div className="text-[var(--color-dark-green)] text-sm">
-                Showing {products.length} of {total} product
-                {total !== 1 ? "s" : ""}
-              </div>
-              <SortDropdown
-                selectedSort={selectedSort}
-                onSortChange={setSelectedSort}
-              />
-            </div>
-
-            <div className="relative min-h-[400px]">
-              {showCenterSpinner && (
-                <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-cream)]/80">
-                  <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
+          {!error && (
+            <>
+              <div className="mb-4 flex items-center justify-between">
+                <div className="text-[var(--color-dark-green)] text-sm">
+                  Showing {products.length} of {total} product
+                  {total !== 1 ? "s" : ""}
                 </div>
-              )}
-
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {products.map((product, index) => (
-                  <ProductCard
-                    key={`${product.id}-${index}`}
-                    product={product}
-                  />
-                ))}
+                <SortDropdown
+                  selectedSort={selectedSort}
+                  onSortChange={setSelectedSort}
+                />
               </div>
-            </div>
 
-            {/* Infinite scroll loader */}
-            <div ref={loaderRef} className="flex justify-center py-8">
-              {isFetchingNextPage && (
-                <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
-              )}
-            </div>
-          </>
-        )}
+              <div className="relative min-h-[400px]">
+                {showCenterSpinner && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-cream)]/80">
+                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {products.map((product, index) => (
+                    <ProductCard
+                      key={`${product.id}-${index}`}
+                      product={product}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Infinite scroll loader */}
+              <div ref={loaderRef} className="flex justify-center py-8">
+                {isFetchingNextPage && (
+                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
