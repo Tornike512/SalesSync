@@ -8,13 +8,22 @@ import {
   useEffect,
   useState,
 } from "react";
-import { signUp as signUpAction } from "@/lib/actions";
+import {
+  signIn as signInAction,
+  signOut as signOutAction,
+  signUp as signUpAction,
+} from "@/lib/actions";
 
 type Session = {
   accessToken: string;
 } | null;
 
 type SessionStatus = "loading" | "authenticated" | "unauthenticated";
+
+type SignInData = {
+  email: string;
+  password: string;
+};
 
 type SignUpData = {
   full_name: string;
@@ -28,7 +37,9 @@ interface SessionContextType {
   status: SessionStatus;
   setSession: (session: Session) => void;
   clearSession: () => void;
+  signIn: (data: SignInData) => Promise<{ success: boolean; error?: string }>;
   signUp: (data: SignUpData) => Promise<{ success: boolean; error?: string }>;
+  signOut: () => Promise<{ success: boolean; error?: string }>;
 }
 
 const SessionContext = createContext<SessionContextType | null>(null);
@@ -74,12 +85,36 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setStatus("unauthenticated");
   }, []);
 
+  const signIn = useCallback(async (data: SignInData) => {
+    const result = await signInAction(data);
+
+    if (result.success) {
+      setSessionState({ accessToken: result.data.access_token });
+      setStatus("authenticated");
+      return { success: true };
+    }
+
+    return { success: false, error: result.error };
+  }, []);
+
   const signUp = useCallback(async (data: SignUpData) => {
     const result = await signUpAction(data);
 
     if (result.success) {
       setSessionState({ accessToken: result.data.access_token });
       setStatus("authenticated");
+      return { success: true };
+    }
+
+    return { success: false, error: result.error };
+  }, []);
+
+  const signOut = useCallback(async () => {
+    const result = await signOutAction();
+
+    if (result.success) {
+      setSessionState(null);
+      setStatus("unauthenticated");
       return { success: true };
     }
 
@@ -93,7 +128,9 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         status,
         setSession,
         clearSession,
+        signIn,
         signUp,
+        signOut,
       }}
     >
       {children}

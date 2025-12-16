@@ -100,3 +100,17 @@ export async function changePassword(
     };
   }
 }
+
+export async function signOut(): Promise<ActionResult> {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.delete(ACCESS_TOKEN_KEY);
+
+    return { success: true, data: undefined };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to sign out",
+    };
+  }
+}

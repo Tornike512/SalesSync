@@ -2,8 +2,11 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useSession } from "@/hooks/use-session";
 import { Button } from "../button";
 
 const signInSchema = z.object({
@@ -14,6 +17,11 @@ const signInSchema = z.object({
 type SignInFormValues = z.infer<typeof signInSchema>;
 
 export function SignIn() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { signIn } = useSession();
+  const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -22,7 +30,17 @@ export function SignIn() {
     resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = async (_data: SignInFormValues) => {};
+  const onSubmit = async (data: SignInFormValues) => {
+    setError(null);
+    const result = await signIn(data);
+
+    if (result.success) {
+      const callbackUrl = searchParams.get("callbackUrl") || "/";
+      router.push(callbackUrl);
+    } else {
+      setError(result.error || "Failed to sign in");
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[var(--background-100)]">
@@ -32,6 +50,12 @@ export function SignIn() {
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {error && (
+            <div className="rounded-lg bg-red-100 p-3 text-red-700 text-sm">
+              {error}
+            </div>
+          )}
+
           {/* Email */}
           <div className="flex flex-col gap-1">
             <label

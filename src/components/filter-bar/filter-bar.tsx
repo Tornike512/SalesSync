@@ -87,7 +87,7 @@ export function FilterBar({
   onSearchChange,
 }: FilterBarProps) {
   const { open } = useMobileSidebar();
-  const { status } = useSession();
+  const { status, signOut } = useSession();
   const {
     selectedCategory,
     selectedSubcategory,
@@ -159,6 +159,15 @@ export function FilterBar({
             >
               Sign In
             </Link>
+          )}
+
+          {status === "authenticated" && (
+            <Button
+              onClick={() => signOut()}
+              className="flex h-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] px-4 font-medium text-[var(--color-dark-green)] text-sm shadow-md transition-all hover:bg-amber-100 active:scale-95"
+            >
+              Log Out
+            </Button>
           )}
         </div>
 

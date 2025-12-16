@@ -2,8 +2,11 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useSession } from "@/hooks/use-session";
 import { Button } from "../button";
 
 const signUpSchema = z
@@ -24,6 +27,10 @@ const signUpSchema = z
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 
 export function SignUp() {
+  const router = useRouter();
+  const { signUp } = useSession();
+  const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -32,7 +39,21 @@ export function SignUp() {
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = async (_data: SignUpFormValues) => {};
+  const onSubmit = async (data: SignUpFormValues) => {
+    setError(null);
+    const result = await signUp({
+      full_name: data.name,
+      email: data.email,
+      password: data.password,
+      confirm_password: data.confirmPassword,
+    });
+
+    if (result.success) {
+      router.push("/");
+    } else {
+      setError(result.error || "Failed to create account");
+    }
+  };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-[var(--background-100)]">
@@ -42,6 +63,12 @@ export function SignUp() {
         </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {error && (
+            <div className="rounded-lg bg-red-100 p-3 text-red-700 text-sm">
+              {error}
+            </div>
+          )}
+
           {/* Name */}
           <div className="flex flex-col gap-1">
             <label
