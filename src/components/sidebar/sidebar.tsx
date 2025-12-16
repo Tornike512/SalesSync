@@ -23,27 +23,16 @@ export function Sidebar() {
     new Set(),
   );
 
-  const toggleCategoryExpanded = (category: string) => {
-    setExpandedCategories((prev) => {
-      const next = new Set(prev);
-      if (next.has(category)) {
-        next.delete(category);
-      } else {
-        next.add(category);
-      }
-      return next;
-    });
-  };
-
   const handleCategoryClick = (category: string) => {
     // If clicking the same category that's already selected, deselect it
     if (selectedCategory === category && !selectedSubcategory) {
       setSelectedCategory(null);
+      setExpandedCategories(new Set());
     } else {
       setSelectedCategory(category);
+      // Close all other categories, keep only the selected one expanded
+      setExpandedCategories(new Set([category]));
     }
-    // Toggle expansion when clicking category
-    toggleCategoryExpanded(category);
   };
 
   const handleSubcategoryClick = (category: string, subcategory: string) => {
@@ -53,6 +42,8 @@ export function Sidebar() {
       setSelectedSubcategory(null);
     } else {
       setSelectedSubcategory(subcategory);
+      // Close all other categories, keep only the selected one expanded
+      setExpandedCategories(new Set([category]));
     }
     // Close mobile sidebar when subcategory is selected
     close();
@@ -212,7 +203,9 @@ export function Sidebar() {
 
       {/* Mobile Sidebar Overlay */}
       {isOpen && (
-        <div
+        <button
+          type="button"
+          aria-label="Close sidebar"
           className="fixed inset-0 z-40 bg-black/50 md:hidden"
           onClick={close}
         />
