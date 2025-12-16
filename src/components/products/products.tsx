@@ -83,9 +83,12 @@ export function Products() {
   const [selectedStore, setSelectedStore] = useState<string | null>(null);
   const [selectedSort, setSelectedSort] = useState<SortOption>("price_asc");
   const [searchQuery, setSearchQuery] = useState("");
-  const { selectedCategory } = useCategoryFilter();
+  const { selectedCategory, selectedSubcategory } = useCategoryFilter();
 
   const debouncedSearch = useDebounce(searchQuery, 300);
+
+  // Use subcategory if selected, otherwise use the main category
+  const categoryFilter = selectedSubcategory ?? selectedCategory;
 
   const {
     data,
@@ -97,7 +100,7 @@ export function Products() {
     isFetchingNextPage,
   } = useGetProducts({
     store_name: selectedStore,
-    category: selectedCategory,
+    category: categoryFilter,
     sort: selectedSort,
     search: debouncedSearch || null,
   });

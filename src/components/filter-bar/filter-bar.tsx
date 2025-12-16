@@ -81,10 +81,10 @@ export function FilterBar({
   onSearchChange,
 }: FilterBarProps) {
   return (
-    <div className="sticky top-0 z-50 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-4 shadow-[4px_5px_12px_rgba(24,58,29,0.15)]">
+    <div className="sticky top-0 z-50 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
       <div className="mx-auto max-w-7xl">
         {/* Search Input */}
-        <div className="relative mb-4">
+        <div className="relative mb-3 sm:mb-4">
           <Search
             className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)]"
             size={20}
@@ -94,24 +94,25 @@ export function FilterBar({
             placeholder="Search products..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full rounded-full border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] py-2 pr-4 pl-10 text-[var(--color-dark-green)] placeholder-[var(--color-dark-green)]/50 transition-colors focus:bg-white focus:outline-none"
+            className="w-full rounded-full border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] py-2 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/50 transition-colors focus:bg-white focus:outline-none sm:text-base"
           />
         </div>
 
-        <h2 className="mb-3 font-semibold text-[var(--color-dark-green)] text-lg">
+        <h2 className="mb-2 font-semibold text-[var(--color-dark-green)] text-sm sm:mb-3 sm:text-lg">
           Filter by Store
         </h2>
-        <div className="flex gap-2 overflow-x-auto pb-2">
+        <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {/* All Stores Button */}
           <Button
             onClick={() => onStoreChange(null)}
-            className={`flex items-center gap-2 rounded-full px-4 py-2 font-medium text-sm outline-none transition-all focus:outline-none ${
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 font-medium text-xs outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 sm:text-sm ${
               selectedStore === null
                 ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                 : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
             }`}
           >
-            All Stores
+            All
+            <span className="hidden sm:inline"> Stores</span>
           </Button>
 
           {/* Store Filter Buttons */}
@@ -119,13 +120,13 @@ export function FilterBar({
             <Button
               key={store.id}
               onClick={() => onStoreChange(store.filterValue)}
-              className={`flex items-center gap-2 rounded-full px-4 py-2 outline-none transition-all focus:outline-none ${
+              className={`flex items-center gap-1.5 rounded-full px-2 py-1.5 outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 ${
                 selectedStore === store.filterValue
                   ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                   : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
               }`}
             >
-              <div className="relative h-6 w-6 overflow-hidden rounded-full bg-white p-0.5">
+              <div className="relative h-5 w-5 overflow-hidden rounded-full bg-white p-0.5 sm:h-6 sm:w-6">
                 <Image
                   src={store.logo}
                   alt={store.name}
@@ -133,7 +134,7 @@ export function FilterBar({
                   className="rounded-full object-contain"
                 />
               </div>
-              <span className="whitespace-nowrap font-medium text-sm">
+              <span className="hidden whitespace-nowrap font-medium text-sm sm:inline">
                 {store.name}
               </span>
             </Button>

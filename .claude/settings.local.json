@@ -5,7 +5,8 @@
       "Bash(if exist \"C:\\Users\\User\\Desktop\\sales-frontend-nextjs\\.env.local\" type \"C:\\Users\\User\\Desktop\\sales-frontend-nextjs\\.env.local\")",
       "Bash(ren \"C:\\Users\\User\\Desktop\\sales-frontend-nextjs\\.local.env\" \".env.local\")",
       "Bash(mv:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }
