@@ -7,6 +7,7 @@ import {
   type LucideIcon,
   Percent,
   PiggyBank,
+  ShoppingCart,
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -244,11 +245,14 @@ function ProductCard({ product }: { product: Product }) {
           </span>
         </div>
 
-        {/* Discount Badge */}
+        {/* Discount Badge & Cart */}
         <div className="flex items-center justify-between">
           <span className="rounded-full bg-[var(--color-orange)] px-3 py-1 font-bold text-white text-xs">
             {product.discount_percent ?? 0}% OFF
           </span>
+          <Button className="inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] p-3 text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95">
+            <ShoppingCart size={18} className="shrink-0" />
+          </Button>
         </div>
       </div>
     </div>

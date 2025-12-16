@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Search, X } from "lucide-react";
+import { Menu, Search, ShoppingCart, X } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
@@ -151,6 +151,11 @@ export function FilterBar({
               className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none sm:text-base"
             />
           </div>
+
+          {/* Cart Icon */}
+          <Button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95">
+            <ShoppingCart size={20} />
+          </Button>
 
           {status === "unauthenticated" && (
             <Link
