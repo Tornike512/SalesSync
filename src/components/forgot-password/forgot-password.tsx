@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useForgotPassword } from "@/hooks/use-forgot-password";
 import { Button } from "../button";
 import { SaleSyncIcon } from "../icons/salesync-icon";
 import { FourDigitForm } from "./4-digit-form";
@@ -31,19 +32,26 @@ export function ForgotPassword() {
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
 
+  const { mutate: forgotPassword, isPending } = useForgotPassword();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<ForgotPasswordValues>({
     resolver: zodResolver(forgotPasswordSchema),
   });
 
   const onSubmit = async (data: ForgotPasswordValues) => {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    setEmail(data.email);
-    setStep("verification");
+    forgotPassword(
+      { email: data.email },
+      {
+        onSuccess: () => {
+          setEmail(data.email);
+          setStep("verification");
+        },
+      },
+    );
   };
 
   const handleVerifyCode = async (_code: string) => {
@@ -103,16 +111,16 @@ export function ForgotPassword() {
 
                 <Button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isPending}
                   className="mt-2 w-full rounded-lg bg-[var(--color-dark-green)] py-2 font-semibold text-[var(--background-100)] text-sm transition hover:opacity-90 disabled:opacity-60"
                 >
-                  {isSubmitting ? "Sending..." : "Send Reset Code"}
+                  {isPending ? "Sending..." : "Send Reset Code"}
                 </Button>
 
                 <div className="text-center">
                   <Link
                     href="/sign-in"
-                    className="text-[var(--foreground-100)] text-xs underline-offset-4 hover:underline"
+                    className="cursor-pointer text-[var(--foreground-100)] text-xs underline-offset-4 hover:underline"
                     onClick={() => window.history.back()}
                   >
                     Back to Log In

@@ -30,6 +30,14 @@ type ChangePasswordData = {
   newPassword: string;
 };
 
+type ForgotPasswordData = {
+  email: string;
+};
+
+type ForgotPasswordResponse = {
+  message: string;
+};
+
 type VerifyResponse = {
   id: number;
   full_name: string;
@@ -104,6 +112,25 @@ export async function changePassword(
       success: false,
       error:
         error instanceof Error ? error.message : "Failed to change password",
+    };
+  }
+}
+
+export async function forgotPassword(
+  data: ForgotPasswordData,
+): Promise<ActionResult<ForgotPasswordResponse>> {
+  try {
+    const response = await api.post<ForgotPasswordResponse>(
+      "/api/v1/auth/forgot-password",
+      data,
+    );
+
+    return { success: true, data: response };
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to send reset email",
     };
   }
 }

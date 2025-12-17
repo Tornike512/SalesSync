@@ -160,7 +160,7 @@ export function FourDigitForm({
           <button
             type="button"
             onClick={handleResend}
-            className="text-[var(--foreground-100)] text-xs underline-offset-4 hover:underline"
+            className="cursor-pointer text-[var(--foreground-100)] text-xs underline-offset-4 hover:underline"
           >
             Resend Code
           </button>
@@ -170,7 +170,7 @@ export function FourDigitForm({
           <button
             type="button"
             onClick={onBack}
-            className="text-[var(--foreground-100)] text-xs underline-offset-4 hover:underline"
+            className="cursor-pointer text-[var(--foreground-100)] text-xs underline-offset-4 hover:underline"
           >
             Back to Email
           </button>
