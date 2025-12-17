@@ -2,12 +2,12 @@
 
 import { ChevronDown, ChevronRight, X } from "lucide-react";
 import { useState } from "react";
+import { SaleSyncIcon } from "@/assets/salesync-icon";
 import { getCategoryIcon } from "@/config/categories";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
 import { useMobileSidebar } from "@/providers/mobile-sidebar-provider";
 import { Button } from "../button";
-import { SaleSyncIcon } from "../icons/salesync-icon";
 
 export function Sidebar() {
   const { data: categories, isLoading } = useGetCategories();

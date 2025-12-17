@@ -6,11 +6,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { SaleSyncIcon } from "@/assets/salesync-icon";
 import { useForgotPassword } from "@/hooks/use-forgot-password";
 import { useResetPassword } from "@/hooks/use-reset-password";
 import { useVerifyResetCode } from "@/hooks/use-verify-reset-code";
 import { Button } from "../button";
-import { SaleSyncIcon } from "../icons/salesync-icon";
 import { FourDigitForm } from "./4-digit-form";
 
 const GoBackLink = () => (
@@ -108,7 +108,7 @@ export function ForgotPassword() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-[var(--background-100)]">
+    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-[var(--color-cream)] via-[var(--color-sage)] to-[var(--color-yellow)]">
       <GoBackLink />
       <div className="w-full max-w-md px-4">
         <div className="rounded-2xl bg-[var(--color-yellow)] p-8 shadow-xl">

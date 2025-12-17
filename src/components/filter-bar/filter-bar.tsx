@@ -188,9 +188,16 @@ export function FilterBar({
           )}
         </div>
 
-        <h2 className="mb-2 font-semibold text-[var(--color-dark-green)] text-sm sm:mb-3 sm:text-lg">
-          Filter by Store
-        </h2>
+        <div className="mb-3 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
+          <h2 className="font-semibold text-[var(--color-dark-green)] text-sm sm:text-lg">
+            Filter by Store
+          </h2>
+          <div className="rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center">
+            <p className="text-[var(--color-dark-green)] text-xs">
+              Data resets every 24 hours at 6:00 AM
+            </p>
+          </div>
+        </div>
         <div className="flex flex-wrap gap-1.5 sm:gap-2">
           {/* All Stores Button */}
           <Button
