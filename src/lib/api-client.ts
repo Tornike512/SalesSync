@@ -75,6 +75,7 @@ async function fetchApi<T>(
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      "X-API-Key": process.env.API_KEY || "",
       ...headers,
       ...(cookieHeader ? { Cookie: cookieHeader } : {}),
     },
