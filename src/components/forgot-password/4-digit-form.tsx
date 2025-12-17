@@ -153,7 +153,7 @@ export function FourDigitForm({
         </div>
 
         {verificationError && (
-          <div className="flex items-center justify-center gap-2 rounded-lg bg-red-100 px-3 py-2 text-red-700">
+          <div className="flex items-center justify-center gap-2 rounded-lg bg-red-50 px-3 py-2 text-red-500">
             <AlertCircle size={16} />
             <p className="font-medium text-sm">{verificationError}</p>
           </div>

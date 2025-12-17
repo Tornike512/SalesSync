@@ -220,7 +220,7 @@ export function Cart() {
               </div>
 
               <Button className="mt-6 w-full rounded-full bg-[var(--color-yellow)] py-3 font-bold text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95">
-                View Monthly Spend
+                Add to History
               </Button>
             </div>
           </div>
