@@ -5,12 +5,15 @@ import {
   ArrowDown10,
   ChevronDown,
   type LucideIcon,
+  Minus,
   Percent,
   PiggyBank,
-  ShoppingCart,
+  Plus,
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useAddCartItem } from "@/hooks/use-add-cart-item";
+import { useGetCart } from "@/hooks/use-get-cart";
 import {
   type Product,
   type SortOption,
@@ -189,6 +192,13 @@ export function Products() {
 }
 
 function ProductCard({ product }: { product: Product }) {
+  const [quantity, setQuantity] = useState(1);
+  const { data: cart } = useGetCart();
+  const { mutate: addToCart, isPending } = useAddCartItem();
+
+  const cartItem = cart?.items.find((item) => item.product_id === product.id);
+  const cartQuantity = cartItem?.quantity ?? 0;
+
   const getStoreLogo = (storeName: string | undefined) => {
     if (!storeName) return null;
     const name = storeName.toLowerCase();
@@ -199,6 +209,18 @@ function ProductCard({ product }: { product: Product }) {
   };
 
   const storeLogo = getStoreLogo(product.store_name);
+
+  const handleAddToCart = () => {
+    addToCart({ product_id: product.id, quantity });
+  };
+
+  const incrementQuantity = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const decrementQuantity = () => {
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  };
 
   return (
     <div className="relative overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
@@ -213,6 +235,14 @@ function ProductCard({ product }: { product: Product }) {
           />
         </div>
       )}
+
+      {/* Cart Quantity Badge */}
+      {cartQuantity > 0 && (
+        <div className="absolute top-2 left-3 flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-orange)] font-bold text-white text-xs shadow-md">
+          {cartQuantity}
+        </div>
+      )}
+
       {/* Product Image */}
       <div className="relative aspect-square overflow-hidden bg-white">
         {product.image_url !== null ? (
@@ -245,13 +275,39 @@ function ProductCard({ product }: { product: Product }) {
           </span>
         </div>
 
-        {/* Discount Badge & Cart */}
-        <div className="flex items-center justify-between">
+        {/* Discount Badge */}
+        <div className="mb-3">
           <span className="rounded-full bg-[var(--color-orange)] px-3 py-1 font-bold text-white text-xs">
             {product.discount_percent ?? 0}% OFF
           </span>
-          <Button className="inline-flex shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] p-3 text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95">
-            <ShoppingCart size={18} className="shrink-0" />
+        </div>
+
+        {/* Quantity Controls & Cart */}
+        <div className="flex items-center gap-2">
+          {/* Quantity Selector */}
+          <Button
+            onClick={decrementQuantity}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95"
+          >
+            <Minus size={14} />
+          </Button>
+          <span className="min-w-[1.5rem] text-center font-bold text-[var(--color-dark-green)] text-lg">
+            {quantity}
+          </span>
+          <Button
+            onClick={incrementQuantity}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95"
+          >
+            <Plus size={14} />
+          </Button>
+
+          {/* Add to Cart Button */}
+          <Button
+            onClick={handleAddToCart}
+            disabled={isPending}
+            className="flex-1 rounded-full bg-[var(--color-yellow)] px-3 py-2 font-semibold text-[var(--color-dark-green)] text-sm shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
+          >
+            Add to cart
           </Button>
         </div>
       </div>
