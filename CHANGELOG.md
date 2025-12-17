@@ -1,3 +1,11 @@
+## 1.4.0 (2025-12-17)
+
+* Merge pull request #1 from Tornike512/Feature/analytics ([d6b5d8f](https://github.com/Tornike512/SalesSync/commit/d6b5d8f)), closes [#1](https://github.com/Tornike512/SalesSync/issues/1)
+* feat: enhance ProductCard layout with flexbox for improved responsiveness ([494d3e1](https://github.com/Tornike512/SalesSync/commit/494d3e1))
+* feat: implement History component and related hooks for viewing product history ([afb7ba7](https://github.com/Tornike512/SalesSync/commit/afb7ba7))
+* feat: update API configuration and enhance security practices in documentation ([4b5d530](https://github.com/Tornike512/SalesSync/commit/4b5d530))
+* fix: update button label and error message styles for better clarity ([3ce030d](https://github.com/Tornike512/SalesSync/commit/3ce030d))
+
 ## 1.3.0 (2025-12-17)
 
 * Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([f2dc865](https://github.com/Tornike512/SalesSync/commit/f2dc865))
