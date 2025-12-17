@@ -1,3 +1,11 @@
+## 1.1.0 (2025-12-17)
+
+* feat: add GithubIcon component and integrate it into the Sidebar for external link ([1406c72](https://github.com/Tornike512/SalesSync/commit/1406c72))
+* feat: adjust padding and z-index for close button in Sidebar component ([6b7e239](https://github.com/Tornike512/SalesSync/commit/6b7e239))
+* feat: enhance FilterBar to display selected store name with styling ([7471145](https://github.com/Tornike512/SalesSync/commit/7471145))
+* feat: implement access token validation in middleware and API route ([aebf3ce](https://github.com/Tornike512/SalesSync/commit/aebf3ce))
+* feat: update version to 1.0.0, add SaleSyncIcon component, and enhance UI in various components ([8ee276a](https://github.com/Tornike512/SalesSync/commit/8ee276a))
+
 ## 1.0.0 (2025-12-17)
 
 * feat: add ([091c3fd](https://github.com/Tornike512/sales-frontend-nextjs/commit/091c3fd))
