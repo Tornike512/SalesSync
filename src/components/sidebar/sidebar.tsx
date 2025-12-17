@@ -1,7 +1,9 @@
 "use client";
 
 import { ChevronDown, ChevronRight, X } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
+import { GithubIcon } from "@/assets/github-icon";
 import { SaleSyncIcon } from "@/assets/salesync-icon";
 import { getCategoryIcon } from "@/config/categories";
 import { useGetCategories } from "@/hooks/use-get-categories";
@@ -59,9 +61,22 @@ export function Sidebar() {
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="mb-6 flex items-center gap-3 border-background-200 border-b pb-4">
-        <SaleSyncIcon width={40} height={40} className="rounded-md" />
-        <span className="font-bold text-foreground-100 text-xl">SalesSync</span>
+      <div className="mb-6 flex items-center justify-between border-background-200 border-b pb-4">
+        <div className="flex items-center gap-3">
+          <SaleSyncIcon width={40} height={40} className="rounded-md" />
+          <span className="font-bold text-foreground-100 text-xl">
+            SalesSync
+          </span>
+        </div>
+        <Link
+          href="https://github.com/Tornike512"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-lg p-2 transition-all hover:bg-background-200"
+          aria-label="Visit GitHub profile"
+        >
+          <GithubIcon width={24} height={24} />
+        </Link>
       </div>
 
       <div className="mb-6 flex items-center justify-between">
