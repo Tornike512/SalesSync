@@ -7,7 +7,8 @@
       "Bash(mv:*)",
       "Bash(npx tsc:*)",
       "Bash(npm run build:*)",
-      "Bash(findstr:*)"
+      "Bash(findstr:*)",
+      "Bash(pnpm lint:fix:*)"
     ]
   }
 }

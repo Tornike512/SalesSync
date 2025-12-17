@@ -157,14 +157,17 @@ export function FilterBar({
           </div>
 
           {/* Cart Icon */}
-          <Button className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95">
+          <Link
+            href="/cart"
+            className="relative flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95"
+          >
             <ShoppingCart size={20} />
             {cartItemCount > 0 && (
               <span className="-top-2 -right-2 absolute flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-orange)] px-1 font-bold text-white text-xs">
                 {cartItemCount > 99 ? "99+" : cartItemCount}
               </span>
             )}
-          </Button>
+          </Link>
 
           {status === "unauthenticated" && (
             <Link
