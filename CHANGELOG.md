@@ -1,3 +1,10 @@
+## 1.2.0 (2025-12-17)
+
+* feat: implement proxy middleware for access token validation on protected and auth routes ([a384e4a](https://github.com/Tornike512/SalesSync/commit/a384e4a))
+* feat: update e2e test to verify home page loads with filter bar ([5bfd637](https://github.com/Tornike512/SalesSync/commit/5bfd637))
+* feat: update version to 1.1.0, enhance JSX support, and improve changelog entries ([8fdd0cb](https://github.com/Tornike512/SalesSync/commit/8fdd0cb))
+* chore: code structure for improved readability and maintainability ([39345c5](https://github.com/Tornike512/SalesSync/commit/39345c5))
+
 ## 1.1.0 (2025-12-17)
 
 * feat: add GithubIcon component and integrate it into the Sidebar for external link ([1406c72](https://github.com/Tornike512/SalesSync/commit/1406c72))
