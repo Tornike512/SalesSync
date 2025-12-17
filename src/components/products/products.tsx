@@ -92,7 +92,15 @@ export function Products() {
     "discount_percent_desc",
   );
   const [searchQuery, setSearchQuery] = useState("");
-  const { selectedCategory, selectedSubcategory } = useCategoryFilter();
+  const { selectedCategory, selectedSubcategory, setSelectedCategory } =
+    useCategoryFilter();
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    if (query) {
+      setSelectedCategory(null);
+    }
+  };
 
   const debouncedSearch = useDebounce(searchQuery, 300);
 
@@ -142,7 +150,7 @@ export function Products() {
         selectedStore={selectedStore}
         onStoreChange={setSelectedStore}
         searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
+        onSearchChange={handleSearchChange}
       />
 
       {/* Product Grid - Scrollable */}
