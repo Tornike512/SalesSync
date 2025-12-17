@@ -1,19 +1,23 @@
 declare module "*.webp" {
-  const src: string;
+  import type { StaticImageData } from "next/image";
+  const src: StaticImageData;
   export default src;
 }
 
 declare module "*.jpg" {
-  const src: string;
+  import type { StaticImageData } from "next/image";
+  const src: StaticImageData;
   export default src;
 }
 
 declare module "*.jpeg" {
-  const src: string;
+  import type { StaticImageData } from "next/image";
+  const src: StaticImageData;
   export default src;
 }
 
 declare module "*.png" {
-  const src: string;
+  import type { StaticImageData } from "next/image";
+  const src: StaticImageData;
   export default src;
 }
