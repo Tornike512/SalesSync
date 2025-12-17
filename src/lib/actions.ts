@@ -49,6 +49,16 @@ type ResetPasswordResponse = {
   message: string;
 };
 
+type VerifyResetCodeData = {
+  email: string;
+  code: string;
+};
+
+type VerifyResetCodeResponse = {
+  valid: boolean;
+  message: string;
+};
+
 type VerifyResponse = {
   id: number;
   full_name: string;
@@ -161,6 +171,25 @@ export async function resetPassword(
       success: false,
       error:
         error instanceof Error ? error.message : "Failed to reset password",
+    };
+  }
+}
+
+export async function verifyResetCode(
+  data: VerifyResetCodeData,
+): Promise<ActionResult<VerifyResetCodeResponse>> {
+  try {
+    const response = await api.post<VerifyResetCodeResponse>(
+      "/api/v1/auth/verify-reset-code",
+      data,
+    );
+
+    return { success: true, data: response };
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to verify reset code",
     };
   }
 }
