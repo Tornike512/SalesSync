@@ -141,7 +141,7 @@ export function ForgotPassword() {
                     className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {errors.email && (
-                    <div className="flex items-center gap-1 text-red-600">
+                    <div className="flex items-center gap-1 text-red-500">
                       <AlertCircle size={14} />
                       <span className="font-medium text-sm">
                         {errors.email.message}
@@ -204,7 +204,7 @@ export function ForgotPassword() {
                     className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {resetErrors.new_password && (
-                    <div className="flex items-center gap-1 text-red-600">
+                    <div className="flex items-center gap-1 text-red-500">
                       <AlertCircle size={14} />
                       <span className="font-medium text-sm">
                         {resetErrors.new_password.message}
@@ -228,7 +228,7 @@ export function ForgotPassword() {
                     className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {resetErrors.confirm_password && (
-                    <div className="flex items-center gap-1 text-red-600">
+                    <div className="flex items-center gap-1 text-red-500">
                       <AlertCircle size={14} />
                       <span className="font-medium text-sm">
                         {resetErrors.confirm_password.message}

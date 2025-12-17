@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { API_URL } from "@/config";
+import { API_KEY, API_URL } from "@/config";
 
 export type Product = {
   id: number;
@@ -58,7 +58,11 @@ async function getProducts(
   searchParams.set("offset", String(params?.offset ?? 0));
 
   const url = `${API_URL}/api/v1/products?${searchParams.toString()}`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      "X-API-Key": API_KEY || "",
+    },
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch products");

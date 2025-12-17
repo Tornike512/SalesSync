@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/noExplicitAny: <> */
-import { API_URL } from "@/config";
+import { API_KEY, API_URL } from "@/config";
 import { logger } from "@/utils/logger";
 
 type RequestOptions = {
@@ -11,6 +11,17 @@ type RequestOptions = {
   cache?: RequestCache;
   next?: NextFetchRequestConfig;
 };
+
+class ApiError extends Error {
+  constructor(
+    message: string,
+    public status: number,
+    public response?: any,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
 
 function buildUrlWithParams(
   url: string,
@@ -70,35 +81,89 @@ async function fetchApi<T>(
 
   const fullUrl = buildUrlWithParams(`${API_URL}${url}`, params);
 
-  const response = await fetch(fullUrl, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      "X-API-Key": process.env.API_KEY || "",
-      ...headers,
-      ...(cookieHeader ? { Cookie: cookieHeader } : {}),
-    },
-    body: body ? JSON.stringify(body) : undefined,
-    credentials: "include",
-    cache,
-    next,
-  });
+  // Build headers with API key authentication
+  const requestHeaders: Record<string, string> = {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    ...headers,
+  };
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    const message =
-      typeof errorData === "object" &&
-      errorData !== null &&
-      "message" in errorData &&
-      typeof (errorData as { message?: unknown }).message === "string"
-        ? (errorData as { message: string }).message
-        : response.statusText;
-
-    throw new Error(message);
+  // Add API key header if available (only available server-side for security)
+  if (API_KEY) {
+    requestHeaders["X-API-Key"] = API_KEY;
   }
 
-  return response.json() as Promise<T>;
+  // Add cookies if available
+  if (cookieHeader) {
+    requestHeaders.Cookie = cookieHeader;
+  }
+
+  try {
+    const response = await fetch(fullUrl, {
+      method,
+      headers: requestHeaders,
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: "include",
+      cache,
+      next,
+    });
+
+    // Handle authentication errors
+    if (response.status === 403) {
+      logger.error("Authentication failed: Invalid or missing API key");
+      throw new ApiError(
+        "Authentication failed. Please check your API key configuration.",
+        403,
+      );
+    }
+
+    // Handle rate limiting
+    if (response.status === 429) {
+      const retryAfter = response.headers.get("Retry-After");
+      logger.warn(
+        `Rate limit exceeded. Retry after: ${retryAfter || "unknown"}`,
+      );
+      throw new ApiError(
+        `Too many requests. Please try again ${retryAfter ? `in ${retryAfter} seconds` : "later"}.`,
+        429,
+        { retryAfter },
+      );
+    }
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      const message =
+        typeof errorData === "object" &&
+        errorData !== null &&
+        "message" in errorData &&
+        typeof (errorData as { message?: unknown }).message === "string"
+          ? (errorData as { message: string }).message
+          : response.statusText;
+
+      logger.error(`API Error (${response.status}):`, message);
+      throw new ApiError(message, response.status, errorData);
+    }
+
+    return response.json() as Promise<T>;
+  } catch (error) {
+    // Re-throw ApiError as is
+    if (error instanceof ApiError) {
+      throw error;
+    }
+
+    // Handle network errors
+    if (error instanceof TypeError && error.message.includes("fetch")) {
+      logger.error("Network error:", error);
+      throw new ApiError(
+        "Network error. Please check your internet connection.",
+        0,
+      );
+    }
+
+    // Handle other errors
+    logger.error("Unexpected API error:", error);
+    throw error;
+  }
 }
 
 export const api = {

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { API_URL } from "@/config";
+import { API_KEY, API_URL } from "@/config";
 import { useSession } from "./use-session";
 
 export type CartItem = {
@@ -29,6 +29,7 @@ export type Cart = {
 async function getCart(token: string): Promise<Cart> {
   const response = await fetch(`${API_URL}/api/v1/cart`, {
     headers: {
+      "X-API-Key": API_KEY || "",
       Authorization: `Bearer ${token}`,
     },
   });

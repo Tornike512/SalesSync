@@ -1,11 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
-import { API_URL } from "@/config";
+import { API_KEY, API_URL } from "@/config";
 
 export type CategoryHierarchy = Record<string, string[]>;
 
 async function getCategoriesHierarchy(): Promise<CategoryHierarchy> {
   const url = `${API_URL}/api/v1/products/categories/hierarchy`;
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    headers: {
+      "X-API-Key": API_KEY || "",
+    },
+  });
 
   if (!response.ok) {
     throw new Error("Failed to fetch categories hierarchy");
