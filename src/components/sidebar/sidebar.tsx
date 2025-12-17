@@ -224,11 +224,11 @@ export function Sidebar() {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="p-6">
+        <div className="p-6 pt-16">
           {/* Close Button */}
           <Button
             onClick={close}
-            className="absolute top-4 right-4 rounded-full p-2 text-foreground-100 hover:bg-background-200"
+            className="absolute top-4 right-4 z-10 rounded-full p-2 text-foreground-100 hover:bg-background-200"
           >
             <X size={24} />
           </Button>
