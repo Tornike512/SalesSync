@@ -1,6 +1,6 @@
 "use client";
 
-export default function Cart() {
+export function Cart() {
   return (
     <div>
       <h1>Cart</h1>
