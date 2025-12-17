@@ -63,7 +63,7 @@ export function SignIn() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {error && (
-              <div className="rounded-lg bg-red-100 p-3 text-red-700 text-sm">
+              <div className="rounded-lg bg-red-50 p-3 text-red-500 text-sm">
                 {error}
               </div>
             )}
@@ -84,7 +84,7 @@ export function SignIn() {
                 className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
               />
               {errors.email && (
-                <span className="text-[var(--color-orange)] text-xs">
+                <span className="text-red-500 text-xs">
                   {errors.email.message}
                 </span>
               )}
@@ -106,7 +106,7 @@ export function SignIn() {
                 className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
               />
               {errors.password && (
-                <span className="text-[var(--color-orange)] text-xs">
+                <span className="text-red-500 text-xs">
                   {errors.password.message}
                 </span>
               )}
