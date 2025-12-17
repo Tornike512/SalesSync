@@ -240,6 +240,7 @@ function StoreGroup({
   const [isOpen, setIsOpen] = useState(true);
   const logo = getStoreLogo(storeName);
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const displayName = storeName.split(" ")[0];
 
   return (
     <div className="overflow-hidden rounded-xl border-2 border-[var(--color-dark-green)] bg-white shadow-md">
@@ -262,7 +263,7 @@ function StoreGroup({
           )}
           <div className="text-left">
             <h3 className="font-bold text-[var(--color-dark-green)] text-lg">
-              {storeName}
+              {displayName}
             </h3>
             <p className="text-[var(--color-dark-green)] text-sm opacity-60">
               {itemCount} item{itemCount !== 1 ? "s" : ""}
