@@ -13,6 +13,7 @@ import {
 import Image, { type StaticImageData } from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { useAddCartItem } from "@/hooks/use-add-cart-item";
 import { useGetCart } from "@/hooks/use-get-cart";
 import {
@@ -219,7 +220,20 @@ function ProductCard({ product }: { product: Product }) {
       router.push("/sign-in");
       return;
     }
-    addToCart({ product_id: product.id, quantity });
+    addToCart(
+      { product_id: product.id, quantity },
+      {
+        onSuccess: () => {
+          toast.success(
+            `Added ${quantity} item${quantity > 1 ? "s" : ""} to cart`,
+          );
+          setQuantity(1);
+        },
+        onError: () => {
+          toast.error("Failed to add item to cart");
+        },
+      },
+    );
   };
 
   const incrementQuantity = () => {

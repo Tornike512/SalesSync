@@ -1,18 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "@/config";
 import type { Cart } from "./use-get-cart";
+import { useSession } from "./use-session";
 
-function getCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
-  return null;
-}
-
-async function deleteCart(): Promise<Cart> {
-  const token = getCookie("access_token");
-
+async function deleteCart(token: string): Promise<Cart> {
   const response = await fetch(`${API_URL}/api/v1/cart`, {
     method: "DELETE",
     headers: {
@@ -29,9 +20,10 @@ async function deleteCart(): Promise<Cart> {
 
 export function useDeleteCart() {
   const queryClient = useQueryClient();
+  const { session } = useSession();
 
   return useMutation({
-    mutationFn: deleteCart,
+    mutationFn: () => deleteCart(session?.accessToken ?? ""),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },

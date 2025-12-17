@@ -1,4 +1,5 @@
 "use client";
+import { Toaster } from "react-hot-toast";
 import { CategoryFilterProvider } from "./category-filter-provider";
 import { ErrorBoundaryProvider } from "./error-boundary-provider";
 import { MobileSidebarProvider } from "./mobile-sidebar-provider";
@@ -11,7 +12,10 @@ export const AppProviders = ({ children }: { children: React.ReactNode }) => {
       <TanstackQueryProvider>
         <SessionProvider>
           <MobileSidebarProvider>
-            <CategoryFilterProvider>{children}</CategoryFilterProvider>
+            <CategoryFilterProvider>
+              {children}
+              <Toaster position="bottom-right" />
+            </CategoryFilterProvider>
           </MobileSidebarProvider>
         </SessionProvider>
       </TanstackQueryProvider>

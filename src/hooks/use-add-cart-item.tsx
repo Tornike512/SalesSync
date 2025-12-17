@@ -1,23 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_URL } from "@/config";
 import type { Cart } from "./use-get-cart";
+import { useSession } from "./use-session";
 
 type AddCartItemParams = {
   product_id: number;
   quantity: number;
+  token: string;
 };
 
-function getCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
-  return null;
-}
-
-async function addCartItem(params: AddCartItemParams): Promise<Cart> {
-  const token = getCookie("access_token");
-
+async function addCartItem({
+  token,
+  ...params
+}: AddCartItemParams): Promise<Cart> {
   const response = await fetch(`${API_URL}/api/v1/cart/items`, {
     method: "POST",
     headers: {
@@ -36,9 +31,11 @@ async function addCartItem(params: AddCartItemParams): Promise<Cart> {
 
 export function useAddCartItem() {
   const queryClient = useQueryClient();
+  const { session } = useSession();
 
   return useMutation({
-    mutationFn: addCartItem,
+    mutationFn: (params: Omit<AddCartItemParams, "token">) =>
+      addCartItem({ ...params, token: session?.accessToken ?? "" }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },

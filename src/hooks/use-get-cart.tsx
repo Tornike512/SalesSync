@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { API_URL } from "@/config";
+import { useSession } from "./use-session";
 
 export type CartItem = {
   id: number;
@@ -25,17 +26,7 @@ export type Cart = {
   updated_at: string;
 };
 
-function getCookie(name: string): string | null {
-  if (typeof document === "undefined") return null;
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
-  return null;
-}
-
-async function getCart(): Promise<Cart> {
-  const token = getCookie("access_token");
-
+async function getCart(token: string): Promise<Cart> {
   const response = await fetch(`${API_URL}/api/v1/cart`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -50,8 +41,11 @@ async function getCart(): Promise<Cart> {
 }
 
 export function useGetCart() {
+  const { session, status } = useSession();
+
   return useQuery({
     queryKey: ["cart"],
-    queryFn: getCart,
+    queryFn: () => getCart(session?.accessToken ?? ""),
+    enabled: status === "authenticated",
   });
 }

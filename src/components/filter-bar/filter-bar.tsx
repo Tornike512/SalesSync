@@ -3,6 +3,7 @@
 import { Menu, Search, ShoppingCart, X } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
+import { useGetCart } from "@/hooks/use-get-cart";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
 import { useMobileSidebar } from "@/providers/mobile-sidebar-provider";
 import { useSession } from "@/providers/session-provider";
@@ -88,12 +89,15 @@ export function FilterBar({
 }: FilterBarProps) {
   const { open } = useMobileSidebar();
   const { status, signOut } = useSession();
+  const { data: cart } = useGetCart();
   const {
     selectedCategory,
     selectedSubcategory,
     setSelectedCategory,
     setSelectedSubcategory,
   } = useCategoryFilter();
+
+  const cartItemCount = cart?.total_items ?? 0;
 
   const handleClearCategoryFilter = () => {
     setSelectedCategory(null);
@@ -153,8 +157,13 @@ export function FilterBar({
           </div>
 
           {/* Cart Icon */}
-          <Button className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95">
+          <Button className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95">
             <ShoppingCart size={20} />
+            {cartItemCount > 0 && (
+              <span className="-top-2 -right-2 absolute flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-orange)] px-1 font-bold text-white text-xs">
+                {cartItemCount > 99 ? "99+" : cartItemCount}
+              </span>
+            )}
           </Button>
 
           {status === "unauthenticated" && (
