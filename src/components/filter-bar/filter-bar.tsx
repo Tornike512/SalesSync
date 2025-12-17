@@ -189,9 +189,16 @@ export function FilterBar({
         </div>
 
         <div className="mb-3 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
-          <h2 className="font-semibold text-[var(--color-dark-green)] text-sm sm:text-lg">
-            Filter by Store
-          </h2>
+          <div className="flex items-center gap-2">
+            <h2 className="font-semibold text-[var(--color-dark-green)] text-sm sm:text-lg">
+              Filter by Store
+            </h2>
+            {selectedStore && (
+              <span className="rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs sm:hidden">
+                {stores.find((s) => s.filterValue === selectedStore)?.name}
+              </span>
+            )}
+          </div>
           <div className="rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center">
             <p className="text-[var(--color-dark-green)] text-xs">
               Data resets every 24 hours at 6:00 AM
