@@ -1,3 +1,8 @@
+## 1.3.0 (2025-12-17)
+
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([f2dc865](https://github.com/Tornike512/SalesSync/commit/f2dc865))
+* feat: update StoreGroup component to display the first word of the store name ([cd7a665](https://github.com/Tornike512/SalesSync/commit/cd7a665))
+
 ## 1.2.0 (2025-12-17)
 
 * feat: implement proxy middleware for access token validation on protected and auth routes ([a384e4a](https://github.com/Tornike512/SalesSync/commit/a384e4a))
