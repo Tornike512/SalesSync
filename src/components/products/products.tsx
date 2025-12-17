@@ -11,6 +11,7 @@ import {
   Plus,
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useAddCartItem } from "@/hooks/use-add-cart-item";
 import { useGetCart } from "@/hooks/use-get-cart";
@@ -19,6 +20,7 @@ import {
   type SortOption,
   useGetProducts,
 } from "@/hooks/use-get-products";
+import { useSession } from "@/hooks/use-session";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
 import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
@@ -195,6 +197,8 @@ function ProductCard({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
   const { data: cart } = useGetCart();
   const { mutate: addToCart, isPending } = useAddCartItem();
+  const { status } = useSession();
+  const router = useRouter();
 
   const cartItem = cart?.items.find((item) => item.product_id === product.id);
   const cartQuantity = cartItem?.quantity ?? 0;
@@ -211,6 +215,10 @@ function ProductCard({ product }: { product: Product }) {
   const storeLogo = getStoreLogo(product.store_name);
 
   const handleAddToCart = () => {
+    if (status !== "authenticated") {
+      router.push("/sign-in");
+      return;
+    }
     addToCart({ product_id: product.id, quantity });
   };
 
