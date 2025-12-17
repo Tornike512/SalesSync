@@ -1,3 +1,8 @@
+## 1.5.0 (2025-12-17)
+
+* feat: add X-API-Key header to fetchApi function and change JSX setting in tsconfig ([3cd841e](https://github.com/Tornike512/SalesSync/commit/3cd841e))
+* feat: update API configuration, enhance security practices, and add history tracking feature ([65f6cec](https://github.com/Tornike512/SalesSync/commit/65f6cec))
+
 ## 1.4.0 (2025-12-17)
 
 * Merge pull request #1 from Tornike512/Feature/analytics ([d6b5d8f](https://github.com/Tornike512/SalesSync/commit/d6b5d8f)), closes [#1](https://github.com/Tornike512/SalesSync/issues/1)
