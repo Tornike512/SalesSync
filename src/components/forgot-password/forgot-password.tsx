@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
+import { AlertCircle, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -46,7 +46,11 @@ export function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [resetToken, setResetToken] = useState("");
 
-  const { mutate: forgotPassword, isPending } = useForgotPassword();
+  const {
+    mutate: forgotPassword,
+    mutateAsync: forgotPasswordAsync,
+    isPending,
+  } = useForgotPassword();
   const { mutateAsync: verifyResetCode } = useVerifyResetCode();
   const { mutate: resetPassword, isPending: isResetting } = useResetPassword();
 
@@ -100,9 +104,7 @@ export function ForgotPassword() {
   };
 
   const handleResendCode = async () => {
-    // Simulate resending code
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    // Could show a toast notification here
+    await forgotPasswordAsync({ email });
   };
 
   return (
@@ -139,9 +141,12 @@ export function ForgotPassword() {
                     className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {errors.email && (
-                    <span className="text-[var(--color-orange)] text-xs">
-                      {errors.email.message}
-                    </span>
+                    <div className="flex items-center gap-1 text-red-600">
+                      <AlertCircle size={14} />
+                      <span className="font-medium text-sm">
+                        {errors.email.message}
+                      </span>
+                    </div>
                   )}
                 </div>
 
@@ -199,9 +204,12 @@ export function ForgotPassword() {
                     className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {resetErrors.new_password && (
-                    <span className="text-[var(--color-orange)] text-xs">
-                      {resetErrors.new_password.message}
-                    </span>
+                    <div className="flex items-center gap-1 text-red-600">
+                      <AlertCircle size={14} />
+                      <span className="font-medium text-sm">
+                        {resetErrors.new_password.message}
+                      </span>
+                    </div>
                   )}
                 </div>
 
@@ -220,9 +228,12 @@ export function ForgotPassword() {
                     className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {resetErrors.confirm_password && (
-                    <span className="text-[var(--color-orange)] text-xs">
-                      {resetErrors.confirm_password.message}
-                    </span>
+                    <div className="flex items-center gap-1 text-red-600">
+                      <AlertCircle size={14} />
+                      <span className="font-medium text-sm">
+                        {resetErrors.confirm_password.message}
+                      </span>
+                    </div>
                   )}
                 </div>
 

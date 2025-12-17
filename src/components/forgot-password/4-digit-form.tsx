@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { Button } from "../button";
 
@@ -19,6 +20,8 @@ export function FourDigitForm({
   const [code, setCode] = useState(["", "", "", ""]);
   const [verificationError, setVerificationError] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
 
   const handleCodeChange = (index: number, value: string) => {
     // Only allow digits
@@ -78,9 +81,17 @@ export function FourDigitForm({
   };
 
   const handleResend = async () => {
+    setIsResending(true);
+    setResendSuccess(false);
     setCode(["", "", "", ""]);
     setVerificationError("");
-    await onResendCode();
+    try {
+      await onResendCode();
+      setResendSuccess(true);
+      setTimeout(() => setResendSuccess(false), 3000);
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -142,9 +153,10 @@ export function FourDigitForm({
         </div>
 
         {verificationError && (
-          <p className="text-center text-[var(--color-orange)] text-xs">
-            {verificationError}
-          </p>
+          <div className="flex items-center justify-center gap-2 rounded-lg bg-red-100 px-3 py-2 text-red-700">
+            <AlertCircle size={16} />
+            <p className="font-medium text-sm">{verificationError}</p>
+          </div>
         )}
 
         <Button
@@ -157,13 +169,20 @@ export function FourDigitForm({
         </Button>
 
         <div className="text-center">
-          <button
-            type="button"
-            onClick={handleResend}
-            className="cursor-pointer text-[var(--foreground-100)] text-xs underline-offset-4 hover:underline"
-          >
-            Resend Code
-          </button>
+          {resendSuccess ? (
+            <p className="font-medium text-[var(--color-dark-green)] text-sm">
+              Code sent successfully!
+            </p>
+          ) : (
+            <button
+              type="button"
+              onClick={handleResend}
+              disabled={isResending}
+              className="cursor-pointer text-[var(--foreground-100)] text-xs underline-offset-4 hover:underline disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isResending ? "Sending..." : "Resend Code"}
+            </button>
+          )}
         </div>
 
         <div className="text-center">
