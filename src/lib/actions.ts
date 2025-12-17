@@ -38,6 +38,17 @@ type ForgotPasswordResponse = {
   message: string;
 };
 
+type ResetPasswordData = {
+  email: string;
+  code: string;
+  new_password: string;
+  confirm_password: string;
+};
+
+type ResetPasswordResponse = {
+  message: string;
+};
+
 type VerifyResponse = {
   id: number;
   full_name: string;
@@ -131,6 +142,25 @@ export async function forgotPassword(
       success: false,
       error:
         error instanceof Error ? error.message : "Failed to send reset email",
+    };
+  }
+}
+
+export async function resetPassword(
+  data: ResetPasswordData,
+): Promise<ActionResult<ResetPasswordResponse>> {
+  try {
+    const response = await api.post<ResetPasswordResponse>(
+      "/api/v1/auth/reset-password",
+      data,
+    );
+
+    return { success: true, data: response };
+  } catch (error) {
+    return {
+      success: false,
+      error:
+        error instanceof Error ? error.message : "Failed to reset password",
     };
   }
 }
