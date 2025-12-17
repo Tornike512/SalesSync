@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "../button";
 import { SaleSyncIcon } from "../icons/salesync-icon";
+import { FourDigitForm } from "./4-digit-form";
 
 const GoBackLink = () => (
   <Link
@@ -24,8 +25,11 @@ const forgotPasswordSchema = z.object({
 
 type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 
+type Step = "email" | "verification" | "success";
+
 export function ForgotPassword() {
-  const [isSent, setIsSent] = useState(false);
+  const [step, setStep] = useState<Step>("email");
+  const [email, setEmail] = useState("");
 
   const {
     register,
@@ -35,10 +39,26 @@ export function ForgotPassword() {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = async (_data: ForgotPasswordValues) => {
+  const onSubmit = async (data: ForgotPasswordValues) => {
     // Simulate API delay
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    setIsSent(true);
+    setEmail(data.email);
+    setStep("verification");
+  };
+
+  const handleVerifyCode = async (_code: string) => {
+    // Simulate API call to verify code
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    // For demo purposes, accept any 4-digit code
+    // In production, this would validate against the backend
+    setStep("success");
+  };
+
+  const handleResendCode = async () => {
+    // Simulate resending code
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    // Could show a toast notification here
   };
 
   return (
@@ -49,7 +69,7 @@ export function ForgotPassword() {
           <div className="flex justify-center">
             <SaleSyncIcon width={48} height={48} />
           </div>
-          {!isSent ? (
+          {step === "email" ? (
             <>
               <h1 className="mb-2 text-center font-semibold text-2xl text-[var(--foreground-100)]">
                 Forgot Password?
@@ -100,6 +120,13 @@ export function ForgotPassword() {
                 </div>
               </form>
             </>
+          ) : step === "verification" ? (
+            <FourDigitForm
+              email={email}
+              onVerify={handleVerifyCode}
+              onResendCode={handleResendCode}
+              onBack={() => setStep("email")}
+            />
           ) : (
             <div className="text-center">
               <div className="mb-4 flex justify-center text-4xl text-[var(--color-dark-green)]">
@@ -112,7 +139,7 @@ export function ForgotPassword() {
                 We have sent a password reset code to your inbox.
               </p>
               <Button
-                onClick={() => setIsSent(false)}
+                onClick={() => setStep("email")}
                 className="w-full rounded-lg border border-[var(--foreground-100)] py-2 font-semibold text-[var(--foreground-100)] text-sm transition hover:bg-[var(--background-100)]"
               >
                 Try another email
