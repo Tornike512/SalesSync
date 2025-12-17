@@ -1,14 +1,13 @@
 "use client";
 
 import { ChevronDown, ChevronRight, X } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { getCategoryIcon } from "@/config/categories";
 import { useGetCategories } from "@/hooks/use-get-categories";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
 import { useMobileSidebar } from "@/providers/mobile-sidebar-provider";
-import salesSyncLogo from "../../../public/images/salesync-icon.webp";
 import { Button } from "../button";
+import { SaleSyncIcon } from "../icons/salesync-icon";
 
 export function Sidebar() {
   const { data: categories, isLoading } = useGetCategories();
@@ -61,14 +60,7 @@ export function Sidebar() {
     <>
       {/* Logo */}
       <div className="mb-6 flex items-center gap-3 border-background-200 border-b pb-4">
-        <Image
-          src={salesSyncLogo}
-          alt="SalesSync logo"
-          width={40}
-          height={40}
-          className="rounded-md"
-          priority
-        />
+        <SaleSyncIcon width={40} height={40} className="rounded-md" />
         <span className="font-bold text-foreground-100 text-xl">SalesSync</span>
       </div>
 

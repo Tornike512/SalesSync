@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import {
   createContext,
   type ReactNode,
@@ -54,6 +55,7 @@ interface SessionContextType {
 const SessionContext = createContext<SessionContextType | null>(null);
 
 export function SessionProvider({ children }: { children: ReactNode }) {
+  const queryClient = useQueryClient();
   const [session, setSessionState] = useState<Session>(null);
   const [status, setStatus] = useState<SessionStatus>("loading");
 
@@ -147,11 +149,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     if (result.success) {
       setSessionState(null);
       setStatus("unauthenticated");
+      queryClient.removeQueries({ queryKey: ["cart"] });
       return { success: true };
     }
 
     return { success: false, error: result.error };
-  }, []);
+  }, [queryClient]);
 
   return (
     <SessionContext.Provider

@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -8,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useSession } from "@/hooks/use-session";
 import { Button } from "../button";
+import { SaleSyncIcon } from "../icons/salesync-icon";
 
 const signUpSchema = z
   .object({
@@ -56,123 +58,134 @@ export function SignUp() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--background-100)]">
-      <div className="w-full max-w-md rounded-2xl bg-[var(--color-yellow)] p-8 shadow-xl">
-        <h1 className="mb-6 text-center font-semibold text-2xl text-[var(--foreground-100)]">
-          Create Account
-        </h1>
+    <div className="relative flex min-h-screen items-center justify-center bg-[var(--background-100)]">
+      <Link
+        href="/"
+        className="absolute top-6 left-6 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-white text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-cream)] active:scale-95"
+      >
+        <ArrowLeft size={20} />
+      </Link>
+      <div className="w-full max-w-md px-4">
+        <div className="rounded-2xl bg-[var(--color-yellow)] p-8 shadow-xl">
+          <div className="flex justify-center">
+            <SaleSyncIcon width={48} height={48} />
+          </div>
+          <h1 className="mb-6 text-center font-semibold text-2xl text-[var(--foreground-100)]">
+            Create Account
+          </h1>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          {error && (
-            <div className="rounded-lg bg-red-100 p-3 text-red-700 text-sm">
-              {error}
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {error && (
+              <div className="rounded-lg bg-red-100 p-3 text-red-700 text-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Name */}
+            <div className="flex flex-col gap-1">
+              <label
+                htmlFor="name"
+                className="font-medium text-[var(--foreground-100)] text-sm"
+              >
+                Full Name
+              </label>
+              <input
+                id="name"
+                type="text"
+                placeholder="Enter your name"
+                {...register("name")}
+                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+              />
+              {errors.name && (
+                <span className="text-[var(--color-orange)] text-xs">
+                  {errors.name.message}
+                </span>
+              )}
             </div>
-          )}
 
-          {/* Name */}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="name"
-              className="font-medium text-[var(--foreground-100)] text-sm"
+            {/* Email */}
+            <div className="flex flex-col gap-1">
+              <label
+                htmlFor="email"
+                className="font-medium text-[var(--foreground-100)] text-sm"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                {...register("email")}
+                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+              />
+              {errors.email && (
+                <span className="text-[var(--color-orange)] text-xs">
+                  {errors.email.message}
+                </span>
+              )}
+            </div>
+
+            {/* Password */}
+            <div className="flex flex-col gap-1">
+              <label
+                htmlFor="password"
+                className="font-medium text-[var(--foreground-100)] text-sm"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                placeholder="Create a password"
+                {...register("password")}
+                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+              />
+              {errors.password && (
+                <span className="text-[var(--color-orange)] text-xs">
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
+
+            {/* Confirm Password */}
+            <div className="flex flex-col gap-1">
+              <label
+                htmlFor="confirmPassword"
+                className="font-medium text-[var(--foreground-100)] text-sm"
+              >
+                Confirm Password
+              </label>
+              <input
+                id="confirmPassword"
+                type="password"
+                placeholder="Repeat your password"
+                {...register("confirmPassword")}
+                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+              />
+              {errors.confirmPassword && (
+                <span className="text-[var(--color-orange)] text-xs">
+                  {errors.confirmPassword.message}
+                </span>
+              )}
+            </div>
+
+            {/* Submit */}
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="mt-4 w-full rounded-lg bg-[var(--color-dark-green)] py-2 font-semibold text-[var(--background-100)] text-sm transition hover:opacity-90 disabled:opacity-60"
             >
-              Full Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              placeholder="Enter your name"
-              {...register("name")}
-              className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
-            />
-            {errors.name && (
-              <span className="text-[var(--color-orange)] text-xs">
-                {errors.name.message}
-              </span>
-            )}
-          </div>
+              {isSubmitting ? "Creating account..." : "Sign Up"}
+            </Button>
 
-          {/* Email */}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="email"
-              className="font-medium text-[var(--foreground-100)] text-sm"
-            >
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              {...register("email")}
-              className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
-            />
-            {errors.email && (
-              <span className="text-[var(--color-orange)] text-xs">
-                {errors.email.message}
-              </span>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="password"
-              className="font-medium text-[var(--foreground-100)] text-sm"
-            >
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Create a password"
-              {...register("password")}
-              className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
-            />
-            {errors.password && (
-              <span className="text-[var(--color-orange)] text-xs">
-                {errors.password.message}
-              </span>
-            )}
-          </div>
-
-          {/* Confirm Password */}
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="confirmPassword"
-              className="font-medium text-[var(--foreground-100)] text-sm"
-            >
-              Confirm Password
-            </label>
-            <input
-              id="confirmPassword"
-              type="password"
-              placeholder="Repeat your password"
-              {...register("confirmPassword")}
-              className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
-            />
-            {errors.confirmPassword && (
-              <span className="text-[var(--color-orange)] text-xs">
-                {errors.confirmPassword.message}
-              </span>
-            )}
-          </div>
-
-          {/* Submit */}
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="mt-4 w-full rounded-lg bg-[var(--color-dark-green)] py-2 font-semibold text-[var(--background-100)] text-sm transition hover:opacity-90 disabled:opacity-60"
-          >
-            {isSubmitting ? "Creating account..." : "Sign Up"}
-          </Button>
-
-          <p className="text-center text-[var(--foreground-100)] text-xs">
-            Already have an account?{" "}
-            <Link href={"/sign-in"} className="font-bold hover:underline">
-              Log In
-            </Link>
-          </p>
-        </form>
+            <p className="text-center text-[var(--foreground-100)] text-xs">
+              Already have an account?{" "}
+              <Link href={"/sign-in"} className="font-bold hover:underline">
+                Log In
+              </Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   );
