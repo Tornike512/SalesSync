@@ -253,7 +253,7 @@ function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="relative overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
+    <div className="relative flex flex-col overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
       {/* Store Logo Badge */}
       {storeLogo && (
         <div className="absolute top-2 right-3 h-10 w-10 overflow-hidden rounded-full bg-white shadow-md">
@@ -290,13 +290,13 @@ function ProductCard({ product }: { product: Product }) {
       </div>
 
       {/* Product Info */}
-      <div className="p-4">
+      <div className="flex flex-1 flex-col p-4">
         <h3 className="mb-2 line-clamp-2 font-semibold text-[var(--color-dark-green)] text-base">
           {product.name}
         </h3>
 
         {/* Pricing */}
-        <div className="mb-2 flex items-baseline gap-2">
+        <div className="mt-auto mb-2 flex items-baseline gap-2">
           <span className="font-bold text-2xl text-[var(--color-orange)]">
             ₾{(product.current_price ?? 0).toFixed(2)}
           </span>
