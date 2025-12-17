@@ -4,8 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { resetPassword } from "@/lib/actions";
 
 type ResetPasswordData = {
-  email: string;
-  code: string;
+  reset_token: string;
   new_password: string;
   confirm_password: string;
 };

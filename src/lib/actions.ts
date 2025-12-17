@@ -39,8 +39,7 @@ type ForgotPasswordResponse = {
 };
 
 type ResetPasswordData = {
-  email: string;
-  code: string;
+  reset_token: string;
   new_password: string;
   confirm_password: string;
 };
@@ -57,6 +56,7 @@ type VerifyResetCodeData = {
 type VerifyResetCodeResponse = {
   valid: boolean;
   message: string;
+  reset_token?: string;
 };
 
 type VerifyResponse = {

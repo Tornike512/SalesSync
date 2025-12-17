@@ -44,7 +44,7 @@ type Step = "email" | "verification" | "resetPassword" | "success";
 export function ForgotPassword() {
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
+  const [resetToken, setResetToken] = useState("");
 
   const { mutate: forgotPassword, isPending } = useForgotPassword();
   const { mutateAsync: verifyResetCode } = useVerifyResetCode();
@@ -79,16 +79,15 @@ export function ForgotPassword() {
   };
 
   const handleVerifyCode = async (verificationCode: string) => {
-    await verifyResetCode({ email, code: verificationCode });
-    setCode(verificationCode);
+    const result = await verifyResetCode({ email, code: verificationCode });
+    setResetToken(result.reset_token || "");
     setStep("resetPassword");
   };
 
   const onResetPassword = async (data: ResetPasswordValues) => {
     resetPassword(
       {
-        email,
-        code,
+        reset_token: resetToken,
         new_password: data.new_password,
         confirm_password: data.confirm_password,
       },
