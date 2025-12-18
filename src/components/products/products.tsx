@@ -160,7 +160,7 @@ export function Products() {
 
           {!error && (
             <>
-              <div className="mb-4 flex items-center justify-between">
+              <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div className="text-[var(--color-dark-green)] text-sm">
                   Showing {products.length} of {total} product
                   {total !== 1 ? "s" : ""}

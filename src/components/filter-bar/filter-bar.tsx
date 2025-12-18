@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, Search, ShoppingCart, X } from "lucide-react";
+import { Clock, Menu, Search, ShoppingCart, X } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useGetCart } from "@/hooks/use-get-cart";
@@ -109,7 +109,7 @@ export function FilterBar({
   return (
     <div className="z-30 shrink-0 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
       <div className="mx-auto max-w-7xl">
-        {/* Search Input with Menu Button */}
+        {/* Top row: Menu, Category Filter, Icons, Auth */}
         <div className="relative mb-3 flex items-center gap-3 sm:mb-4">
           {/* Mobile Menu Button */}
           <Button
@@ -120,29 +120,8 @@ export function FilterBar({
             <Menu size={22} />
           </Button>
 
-          {/* Mobile Clear Category Filter Button */}
-          <div
-            className={`grid transition-all duration-300 ease-in-out md:hidden ${
-              hasActiveCategoryFilter
-                ? "grid-cols-[1fr] opacity-100"
-                : "grid-cols-[0fr] opacity-0"
-            }`}
-          >
-            <div className="overflow-hidden">
-              <Button
-                onClick={handleClearCategoryFilter}
-                className="flex h-10 shrink-0 items-center gap-1.5 rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-dark-green)] px-3 text-[var(--color-cream)] text-xs shadow-md transition-all hover:bg-[var(--color-dark-green)]/90 active:scale-95"
-                aria-label="Clear category filter"
-              >
-                <X size={14} />
-                <span className="max-w-24 truncate">
-                  {selectedSubcategory || selectedCategory}
-                </span>
-              </Button>
-            </div>
-          </div>
-
-          <div className="relative flex-1">
+          {/* Search Input - shown on md+ */}
+          <div className="relative hidden flex-1 md:block">
             <Search
               className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)] opacity-60"
               size={18}
@@ -152,9 +131,12 @@ export function FilterBar({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none sm:text-base"
+              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-4 pl-10 text-[var(--color-dark-green)] placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none sm:text-base"
             />
           </div>
+
+          {/* Spacer to push icons to the right on mobile */}
+          <div className="flex-1 md:hidden" />
 
           {/* Cart Icon */}
           <Link
@@ -167,6 +149,15 @@ export function FilterBar({
                 {cartItemCount > 99 ? "99+" : cartItemCount}
               </span>
             )}
+          </Link>
+
+          {/* History Icon */}
+          <Link
+            href="/history"
+            className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95"
+            aria-label="View History"
+          >
+            <Clock size={20} />
           </Link>
 
           {status === "unauthenticated" && (
@@ -182,10 +173,26 @@ export function FilterBar({
             <Button
               onClick={() => signOut()}
               className="flex h-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] px-4 font-medium text-[var(--color-dark-green)] text-sm shadow-md transition-all hover:bg-amber-100 active:scale-95"
+              aria-label="Log Out"
             >
               Log Out
             </Button>
           )}
+        </div>
+
+        {/* Mobile Search Input - shown on small screens only */}
+        <div className="relative mb-3 block md:hidden">
+          <Search
+            className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)] opacity-60"
+            size={18}
+          />
+          <input
+            type="text"
+            placeholder="Search products..."
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
+          />
         </div>
 
         <div className="mb-3 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
@@ -196,6 +203,20 @@ export function FilterBar({
             {selectedStore && (
               <span className="rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs sm:hidden">
                 {stores.find((s) => s.filterValue === selectedStore)?.name}
+              </span>
+            )}
+            {hasActiveCategoryFilter && (
+              <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs sm:hidden">
+                <span className="max-w-24 truncate">
+                  {selectedSubcategory || selectedCategory}
+                </span>
+                <Button
+                  onClick={handleClearCategoryFilter}
+                  className="flex items-center justify-center transition-all hover:opacity-70 active:scale-95"
+                  aria-label="Clear category filter"
+                >
+                  <X size={12} />
+                </Button>
               </span>
             )}
           </div>

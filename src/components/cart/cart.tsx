@@ -3,6 +3,7 @@
 import {
   ArrowLeft,
   ChevronDown,
+  Clock,
   Minus,
   Plus,
   ShoppingBag,
@@ -108,6 +109,13 @@ export function Cart() {
                 Shopping Cart
               </h1>
             </div>
+            <Link
+              href="/history"
+              className="flex items-center gap-2 rounded-full border-2 border-[var(--color-dark-green)] bg-white px-4 py-2 font-semibold text-[var(--color-dark-green)] text-sm transition-all hover:bg-[var(--color-cream)] active:scale-95"
+            >
+              <Clock size={16} />
+              View History
+            </Link>
           </div>
 
           <div className="flex flex-col gap-6 lg:flex-row">
@@ -256,14 +264,23 @@ export function Cart() {
               Shopping Cart
             </h1>
           </div>
-          <Button
-            onClick={handleClearCart}
-            disabled={isClearingCart}
-            className="flex items-center gap-2 rounded-full border-2 border-red-500 bg-white px-4 py-2 font-semibold text-red-500 text-sm transition-all hover:bg-red-50 active:scale-95 disabled:opacity-50"
-          >
-            <Trash2 size={16} />
-            Clear Cart
-          </Button>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/history"
+              className="flex items-center gap-2 rounded-full border-2 border-[var(--color-dark-green)] bg-white px-4 py-2 font-semibold text-[var(--color-dark-green)] text-sm transition-all hover:bg-[var(--color-cream)] active:scale-95"
+            >
+              <Clock size={16} />
+              View History
+            </Link>
+            <Button
+              onClick={handleClearCart}
+              disabled={isClearingCart}
+              className="flex items-center gap-2 rounded-full border-2 border-red-500 bg-white px-4 py-2 font-semibold text-red-500 text-sm transition-all hover:bg-red-50 active:scale-95 disabled:opacity-50"
+            >
+              <Trash2 size={16} />
+              Clear Cart
+            </Button>
+          </div>
         </div>
 
         <div className="flex flex-col gap-6 lg:flex-row">
