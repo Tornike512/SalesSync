@@ -30,6 +30,7 @@ import goodwillLogo from "../../../public/images/goodwill.jpg";
 import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
 import nikoraLogo from "../../../public/images/nikora.png";
+import onePriceLogo from "../../../public/images/one-price.png";
 import sparLogo from "../../../public/images/spar.jpeg";
 import { Button } from "../button";
 import { FilterBar } from "../filter-bar";
@@ -41,6 +42,7 @@ const storeLogos: Record<string, StaticImageData> = {
   ioli: ioliLogo,
   magniti: magnitiLogo,
   nikora: nikoraLogo,
+  oneprice: onePriceLogo,
   spar: sparLogo,
   carrefour: carrefourLogo,
 };
