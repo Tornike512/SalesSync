@@ -1,3 +1,22 @@
+## 1.7.0 (2025-12-18)
+
+* chore: update version to 1.6.0 in package.json and enhance changelog ([fa9ed99](https://github.com/Tornike512/SalesSync/commit/fa9ed99))
+* feat: add /history route to protected routes and update matcher configuration ([715c003](https://github.com/Tornike512/SalesSync/commit/715c003))
+* feat: add back button to History component and improve layout ([cb64234](https://github.com/Tornike512/SalesSync/commit/cb64234))
+* feat: add delete functionality for history and individual items in History component ([b42c86e](https://github.com/Tornike512/SalesSync/commit/b42c86e))
+* feat: add history link to Cart and FilterBar components ([8e76920](https://github.com/Tornike512/SalesSync/commit/8e76920))
+* feat: add modal for confirming deletion of all history items ([216f822](https://github.com/Tornike512/SalesSync/commit/216f822))
+* feat: add useGetHistory hook and update History component with improved imports ([6eb2841](https://github.com/Tornike512/SalesSync/commit/6eb2841))
+* feat: enhance History and Cart components to include item quantities in history tracking ([f4fd3d3](https://github.com/Tornike512/SalesSync/commit/f4fd3d3))
+* feat: enhance History component with summary sidebar and improved layout ([7adf6a9](https://github.com/Tornike512/SalesSync/commit/7adf6a9))
+* feat: enhance ProductCard layout with improved quantity controls and button styling ([fe5f981](https://github.com/Tornike512/SalesSync/commit/fe5f981))
+* feat: implement addToHistory functionality and integrate with Cart component ([5c0f516](https://github.com/Tornike512/SalesSync/commit/5c0f516))
+* feat: implement History component and update CartPage metadata ([ff5493a](https://github.com/Tornike512/SalesSync/commit/ff5493a))
+* feat: implement history management hooks for adding and deleting history items ([b118840](https://github.com/Tornike512/SalesSync/commit/b118840))
+* feat: implement pending updates context in Cart component and enhance quantity handling ([55c5e39](https://github.com/Tornike512/SalesSync/commit/55c5e39))
+* feat: improve layout and responsiveness of Cart and History components ([e9389f6](https://github.com/Tornike512/SalesSync/commit/e9389f6))
+* fix: update availability checks in Cart component and make is_available optional in CartItem type ([a3974b8](https://github.com/Tornike512/SalesSync/commit/a3974b8))
+
 ## 1.6.0 (2025-12-18)
 
 * feat: enhance cart and history components with availability checks and UI updates ([955f954](https://github.com/Tornike512/SalesSync/commit/955f954))
