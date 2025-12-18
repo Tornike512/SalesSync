@@ -313,29 +313,31 @@ function ProductCard({ product }: { product: Product }) {
         </div>
 
         {/* Quantity Controls & Cart */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Quantity Selector */}
-          <Button
-            onClick={decrementQuantity}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95"
-          >
-            <Minus size={14} />
-          </Button>
-          <span className="min-w-[1.5rem] text-center font-bold text-[var(--color-dark-green)] text-lg">
-            {quantity}
-          </span>
-          <Button
-            onClick={incrementQuantity}
-            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95"
-          >
-            <Plus size={14} />
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button
+              onClick={decrementQuantity}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95"
+            >
+              <Minus size={14} />
+            </Button>
+            <span className="min-w-[1.5rem] text-center font-bold text-[var(--color-dark-green)] text-lg">
+              {quantity}
+            </span>
+            <Button
+              onClick={incrementQuantity}
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95"
+            >
+              <Plus size={14} />
+            </Button>
+          </div>
 
           {/* Add to Cart Button */}
           <Button
             onClick={handleAddToCart}
             disabled={isPending}
-            className="flex-1 rounded-full bg-[var(--color-yellow)] px-3 py-2 font-semibold text-[var(--color-dark-green)] text-sm shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
+            className="flex-1 whitespace-nowrap rounded-full bg-[var(--color-yellow)] px-3 py-2 font-semibold text-[var(--color-dark-green)] text-sm shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
           >
             Add to cart
           </Button>
