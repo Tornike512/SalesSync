@@ -91,7 +91,7 @@ export function History() {
       {/* Back Button */}
       <Link
         href="/"
-        className="absolute top-6 left-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--foreground-100)] bg-[var(--color-cream)] text-[var(--foreground-100)] transition-all hover:bg-[var(--color-yellow)]/20 active:scale-95"
+        className="absolute top-6 left-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-white text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-cream)] active:scale-95"
       >
         <ArrowLeft size={20} />
       </Link>
@@ -108,25 +108,27 @@ export function History() {
       </div>
 
       {/* Filter Bar */}
-      <div className="mb-6 flex flex-wrap items-center gap-3">
-        <div className="flex items-center gap-2 text-[var(--foreground-100)]/70 text-sm">
+      <div className="mb-6 flex flex-col gap-2">
+        <div className="flex items-center gap-2 text-[var(--foreground-100)]/70 text-sm sm:mb-0">
           <Calendar className="size-4" />
           <span>Filter by:</span>
         </div>
-        {filterOptions.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => setSelectedFilter(option.value)}
-            type="button"
-            className={`rounded-lg px-4 py-2 font-medium text-sm transition-colors ${
-              selectedFilter === option.value
-                ? "bg-[var(--color-yellow)] text-[var(--foreground-100)]"
-                : "bg-[var(--color-sage)] text-[var(--foreground-100)] hover:bg-[var(--color-yellow)]/30"
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
+        <div className="flex flex-wrap gap-3">
+          {filterOptions.map((option) => (
+            <button
+              key={option.value}
+              onClick={() => setSelectedFilter(option.value)}
+              type="button"
+              className={`rounded-lg px-4 py-2 font-medium text-sm transition-colors ${
+                selectedFilter === option.value
+                  ? "bg-[var(--color-yellow)] text-[var(--foreground-100)]"
+                  : "bg-white text-[var(--foreground-100)] shadow-sm hover:bg-[var(--color-yellow)]/30"
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Total Count and Delete Button */}
@@ -172,7 +174,7 @@ export function History() {
               </div>
             </div>
           ) : items.length === 0 ? (
-            <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-[var(--foreground-100)]/20 border-dashed bg-[var(--color-cream)]">
+            <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-[var(--foreground-100)]/20 border-dashed bg-white shadow-md">
               <div className="text-center">
                 <Clock className="mx-auto mb-4 size-16 text-[var(--foreground-100)]/30" />
                 <h3 className="mb-2 font-semibold text-[var(--foreground-100)] text-xl">
@@ -201,20 +203,20 @@ export function History() {
                 return (
                   <div
                     key={`${item.id}-${item.viewed_at}`}
-                    className={`group relative flex flex-col overflow-hidden rounded-lg border-2 bg-[var(--color-cream)] transition-shadow hover:shadow-lg ${
+                    className={`group relative flex flex-col overflow-hidden rounded-lg border-2 bg-white shadow-md transition-shadow hover:shadow-xl ${
                       item.is_available
                         ? "border-[var(--color-yellow)]/30"
                         : "border-gray-300 opacity-75"
                     }`}
                   >
                     {/* Image Container */}
-                    <div className="relative aspect-square w-full overflow-hidden bg-[var(--color-cream)]">
+                    <div className="relative aspect-square w-full overflow-hidden bg-white">
                       {/* Delete Item Button */}
                       <Button
                         type="button"
                         onClick={() => deleteHistoryItem(item.id)}
                         disabled={isDeletingItem}
-                        className="absolute top-2 left-2 z-10 flex size-8 items-center justify-center rounded-full bg-[var(--foreground-100)]/50 text-[var(--color-cream)] opacity-0 transition-opacity hover:bg-[var(--color-orange)] disabled:cursor-not-allowed disabled:opacity-50 group-hover:opacity-100"
+                        className="absolute top-2 left-2 z-10 flex size-8 items-center justify-center rounded-full bg-[var(--foreground-100)]/50 text-[var(--color-cream)] transition-opacity hover:bg-[var(--color-orange)] disabled:cursor-not-allowed disabled:opacity-50"
                         title="Remove from history"
                       >
                         <Trash2 className="size-4" />
@@ -246,12 +248,12 @@ export function History() {
                     {/* Content */}
                     <div className="flex flex-1 flex-col p-4">
                       {/* Store Name */}
-                      <div className="mb-2 font-medium text-[var(--foreground-100)]/60 text-xs uppercase">
+                      <div className="mb-2 font-semibold text-[var(--foreground-100)]/70 text-sm uppercase">
                         {item.store_name}
                       </div>
 
                       {/* Product Name */}
-                      <h3 className="mb-3 line-clamp-2 font-semibold text-[var(--foreground-100)] text-sm">
+                      <h3 className="mb-3 line-clamp-2 font-bold text-[var(--foreground-100)] text-base">
                         {item.product_name}
                       </h3>
 
@@ -268,13 +270,13 @@ export function History() {
                           )}
                         </div>
                         {item.quantity > 1 && (
-                          <div className="text-[var(--foreground-100)]/70 text-xs">
+                          <div className="font-bold text-[var(--foreground-100)] text-sm">
                             Qty: {item.quantity} (Total: ₾
                             {(item.current_price * item.quantity).toFixed(2)})
                           </div>
                         )}
                         {discountAmount > 0 && (
-                          <div className="text-[var(--foreground-100)] text-xs">
+                          <div className="font-semibold text-[var(--color-orange)] text-sm">
                             Save ₾{(discountAmount * item.quantity).toFixed(2)}
                           </div>
                         )}
@@ -298,7 +300,7 @@ export function History() {
         {/* Summary Sidebar */}
         {items.length > 0 && (
           <div className="w-full shrink-0 lg:w-80">
-            <div className="sticky top-4 rounded-lg border-2 border-[var(--color-yellow)]/30 bg-[var(--color-cream)] p-6 shadow-sm">
+            <div className="sticky top-4 rounded-lg border-2 border-[var(--color-yellow)]/30 bg-white p-6 shadow-lg">
               <h2 className="mb-6 font-bold text-[var(--foreground-100)] text-xl">
                 <ShoppingBag className="mr-2 mb-1 inline size-5 text-[var(--color-yellow)]" />
                 Summary
@@ -341,7 +343,7 @@ export function History() {
               </div>
 
               {/* Amount Saved */}
-              <div className="mb-6 flex items-center justify-between rounded-lg bg-[var(--color-yellow)]/20 p-3">
+              <div className="mb-6 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <PiggyBank className="size-5 text-[var(--foreground-100)]" />
                   <span className="font-medium text-[var(--foreground-100)]">
@@ -371,19 +373,23 @@ export function History() {
                 <div className="space-y-2">
                   {Object.entries(summary.storeBreakdown)
                     .sort(([, a], [, b]) => b - a)
-                    .map(([store, count]) => (
-                      <div
-                        key={store}
-                        className="flex items-center justify-between text-sm"
-                      >
-                        <span className="text-[var(--foreground-100)]/70">
-                          {store}
-                        </span>
-                        <span className="rounded-full bg-[var(--color-yellow)]/30 px-2 py-0.5 text-[var(--foreground-100)] text-xs">
-                          {count} {count === 1 ? "item" : "items"}
-                        </span>
-                      </div>
-                    ))}
+                    .map(([store, count]) => {
+                      const displayName =
+                        store.split(" ").slice(0, -1).join(" ") || store;
+                      return (
+                        <div
+                          key={store}
+                          className="flex items-center justify-between text-sm"
+                        >
+                          <span className="text-[var(--foreground-100)]/70">
+                            {displayName}
+                          </span>
+                          <span className="rounded-full bg-[var(--color-yellow)]/30 px-2 py-0.5 text-[var(--foreground-100)] text-xs">
+                            {count} {count === 1 ? "item" : "items"}
+                          </span>
+                        </div>
+                      );
+                    })}
                 </div>
               </div>
             </div>
