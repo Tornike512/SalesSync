@@ -13,11 +13,17 @@ export interface HistoryItem {
   readonly store_name: string;
   readonly viewed_at: string;
   readonly is_available: boolean;
+  readonly quantity: number;
 }
 
 export interface HistoryResponse {
   readonly total: number;
   readonly items: readonly HistoryItem[];
+}
+
+export interface AddHistoryItem {
+  readonly product_id: number;
+  readonly quantity: number;
 }
 
 export type TimeFilter = "day" | "week" | "month" | "year" | "all";
@@ -67,7 +73,7 @@ export function useGetHistory(filter: TimeFilter = "all") {
 
 async function addToHistory(
   token: string,
-  productIds: readonly number[],
+  items: readonly AddHistoryItem[],
 ): Promise<HistoryResponse> {
   const response = await fetch(`${API_URL}/api/v1/auth/history`, {
     method: "POST",
@@ -76,7 +82,7 @@ async function addToHistory(
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ product_ids: productIds }),
+    body: JSON.stringify({ items }),
   });
 
   if (!response.ok) {
@@ -96,8 +102,8 @@ export function useAddHistory() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (productIds: readonly number[]) =>
-      addToHistory(session?.accessToken ?? "", productIds),
+    mutationFn: (items: readonly AddHistoryItem[]) =>
+      addToHistory(session?.accessToken ?? "", items),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["history"] });
     },

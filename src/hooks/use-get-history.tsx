@@ -2,23 +2,24 @@ import { useQuery } from "@tanstack/react-query";
 import { API_KEY, API_URL } from "@/config";
 import { useSession } from "./use-session";
 
-export type HistoryItem = {
-  id: number;
-  product_id: number;
-  product_name: string;
-  product_image_url: string;
-  current_price: number;
-  original_price: number;
-  discount_percent: number;
-  store_name: string;
-  viewed_at: string;
-  is_available: boolean;
-};
+export interface HistoryItem {
+  readonly id: number;
+  readonly product_id: number;
+  readonly product_name: string;
+  readonly product_image_url: string;
+  readonly current_price: number;
+  readonly original_price: number;
+  readonly discount_percent: number;
+  readonly store_name: string;
+  readonly viewed_at: string;
+  readonly is_available: boolean;
+  readonly quantity: number;
+}
 
-export type HistoryResponse = {
-  total: number;
-  items: HistoryItem[];
-};
+export interface HistoryResponse {
+  readonly total: number;
+  readonly items: readonly HistoryItem[];
+}
 
 export type TimeFilter = "day" | "week" | "month" | "year" | "all";
 

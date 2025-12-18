@@ -40,12 +40,16 @@ export function History() {
   const total = data?.total ?? 0;
 
   const summary = useMemo(() => {
-    const totalSpent = items.reduce((acc, item) => acc + item.current_price, 0);
+    const totalSpent = items.reduce(
+      (acc, item) => acc + item.current_price * item.quantity,
+      0,
+    );
     const totalOriginal = items.reduce(
-      (acc, item) => acc + item.original_price,
+      (acc, item) => acc + item.original_price * item.quantity,
       0,
     );
     const totalSaved = totalOriginal - totalSpent;
+    const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
     const avgDiscount =
       items.length > 0
         ? items.reduce((acc, item) => acc + item.discount_percent, 0) /
@@ -53,7 +57,7 @@ export function History() {
         : 0;
     const storeBreakdown = items.reduce(
       (acc, item) => {
-        acc[item.store_name] = (acc[item.store_name] || 0) + 1;
+        acc[item.store_name] = (acc[item.store_name] || 0) + item.quantity;
         return acc;
       },
       {} as Record<string, number>,
@@ -63,6 +67,7 @@ export function History() {
       totalSpent,
       totalOriginal,
       totalSaved,
+      totalQuantity,
       avgDiscount,
       storeBreakdown,
     };
@@ -256,9 +261,15 @@ export function History() {
                             </span>
                           )}
                         </div>
+                        {item.quantity > 1 && (
+                          <div className="text-foreground-100/70 text-xs">
+                            Qty: {item.quantity} (Total: ₾
+                            {(item.current_price * item.quantity).toFixed(2)})
+                          </div>
+                        )}
                         {discountAmount > 0 && (
                           <div className="text-[var(--color-dark-green)] text-xs">
-                            Save ₾{discountAmount.toFixed(2)}
+                            Save ₾{(discountAmount * item.quantity).toFixed(2)}
                           </div>
                         )}
                       </div>
@@ -291,7 +302,7 @@ export function History() {
               <div className="mb-4 flex items-center justify-between border-foreground-100/10 border-b pb-4">
                 <span className="text-foreground-100/70">Total Items</span>
                 <span className="font-semibold text-foreground-100">
-                  {total}
+                  {summary.totalQuantity}
                 </span>
               </div>
 

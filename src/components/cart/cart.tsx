@@ -263,8 +263,11 @@ export function Cart() {
   };
 
   const handleAddToHistory = () => {
-    const productIds = cart.items.map((item) => item.product_id);
-    addToHistory(productIds, {
+    const historyItems = cart.items.map((item) => ({
+      product_id: item.product_id,
+      quantity: item.quantity,
+    }));
+    addToHistory(historyItems, {
       onSuccess: () => {
         clearCart(undefined, {
           onSuccess: () => {
