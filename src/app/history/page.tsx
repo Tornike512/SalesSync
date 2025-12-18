@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { History } from "@/components/history";
+import { History } from "@/features/history";
 
 export const metadata: Metadata = {
   title: "History - SaleSync",
