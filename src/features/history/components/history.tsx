@@ -1,11 +1,16 @@
 "use client";
 
-import { ArrowLeft, Calendar, Clock, TrendingDown } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Trash2, TrendingDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { Button } from "@/components/button";
 import type { TimeFilter } from "../hooks/use-get-history";
-import { useGetHistory } from "../hooks/use-get-history";
+import {
+  useDeleteHistory,
+  useDeleteHistoryItem,
+  useGetHistory,
+} from "../hooks/use-get-history";
 
 const filterOptions: { value: TimeFilter; label: string }[] = [
   { value: "day", label: "Today" },
@@ -18,6 +23,9 @@ const filterOptions: { value: TimeFilter; label: string }[] = [
 export function History() {
   const [selectedFilter, setSelectedFilter] = useState<TimeFilter>("all");
   const { data, isLoading, error } = useGetHistory(selectedFilter);
+  const { mutate: deleteHistory, isPending: isDeleting } = useDeleteHistory();
+  const { mutate: deleteHistoryItem, isPending: isDeletingItem } =
+    useDeleteHistoryItem();
 
   if (isLoading) {
     return (
@@ -89,12 +97,25 @@ export function History() {
         ))}
       </div>
 
-      {/* Total Count */}
-      <div className="mb-4 text-foreground-100/70 text-sm">
-        {total === 0
-          ? "No items"
-          : `${total} ${total === 1 ? "item" : "items"}`}{" "}
-        found
+      {/* Total Count and Delete Button */}
+      <div className="mb-4 flex items-center justify-between">
+        <div className="text-foreground-100/70 text-sm">
+          {total === 0
+            ? "No items"
+            : `${total} ${total === 1 ? "item" : "items"}`}{" "}
+          found
+        </div>
+        {total > 0 && (
+          <Button
+            type="button"
+            onClick={() => deleteHistory()}
+            disabled={isDeleting}
+            className="flex items-center gap-2 rounded-lg bg-red-500 px-4 py-2 font-medium text-sm text-white transition-colors hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Trash2 className="size-4" />
+            {isDeleting ? "Deleting..." : "Clear All History"}
+          </Button>
+        )}
       </div>
 
       {/* History Items */}
@@ -136,6 +157,16 @@ export function History() {
               >
                 {/* Image Container */}
                 <div className="relative aspect-square w-full overflow-hidden bg-background-200">
+                  {/* Delete Item Button */}
+                  <Button
+                    type="button"
+                    onClick={() => deleteHistoryItem(item.id)}
+                    disabled={isDeletingItem}
+                    className="absolute top-2 left-2 z-10 flex size-8 items-center justify-center rounded-full bg-black/50 text-white opacity-0 transition-opacity hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50 group-hover:opacity-100"
+                    title="Remove from history"
+                  >
+                    <Trash2 className="size-4" />
+                  </Button>
                   <Image
                     src={item.product_image_url}
                     alt={item.product_name}
