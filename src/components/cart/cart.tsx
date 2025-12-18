@@ -236,7 +236,7 @@ export function Cart() {
 
   const groupedItems = groupItemsByStore(cart.items);
   const unavailableCount = cart.items.filter(
-    (item) => !item.is_available,
+    (item) => item.is_available === false,
   ).length;
   const totalOriginalPrice = cart.items.reduce(
     (sum, item) => sum + item.original_price * item.quantity,
@@ -468,7 +468,7 @@ function StoreGroup({
 function CartItemCard({ item }: { item: CartItem }) {
   const { mutate: deleteItem, isPending: isDeleting } = useDeleteCartItem();
   const { mutate: updateItem, isPending: isUpdating } = useUpdateCartItem();
-  const isUnavailable = !item.is_available;
+  const isUnavailable = item.is_available === false;
 
   const handleDelete = () => {
     deleteItem(item.id);
