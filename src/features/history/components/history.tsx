@@ -18,6 +18,7 @@ import { useDeleteHistory } from "../hooks/use-delete-history";
 import { useDeleteHistoryItem } from "../hooks/use-delete-history-item";
 import type { TimeFilter } from "../hooks/use-get-history";
 import { useGetHistory } from "../hooks/use-get-history";
+import { DeleteHistoryModal } from "./delete-history-modal";
 
 const filterOptions: { value: TimeFilter; label: string }[] = [
   { value: "day", label: "Today" },
@@ -29,6 +30,7 @@ const filterOptions: { value: TimeFilter; label: string }[] = [
 
 export function History() {
   const [selectedFilter, setSelectedFilter] = useState<TimeFilter>("all");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const { data, isLoading, error } = useGetHistory(selectedFilter);
   const { mutate: deleteHistory, isPending: isDeleting } = useDeleteHistory();
   const { mutate: deleteHistoryItem, isPending: isDeletingItem } =
@@ -70,19 +72,6 @@ export function History() {
       storeBreakdown,
     };
   }, [items]);
-
-  if (isLoading) {
-    return (
-      <div className="flex min-h-[400px] items-center justify-center bg-[var(--color-cream)]">
-        <div className="text-center">
-          <div className="mx-auto mb-4 size-12 animate-spin rounded-full border-4 border-[var(--color-yellow)]/30 border-t-[var(--color-yellow)]" />
-          <p className="text-[var(--foreground-100)]/70">
-            Loading your history...
-          </p>
-        </div>
-      </div>
-    );
-  }
 
   if (error) {
     return (
@@ -151,7 +140,7 @@ export function History() {
         {total > 0 && (
           <Button
             type="button"
-            onClick={() => deleteHistory()}
+            onClick={() => setIsDeleteModalOpen(true)}
             disabled={isDeleting}
             className="flex items-center gap-2 rounded-lg bg-[var(--color-orange)] px-4 py-2 font-medium text-[var(--color-cream)] text-sm transition-colors hover:bg-[var(--color-orange)]/80 disabled:cursor-not-allowed disabled:opacity-50"
           >
@@ -161,12 +150,29 @@ export function History() {
         )}
       </div>
 
+      {/* Delete Confirmation Modal */}
+      <DeleteHistoryModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => deleteHistory()}
+        isDeleting={isDeleting}
+      />
+
       {/* Main Content with Sidebar */}
       <div className="flex flex-col gap-6 lg:flex-row">
         {/* History Items */}
         <div className="flex-1">
-          {items.length === 0 ? (
-            <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-[var(--foreground-100)]/20 border-dashed bg-[var(--color-sage)]">
+          {isLoading || !data ? (
+            <div className="flex min-h-[300px] items-center justify-center">
+              <div className="text-center">
+                <div className="mx-auto mb-4 size-12 animate-spin rounded-full border-4 border-[var(--color-yellow)]/30 border-t-[var(--color-yellow)]" />
+                <p className="text-[var(--foreground-100)]/70">
+                  Loading items...
+                </p>
+              </div>
+            </div>
+          ) : items.length === 0 ? (
+            <div className="flex min-h-[300px] items-center justify-center rounded-lg border-2 border-[var(--foreground-100)]/20 border-dashed bg-[var(--color-cream)]">
               <div className="text-center">
                 <Clock className="mx-auto mb-4 size-16 text-[var(--foreground-100)]/30" />
                 <h3 className="mb-2 font-semibold text-[var(--foreground-100)] text-xl">
@@ -202,7 +208,7 @@ export function History() {
                     }`}
                   >
                     {/* Image Container */}
-                    <div className="relative aspect-square w-full overflow-hidden bg-[var(--color-sage)]">
+                    <div className="relative aspect-square w-full overflow-hidden bg-[var(--color-cream)]">
                       {/* Delete Item Button */}
                       <Button
                         type="button"
@@ -335,7 +341,7 @@ export function History() {
               </div>
 
               {/* Amount Saved */}
-              <div className="mb-6 flex items-center justify-between rounded-lg bg-[var(--color-sage)] p-3">
+              <div className="mb-6 flex items-center justify-between rounded-lg bg-[var(--color-yellow)]/20 p-3">
                 <div className="flex items-center gap-2">
                   <PiggyBank className="size-5 text-[var(--foreground-100)]" />
                   <span className="font-medium text-[var(--foreground-100)]">
