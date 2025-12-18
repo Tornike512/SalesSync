@@ -1,3 +1,9 @@
+## 1.6.0 (2025-12-18)
+
+* feat: enhance cart and history components with availability checks and UI updates ([955f954](https://github.com/Tornike512/SalesSync/commit/955f954))
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([91215c3](https://github.com/Tornike512/SalesSync/commit/91215c3))
+* test: update filter bar visibility check to use getByRole for improved accuracy ([b635c61](https://github.com/Tornike512/SalesSync/commit/b635c61))
+
 ## 1.5.0 (2025-12-17)
 
 * feat: add X-API-Key header to fetchApi function and change JSX setting in tsconfig ([3cd841e](https://github.com/Tornike512/SalesSync/commit/3cd841e))
