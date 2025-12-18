@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-const protectedRoutes = ["/cart"];
+const protectedRoutes = ["/cart", "/history"];
 const authRoutes = ["/sign-in", "/sign-up", "/forgot-password"];
 
 /**
@@ -72,5 +72,11 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/cart/:path*", "/sign-in", "/sign-up", "/forgot-password"],
+  matcher: [
+    "/cart/:path*",
+    "/history/:path*",
+    "/sign-in",
+    "/sign-up",
+    "/forgot-password",
+  ],
 };
