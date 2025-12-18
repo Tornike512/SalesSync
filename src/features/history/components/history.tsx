@@ -3,7 +3,8 @@
 import { Calendar, Clock, TrendingDown } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { type TimeFilter, useGetHistory } from "@/hooks/use-get-history";
+import type { TimeFilter } from "../hooks/use-get-history";
+import { useGetHistory } from "../hooks/use-get-history";
 
 const filterOptions: { value: TimeFilter; label: string }[] = [
   { value: "day", label: "Today" },
