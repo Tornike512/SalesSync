@@ -1,7 +1,8 @@
 "use client";
 
-import { Calendar, Clock, TrendingDown } from "lucide-react";
+import { ArrowLeft, Calendar, Clock, TrendingDown } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import type { TimeFilter } from "../hooks/use-get-history";
 import { useGetHistory } from "../hooks/use-get-history";
@@ -46,9 +47,17 @@ export function History() {
   const total = data?.total ?? 0;
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8">
+    <div className="relative mx-auto w-full max-w-7xl px-4 py-8">
+      {/* Back Button */}
+      <Link
+        href="/"
+        className="absolute top-6 left-3 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-white text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-cream)] active:scale-95"
+      >
+        <ArrowLeft size={20} />
+      </Link>
+
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-8 pt-12">
         <h1 className="mb-2 font-bold text-3xl text-foreground-100">
           <Clock className="mr-2 mb-1 inline size-8" />
           Viewing History
