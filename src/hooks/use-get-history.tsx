@@ -12,6 +12,7 @@ export type HistoryItem = {
   discount_percent: number;
   store_name: string;
   viewed_at: string;
+  is_available: boolean;
 };
 
 export type HistoryResponse = {

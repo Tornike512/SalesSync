@@ -124,6 +124,9 @@ export function Cart() {
   };
 
   const groupedItems = groupItemsByStore(cart.items);
+  const unavailableCount = cart.items.filter(
+    (item) => !item.is_available,
+  ).length;
   const totalOriginalPrice = cart.items.reduce(
     (sum, item) => sum + item.original_price * item.quantity,
     0,
@@ -163,6 +166,42 @@ export function Cart() {
         <div className="flex flex-col gap-6 lg:flex-row">
           {/* Left side - Store groups */}
           <div className="flex-1 space-y-4">
+            {unavailableCount > 0 && (
+              <div className="rounded-xl border-2 border-amber-500 bg-amber-50 p-4 shadow-md">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-full bg-amber-500 p-1.5 text-white">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-label="Warning"
+                    >
+                      <title>Warning</title>
+                      <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                      <line x1="12" y1="9" x2="12" y2="13" />
+                      <line x1="12" y1="17" x2="12.01" y2="17" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-amber-900">
+                      {unavailableCount}{" "}
+                      {unavailableCount === 1 ? "item" : "items"} no longer
+                      available
+                    </h3>
+                    <p className="mt-1 text-amber-800 text-sm">
+                      Some products in your cart are currently unavailable and
+                      cannot be purchased.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             {Object.entries(groupedItems).map(([storeName, items]) => (
               <StoreGroup key={storeName} storeName={storeName} items={items} />
             ))}
@@ -302,16 +341,19 @@ function StoreGroup({
 function CartItemCard({ item }: { item: CartItem }) {
   const { mutate: deleteItem, isPending: isDeleting } = useDeleteCartItem();
   const { mutate: updateItem, isPending: isUpdating } = useUpdateCartItem();
+  const isUnavailable = !item.is_available;
 
   const handleDelete = () => {
     deleteItem(item.id);
   };
 
   const handleIncrement = () => {
+    if (isUnavailable) return;
     updateItem({ itemId: item.id, quantity: item.quantity + 1 });
   };
 
   const handleDecrement = () => {
+    if (isUnavailable) return;
     if (item.quantity > 1) {
       updateItem({ itemId: item.id, quantity: item.quantity - 1 });
     } else {
@@ -322,9 +364,13 @@ function CartItemCard({ item }: { item: CartItem }) {
   const isPending = isDeleting || isUpdating;
 
   return (
-    <div className="flex gap-4 rounded-lg bg-[var(--color-cream)] p-3">
+    <div
+      className={`flex gap-4 rounded-lg p-3 ${isUnavailable ? "bg-gray-100" : "bg-[var(--color-cream)]"}`}
+    >
       {/* Product Image */}
-      <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white">
+      <div
+        className={`relative h-20 w-20 shrink-0 overflow-hidden rounded-lg bg-white ${isUnavailable ? "opacity-50" : ""}`}
+      >
         {item.product_image_url ? (
           <Image
             src={item.product_image_url}
@@ -337,57 +383,91 @@ function CartItemCard({ item }: { item: CartItem }) {
             No Image
           </div>
         )}
+        {isUnavailable && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40">
+            <span className="rounded bg-red-500 px-2 py-0.5 font-bold text-white text-xs">
+              UNAVAILABLE
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Product Info */}
       <div className="flex flex-1 flex-col justify-between">
         <div>
-          <h4 className="line-clamp-2 font-semibold text-[var(--color-dark-green)] text-sm">
+          <h4
+            className={`line-clamp-2 font-semibold text-sm ${isUnavailable ? "text-gray-500 line-through" : "text-[var(--color-dark-green)]"}`}
+          >
             {item.product_name}
           </h4>
-          <div className="mt-1 flex flex-wrap items-baseline gap-2">
-            <span className="font-bold text-[var(--color-orange)]">
-              ₾{item.current_price.toFixed(2)}
-            </span>
-            <span className="text-[var(--color-dark-green)] text-xs line-through opacity-50">
-              ₾{item.original_price.toFixed(2)}
-            </span>
-            <span className="rounded-full bg-[var(--color-orange)] px-1.5 py-0.5 font-bold text-white text-xs">
-              -{item.discount_percent}%
-            </span>
-          </div>
+          {isUnavailable ? (
+            <div className="mt-1 flex items-center gap-1.5">
+              <span className="rounded-full bg-red-100 px-2 py-0.5 font-semibold text-red-700 text-xs">
+                This item is no longer available
+              </span>
+            </div>
+          ) : (
+            <div className="mt-1 flex flex-wrap items-baseline gap-2">
+              <span className="font-bold text-[var(--color-orange)]">
+                ₾{item.current_price.toFixed(2)}
+              </span>
+              <span className="text-[var(--color-dark-green)] text-xs line-through opacity-50">
+                ₾{item.original_price.toFixed(2)}
+              </span>
+              <span className="rounded-full bg-[var(--color-orange)] px-1.5 py-0.5 font-bold text-white text-xs">
+                -{item.discount_percent}%
+              </span>
+            </div>
+          )}
         </div>
 
         <div className="flex flex-wrap items-center justify-between">
           {/* Quantity Controls */}
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={handleDecrement}
-              disabled={isPending}
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
-            >
-              <Minus size={14} />
-            </Button>
-            <span className="min-w-[1.5rem] text-center font-bold text-[var(--color-dark-green)]">
-              {item.quantity}
-            </span>
-            <Button
-              onClick={handleIncrement}
-              disabled={isPending}
-              className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
-            >
-              <Plus size={14} />
-            </Button>
-          </div>
+          {isUnavailable ? (
+            <div className="flex items-center gap-2 opacity-50">
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-300">
+                <Minus size={14} className="text-gray-500" />
+              </div>
+              <span className="min-w-[1.5rem] text-center font-bold text-gray-500">
+                {item.quantity}
+              </span>
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-300">
+                <Plus size={14} className="text-gray-500" />
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={handleDecrement}
+                disabled={isPending}
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
+              >
+                <Minus size={14} />
+              </Button>
+              <span className="min-w-[1.5rem] text-center font-bold text-[var(--color-dark-green)]">
+                {item.quantity}
+              </span>
+              <Button
+                onClick={handleIncrement}
+                disabled={isPending}
+                className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
+              >
+                <Plus size={14} />
+              </Button>
+            </div>
+          )}
 
           <div className="flex items-center gap-3">
-            <span className="font-bold text-[var(--color-dark-green)]">
-              ₾{item.subtotal.toFixed(2)}
-            </span>
+            {!isUnavailable && (
+              <span className="font-bold text-[var(--color-dark-green)]">
+                ₾{item.subtotal.toFixed(2)}
+              </span>
+            )}
             <Button
               onClick={handleDelete}
               disabled={isPending}
               className="rounded-full p-1.5 text-red-500 transition-colors hover:bg-red-100 disabled:opacity-50"
+              title="Remove from cart"
             >
               <Trash2 size={16} />
             </Button>

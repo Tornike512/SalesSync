@@ -118,7 +118,11 @@ export function History() {
             return (
               <div
                 key={`${item.id}-${item.viewed_at}`}
-                className="group relative flex flex-col overflow-hidden rounded-lg border border-foreground-100/10 bg-background-100 transition-shadow hover:shadow-lg"
+                className={`group relative flex flex-col overflow-hidden rounded-lg border bg-background-100 transition-shadow hover:shadow-lg ${
+                  item.is_available
+                    ? "border-foreground-100/10"
+                    : "border-gray-300 opacity-75"
+                }`}
               >
                 {/* Image Container */}
                 <div className="relative aspect-square w-full overflow-hidden bg-background-200">
@@ -126,10 +130,19 @@ export function History() {
                     src={item.product_image_url}
                     alt={item.product_name}
                     fill
-                    className="object-cover transition-transform group-hover:scale-105"
+                    className={`object-cover transition-transform group-hover:scale-105 ${
+                      !item.is_available ? "grayscale" : ""
+                    }`}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
                   />
-                  {item.discount_percent > 0 && (
+                  {!item.is_available && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                      <span className="rounded bg-red-500 px-3 py-1 font-bold text-sm text-white shadow-lg">
+                        UNAVAILABLE
+                      </span>
+                    </div>
+                  )}
+                  {item.is_available && item.discount_percent > 0 && (
                     <div className="absolute top-2 right-2 flex items-center gap-1 rounded-full bg-red-500 px-2 py-1 font-bold text-white text-xs shadow-lg">
                       <TrendingDown className="size-3" />
                       {item.discount_percent}%

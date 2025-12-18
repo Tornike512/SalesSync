@@ -13,6 +13,7 @@ export type Product = {
   store_name: string;
   source_url: string;
   scraped_at: string;
+  is_available: boolean;
 };
 
 export type ProductsResponse = {
@@ -38,6 +39,7 @@ export type GetProductsParams = {
   search?: string | null;
   limit?: number;
   offset?: number;
+  is_available?: boolean;
 };
 
 async function getProducts(
@@ -56,6 +58,7 @@ async function getProducts(
   if (params?.search) searchParams.set("search", params.search);
   searchParams.set("limit", String(params?.limit ?? 16));
   searchParams.set("offset", String(params?.offset ?? 0));
+  searchParams.set("is_available", String(params?.is_available ?? true));
 
   const url = `${API_URL}/api/v1/products?${searchParams.toString()}`;
   const response = await fetch(url, {

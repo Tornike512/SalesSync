@@ -14,6 +14,7 @@ export type CartItem = {
   quantity: number;
   subtotal: number;
   added_at: string;
+  is_available: boolean;
 };
 
 export type Cart = {
