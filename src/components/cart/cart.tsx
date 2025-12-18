@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   ChevronDown,
   Clock,
+  Loader2,
   Minus,
   Plus,
   ShoppingBag,
@@ -11,7 +12,15 @@ import {
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import toast from "react-hot-toast";
 import { useAddHistory } from "@/features/history";
 import { useDeleteCart } from "@/hooks/use-delete-cart";
@@ -58,12 +67,51 @@ function groupItemsByStore(items: CartItem[]): GroupedItems {
   }, {} as GroupedItems);
 }
 
+// Context to track pending debounced updates
+interface PendingUpdatesContextValue {
+  readonly pendingCount: number;
+  readonly registerPending: () => void;
+  readonly unregisterPending: () => void;
+}
+
+const PendingUpdatesContext = createContext<PendingUpdatesContextValue>({
+  pendingCount: 0,
+  registerPending: () => {},
+  unregisterPending: () => {},
+});
+
+function usePendingUpdates(): PendingUpdatesContextValue {
+  return useContext(PendingUpdatesContext);
+}
+
 export function Cart() {
   const { status } = useSession();
   const { data: cart, isLoading } = useGetCart();
   const { mutate: clearCart, isPending: isClearingCart } = useDeleteCart();
   const { mutate: addToHistory, isPending: isAddingToHistory } =
     useAddHistory();
+
+  // State for tracking pending debounced updates
+  const [pendingCount, setPendingCount] = useState(0);
+
+  const registerPending = useCallback((): void => {
+    setPendingCount((prev) => prev + 1);
+  }, []);
+
+  const unregisterPending = useCallback((): void => {
+    setPendingCount((prev) => Math.max(0, prev - 1));
+  }, []);
+
+  const pendingUpdatesValue = useMemo(
+    () => ({
+      pendingCount,
+      registerPending,
+      unregisterPending,
+    }),
+    [pendingCount, registerPending, unregisterPending],
+  );
+
+  const hasPendingUpdates = pendingCount > 0;
 
   if (status === "loading" || isLoading) {
     return (
@@ -322,19 +370,35 @@ export function Cart() {
                 </div>
               </div>
             )}
-            {Object.entries(groupedItems).map(([storeName, items]) => (
-              <StoreGroup key={storeName} storeName={storeName} items={items} />
-            ))}
+            <PendingUpdatesContext.Provider value={pendingUpdatesValue}>
+              {Object.entries(groupedItems).map(([storeName, items]) => (
+                <StoreGroup
+                  key={storeName}
+                  storeName={storeName}
+                  items={items}
+                />
+              ))}
+            </PendingUpdatesContext.Provider>
           </div>
 
           {/* Right side - Order summary */}
           <div className="lg:w-80">
             <div className="sticky top-6 rounded-xl border-2 border-[var(--color-dark-green)] bg-white p-6 shadow-lg">
-              <h2 className="mb-4 font-bold text-[var(--color-dark-green)] text-lg">
-                Order Summary
-              </h2>
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="font-bold text-[var(--color-dark-green)] text-lg">
+                  Order Summary
+                </h2>
+                {hasPendingUpdates && (
+                  <Loader2
+                    size={20}
+                    className="animate-spin text-[var(--color-dark-green)]"
+                  />
+                )}
+              </div>
 
-              <div className="space-y-3">
+              <div
+                className={`space-y-3 transition-opacity ${hasPendingUpdates ? "opacity-50" : "opacity-100"}`}
+              >
                 <div className="flex justify-between text-[var(--color-dark-green)]">
                   <span className="opacity-70">Original Price</span>
                   <span className="line-through opacity-50">
@@ -380,7 +444,9 @@ export function Cart() {
 
               <Button
                 onClick={handleAddToHistory}
-                disabled={isAddingToHistory || isClearingCart}
+                disabled={
+                  isAddingToHistory || isClearingCart || hasPendingUpdates
+                }
                 className="mt-6 w-full rounded-full bg-[var(--color-yellow)] py-3 font-bold text-[var(--color-dark-green)] shadow-md transition-all disabled:cursor-not-allowed disabled:opacity-50 [&:not(:disabled)]:hover:bg-[var(--color-yellow)]/80 [&:not(:disabled)]:active:scale-95"
               >
                 {isAddingToHistory ? "Adding..." : "Add to History"}
@@ -468,24 +534,99 @@ function StoreGroup({
 function CartItemCard({ item }: { item: CartItem }) {
   const { mutate: deleteItem, isPending: isDeleting } = useDeleteCartItem();
   const { mutate: updateItem, isPending: isUpdating } = useUpdateCartItem();
+  const { registerPending, unregisterPending } = usePendingUpdates();
   const isUnavailable = item.is_available === false;
 
-  const handleDelete = () => {
+  const [localQuantity, setLocalQuantity] = useState(item.quantity);
+  const debounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasChangedRef = useRef(false);
+  const isPendingRegisteredRef = useRef(false);
+
+  // Sync local quantity with server quantity when item.quantity changes from server
+  useEffect(() => {
+    if (!hasChangedRef.current) {
+      setLocalQuantity(item.quantity);
+    }
+  }, [item.quantity]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+      }
+      if (isPendingRegisteredRef.current) {
+        unregisterPending();
+        isPendingRegisteredRef.current = false;
+      }
+    };
+  }, [unregisterPending]);
+
+  const handleDelete = (): void => {
+    // Unregister pending if we're deleting while a debounce is active
+    if (isPendingRegisteredRef.current) {
+      unregisterPending();
+      isPendingRegisteredRef.current = false;
+    }
     deleteItem(item.id);
   };
 
-  const handleIncrement = () => {
+  const handleQuantityChange = (newQuantity: number): void => {
     if (isUnavailable) return;
-    updateItem({ itemId: item.id, quantity: item.quantity + 1 });
+
+    if (newQuantity < 1) {
+      // If quantity goes below 1, delete the item immediately
+      if (debounceTimeoutRef.current) {
+        clearTimeout(debounceTimeoutRef.current);
+        debounceTimeoutRef.current = null;
+      }
+      if (isPendingRegisteredRef.current) {
+        unregisterPending();
+        isPendingRegisteredRef.current = false;
+      }
+      hasChangedRef.current = false;
+      deleteItem(item.id);
+      return;
+    }
+
+    setLocalQuantity(newQuantity);
+    hasChangedRef.current = true;
+
+    // Register pending on first change (if not already registered)
+    if (!isPendingRegisteredRef.current) {
+      registerPending();
+      isPendingRegisteredRef.current = true;
+    }
+
+    // Clear existing timeout
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    // Set new timeout to send request after 1 second
+    debounceTimeoutRef.current = setTimeout(() => {
+      updateItem(
+        { itemId: item.id, quantity: newQuantity },
+        {
+          onSettled: () => {
+            hasChangedRef.current = false;
+            if (isPendingRegisteredRef.current) {
+              unregisterPending();
+              isPendingRegisteredRef.current = false;
+            }
+          },
+        },
+      );
+      debounceTimeoutRef.current = null;
+    }, 1000);
   };
 
-  const handleDecrement = () => {
-    if (isUnavailable) return;
-    if (item.quantity > 1) {
-      updateItem({ itemId: item.id, quantity: item.quantity - 1 });
-    } else {
-      deleteItem(item.id);
-    }
+  const handleIncrement = (): void => {
+    handleQuantityChange(localQuantity + 1);
+  };
+
+  const handleDecrement = (): void => {
+    handleQuantityChange(localQuantity - 1);
   };
 
   const isPending = isDeleting || isUpdating;
@@ -556,7 +697,7 @@ function CartItemCard({ item }: { item: CartItem }) {
                 <Minus size={14} className="text-gray-500" />
               </div>
               <span className="min-w-[1.5rem] text-center font-bold text-gray-500">
-                {item.quantity}
+                {localQuantity}
               </span>
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-300">
                 <Plus size={14} className="text-gray-500" />
@@ -572,7 +713,7 @@ function CartItemCard({ item }: { item: CartItem }) {
                 <Minus size={14} />
               </Button>
               <span className="min-w-[1.5rem] text-center font-bold text-[var(--color-dark-green)]">
-                {item.quantity}
+                {localQuantity}
               </span>
               <Button
                 onClick={handleIncrement}
