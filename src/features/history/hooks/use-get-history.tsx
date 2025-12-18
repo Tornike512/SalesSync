@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { API_KEY, API_URL } from "@/config";
 import { useSession } from "@/hooks/use-session";
 
@@ -62,5 +62,44 @@ export function useGetHistory(filter: TimeFilter = "all") {
     queryKey: ["history", filter],
     queryFn: () => getHistory(session?.accessToken ?? "", filter),
     enabled: status === "authenticated",
+  });
+}
+
+async function addToHistory(
+  token: string,
+  productIds: readonly number[],
+): Promise<HistoryResponse> {
+  const response = await fetch(`${API_URL}/api/v1/auth/history`, {
+    method: "POST",
+    headers: {
+      "X-API-Key": API_KEY || "",
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ product_ids: productIds }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to add to history");
+  }
+
+  return response.json() as Promise<HistoryResponse>;
+}
+
+/**
+ * Adds products to the current user's view history.
+ *
+ * @returns Mutation for adding product IDs to history
+ */
+export function useAddHistory() {
+  const { session } = useSession();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (productIds: readonly number[]) =>
+      addToHistory(session?.accessToken ?? "", productIds),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["history"] });
+    },
   });
 }

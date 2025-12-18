@@ -12,6 +12,7 @@ import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useAddHistory } from "@/features/history";
 import { useDeleteCart } from "@/hooks/use-delete-cart";
 import { useDeleteCartItem } from "@/hooks/use-delete-cart-item";
 import { type CartItem, useGetCart } from "@/hooks/use-get-cart";
@@ -60,6 +61,8 @@ export function Cart() {
   const { status } = useSession();
   const { data: cart, isLoading } = useGetCart();
   const { mutate: clearCart, isPending: isClearingCart } = useDeleteCart();
+  const { mutate: addToHistory, isPending: isAddingToHistory } =
+    useAddHistory();
 
   if (status === "loading" || isLoading) {
     return (
@@ -91,23 +94,103 @@ export function Cart() {
 
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[var(--color-cream)]">
-        <ShoppingBag
-          size={64}
-          className="text-[var(--color-dark-green)] opacity-30"
-        />
-        <h1 className="font-bold text-2xl text-[var(--color-dark-green)]">
-          Your cart is empty
-        </h1>
-        <p className="text-[var(--color-dark-green)] opacity-60">
-          Start shopping to add items to your cart
-        </p>
-        <Link
-          href="/"
-          className="rounded-full bg-[var(--color-yellow)] px-6 py-3 font-semibold text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-yellow)]/80"
-        >
-          Browse Products
-        </Link>
+      <div className="min-h-screen bg-[var(--color-cream)]">
+        <div className="mx-auto max-w-7xl p-4 sm:p-6">
+          <div className="mb-6 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Link
+                href="/"
+                className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-white text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-cream)] active:scale-95"
+              >
+                <ArrowLeft size={20} />
+              </Link>
+              <h1 className="font-bold text-2xl text-[var(--color-dark-green)] sm:text-3xl">
+                Shopping Cart
+              </h1>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-6 lg:flex-row">
+            {/* Left side - Empty state */}
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 rounded-xl border-2 border-[var(--color-dark-green)] border-dashed bg-white p-12">
+              <ShoppingBag
+                size={64}
+                className="text-[var(--color-dark-green)] opacity-30"
+              />
+              <h2 className="font-bold text-2xl text-[var(--color-dark-green)]">
+                Your cart is empty
+              </h2>
+              <p className="text-[var(--color-dark-green)] opacity-60">
+                Start shopping to add items to your cart
+              </p>
+              <Link
+                href="/"
+                className="rounded-full bg-[var(--color-yellow)] px-6 py-3 font-semibold text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-yellow)]/80"
+              >
+                Browse Products
+              </Link>
+            </div>
+
+            {/* Right side - Order summary with zero values */}
+            <div className="lg:w-80">
+              <div className="sticky top-6 rounded-xl border-2 border-[var(--color-dark-green)] bg-white p-6 shadow-lg">
+                <h2 className="mb-4 font-bold text-[var(--color-dark-green)] text-lg">
+                  Order Summary
+                </h2>
+
+                <div className="space-y-3">
+                  <div className="flex justify-between text-[var(--color-dark-green)]">
+                    <span className="opacity-70">Original Price</span>
+                    <span className="line-through opacity-50">₾0.00</span>
+                  </div>
+
+                  <div className="flex justify-between text-[var(--color-dark-green)]">
+                    <span className="opacity-70">Sale Price</span>
+                    <span className="font-semibold">₾0.00</span>
+                  </div>
+
+                  <div className="border-[var(--color-sage)] border-t pt-3">
+                    <div className="flex justify-between text-[var(--color-dark-green)]">
+                      <span className="font-semibold">You Save</span>
+                      <span className="font-bold text-[var(--color-orange)]">
+                        ₾0.00
+                      </span>
+                    </div>
+                    <div className="mt-1 text-right">
+                      <span className="rounded-full bg-[var(--color-orange)] px-2 py-0.5 font-bold text-white text-xs">
+                        0% OFF
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="border-[var(--color-dark-green)] border-t-2 pt-4">
+                    <div className="flex justify-between">
+                      <span className="font-bold text-[var(--color-dark-green)] text-lg">
+                        Total
+                      </span>
+                      <span className="font-bold text-[var(--color-orange)] text-xl">
+                        ₾0.00
+                      </span>
+                    </div>
+                    <p className="mt-1 text-[var(--color-dark-green)] text-xs opacity-50">
+                      0 items
+                    </p>
+                  </div>
+                </div>
+
+                <Button
+                  disabled
+                  className="mt-6 w-full rounded-full bg-[var(--color-yellow)] py-3 font-bold text-[var(--color-dark-green)] shadow-md transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Add to History
+                </Button>
+                <p className="mt-2 text-center text-[var(--color-dark-green)] text-xs opacity-60">
+                  Adding to history will clear your cart
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
@@ -119,6 +202,26 @@ export function Cart() {
       },
       onError: () => {
         toast.error("Failed to clear cart");
+      },
+    });
+  };
+
+  const handleAddToHistory = () => {
+    const productIds = cart.items.map((item) => item.product_id);
+    addToHistory(productIds, {
+      onSuccess: () => {
+        clearCart(undefined, {
+          onSuccess: () => {
+            toast.success("Added to history and cart cleared");
+          },
+          onError: () => {
+            toast.success("Added to history");
+            toast.error("Failed to clear cart");
+          },
+        });
+      },
+      onError: () => {
+        toast.error("Failed to add to history");
       },
     });
   };
@@ -258,9 +361,16 @@ export function Cart() {
                 </div>
               </div>
 
-              <Button className="mt-6 w-full rounded-full bg-[var(--color-yellow)] py-3 font-bold text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95">
-                Add to History
+              <Button
+                onClick={handleAddToHistory}
+                disabled={isAddingToHistory || isClearingCart}
+                className="mt-6 w-full rounded-full bg-[var(--color-yellow)] py-3 font-bold text-[var(--color-dark-green)] shadow-md transition-all disabled:cursor-not-allowed disabled:opacity-50 [&:not(:disabled)]:hover:bg-[var(--color-yellow)]/80 [&:not(:disabled)]:active:scale-95"
+              >
+                {isAddingToHistory ? "Adding..." : "Add to History"}
               </Button>
+              <p className="mt-2 text-center text-[var(--color-dark-green)] text-xs opacity-60">
+                Adding to history will clear your cart
+              </p>
             </div>
           </div>
         </div>

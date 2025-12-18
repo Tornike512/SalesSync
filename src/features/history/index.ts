@@ -4,4 +4,4 @@ export type {
   HistoryResponse,
   TimeFilter,
 } from "./hooks/use-get-history";
-export { useGetHistory } from "./hooks/use-get-history";
+export { useAddHistory, useGetHistory } from "./hooks/use-get-history";
