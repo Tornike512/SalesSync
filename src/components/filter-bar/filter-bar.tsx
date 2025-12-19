@@ -131,8 +131,17 @@ export function FilterBar({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-4 pl-10 text-[var(--color-dark-green)] placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none sm:text-base"
+              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-10 pl-10 text-[var(--color-dark-green)] placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none sm:text-base"
             />
+            {searchQuery && (
+              <Button
+                onClick={() => onSearchChange("")}
+                className="-translate-y-1/2 absolute top-1/2 right-3 flex h-5 w-5 items-center justify-center rounded-full text-[var(--color-dark-green)] opacity-60 transition-all hover:bg-[var(--color-dark-green)]/10 hover:opacity-100 active:scale-95"
+                aria-label="Clear search"
+              >
+                <X size={16} />
+              </Button>
+            )}
           </div>
 
           {/* Spacer to push icons to the right on mobile */}
@@ -191,8 +200,17 @@ export function FilterBar({
             placeholder="Search products..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-4 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
+            className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-10 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
           />
+          {searchQuery && (
+            <Button
+              onClick={() => onSearchChange("")}
+              className="-translate-y-1/2 absolute top-1/2 right-3 flex h-5 w-5 items-center justify-center rounded-full text-[var(--color-dark-green)] opacity-60 transition-all hover:bg-[var(--color-dark-green)]/10 hover:opacity-100 active:scale-95"
+              aria-label="Clear search"
+            >
+              <X size={16} />
+            </Button>
+          )}
         </div>
 
         <div className="mb-3 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">

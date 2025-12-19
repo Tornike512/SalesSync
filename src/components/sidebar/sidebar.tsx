@@ -62,12 +62,12 @@ export function Sidebar() {
     <>
       {/* Logo */}
       <div className="mb-6 flex items-center justify-between border-background-200 border-b pb-4">
-        <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <SaleSyncIcon width={40} height={40} className="rounded-md" />
           <span className="font-bold text-foreground-100 text-xl">
             SalesSync
           </span>
-        </div>
+        </Link>
         <Link
           href="https://github.com/Tornike512"
           target="_blank"
