@@ -23,7 +23,7 @@ import { WeekView } from "./week-view";
 import { YearView } from "./year-view";
 
 const filterOptions: { value: TimeFilter; label: string }[] = [
-  { value: "day", label: "Today" },
+  { value: "day", label: "Last 24 Hours" },
   { value: "week", label: "This Week" },
   { value: "month", label: "This Month" },
   { value: "year", label: "This Year" },
