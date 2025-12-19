@@ -1,3 +1,8 @@
+## 1.9.0 (2025-12-19)
+
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([89d6ecd](https://github.com/Tornike512/SalesSync/commit/89d6ecd))
+* feat: implement history management views and utilities for filtering history items by date ([f4cff6c](https://github.com/Tornike512/SalesSync/commit/f4cff6c))
+
 ## <small>1.8.1 (2025-12-19)</small>
 
 * Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([2260b80](https://github.com/Tornike512/SalesSync/commit/2260b80))
