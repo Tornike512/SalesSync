@@ -11,7 +11,7 @@ import {
   Plus,
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useAddCartItem } from "@/hooks/use-add-cart-item";
@@ -89,20 +89,68 @@ function useDebounce<T>(value: T, delay: number): T {
 }
 
 export function Products() {
-  const [selectedStore, setSelectedStore] = useState<string | null>(null);
-  const [selectedSort, setSelectedSort] = useState<SortOption>(
-    "discount_percent_desc",
-  );
-  const [searchQuery, setSearchQuery] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { selectedCategory, selectedSubcategory, setSelectedCategory } =
     useCategoryFilter();
 
+  // Initialize state from URL params
+  const [selectedStore, setSelectedStore] = useState<string | null>(
+    searchParams.get("store"),
+  );
+  const [selectedSort, setSelectedSort] = useState<SortOption>(
+    (searchParams.get("sort") as SortOption) || "discount_percent_desc",
+  );
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get("search") || "",
+  );
+
+  // Function to update URL params
+  const updateURLParams = (updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    for (const [key, value] of Object.entries(updates)) {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    }
+
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
+
+  // Handle store change
+  const handleStoreChange = (store: string | null) => {
+    setSelectedStore(store);
+    updateURLParams({ store });
+  };
+
+  // Handle sort change
+  const handleSortChange = (sort: SortOption) => {
+    setSelectedSort(sort);
+    updateURLParams({ sort });
+  };
+
+  // Handle search change
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
+    updateURLParams({ search: query || null });
     if (query) {
       setSelectedCategory(null);
     }
   };
+
+  // Sync state with URL params when they change externally (e.g., browser back/forward)
+  useEffect(() => {
+    const store = searchParams.get("store");
+    const sort = searchParams.get("sort") as SortOption;
+    const search = searchParams.get("search");
+
+    setSelectedStore(store);
+    setSelectedSort(sort || "discount_percent_desc");
+    setSearchQuery(search || "");
+  }, [searchParams]);
 
   const debouncedSearch = useDebounce(searchQuery, 300);
 
@@ -150,7 +198,7 @@ export function Products() {
     <div className="flex h-screen flex-col bg-[var(--color-cream)]">
       <FilterBar
         selectedStore={selectedStore}
-        onStoreChange={setSelectedStore}
+        onStoreChange={handleStoreChange}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
       />
@@ -169,7 +217,7 @@ export function Products() {
                 </div>
                 <SortDropdown
                   selectedSort={selectedSort}
-                  onSortChange={setSelectedSort}
+                  onSortChange={handleSortChange}
                 />
               </div>
 

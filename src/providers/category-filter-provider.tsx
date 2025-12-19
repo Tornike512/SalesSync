@@ -1,6 +1,13 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface CategoryFilterContextType {
   selectedCategory: string | null;
@@ -14,16 +21,50 @@ const CategoryFilterContext = createContext<CategoryFilterContextType | null>(
 );
 
 export function CategoryFilterProvider({ children }: { children: ReactNode }) {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(
-    null,
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(
+    searchParams.get("category"),
   );
+  const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(
+    searchParams.get("subcategory"),
+  );
+
+  // Function to update URL params
+  const updateURLParams = (updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    for (const [key, value] of Object.entries(updates)) {
+      if (value) {
+        params.set(key, value);
+      } else {
+        params.delete(key);
+      }
+    }
+
+    router.replace(`?${params.toString()}`, { scroll: false });
+  };
 
   const handleSetSelectedCategory = (category: string | null) => {
     setSelectedCategory(category);
-    // Clear subcategory when main category changes
     setSelectedSubcategory(null);
+    updateURLParams({ category, subcategory: null });
   };
+
+  const handleSetSelectedSubcategory = (subcategory: string | null) => {
+    setSelectedSubcategory(subcategory);
+    updateURLParams({ subcategory });
+  };
+
+  // Sync state with URL params when they change externally (e.g., browser back/forward)
+  useEffect(() => {
+    const category = searchParams.get("category");
+    const subcategory = searchParams.get("subcategory");
+
+    setSelectedCategory(category);
+    setSelectedSubcategory(subcategory);
+  }, [searchParams]);
 
   return (
     <CategoryFilterContext.Provider
@@ -31,7 +72,7 @@ export function CategoryFilterProvider({ children }: { children: ReactNode }) {
         selectedCategory,
         selectedSubcategory,
         setSelectedCategory: handleSetSelectedCategory,
-        setSelectedSubcategory,
+        setSelectedSubcategory: handleSetSelectedSubcategory,
       }}
     >
       {children}
