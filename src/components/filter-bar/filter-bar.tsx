@@ -116,17 +116,17 @@ export function FilterBar({
   const hasActiveCategoryFilter = selectedCategory !== null;
 
   return (
-    <div className="z-30 shrink-0 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-3 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
+    <div className="z-30 shrink-0 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-2 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
       <div className="mx-auto max-w-7xl">
         {/* Top row: Menu, Category Filter, Icons, Auth */}
-        <div className="relative mb-3 flex items-center gap-3 sm:mb-4">
+        <div className="relative mb-2 flex items-center gap-2 sm:mb-4 sm:gap-3">
           {/* Mobile Menu Button */}
           <Button
             onClick={open}
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 md:hidden"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 md:hidden"
             aria-label="Open categories menu"
           >
-            <Menu size={22} />
+            <Menu size={20} />
           </Button>
 
           {/* Search Input - shown on md+ */}
@@ -159,9 +159,9 @@ export function FilterBar({
           {/* Cart Icon */}
           <Link
             href="/cart"
-            className="relative flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95"
+            className="relative flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:w-10"
           >
-            <ShoppingCart size={20} />
+            <ShoppingCart size={18} className="sm:h-5 sm:w-5" />
             {cartItemCount > 0 && (
               <span className="-top-2 -right-2 absolute flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-orange)] px-1 font-bold text-white text-xs">
                 {cartItemCount > 99 ? "99+" : cartItemCount}
@@ -172,16 +172,16 @@ export function FilterBar({
           {/* History Icon */}
           <Link
             href="/history"
-            className="flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95"
+            className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:w-10"
             aria-label="View History"
           >
-            <Clock size={20} />
+            <Clock size={18} className="sm:h-5 sm:w-5" />
           </Link>
 
           {status === "unauthenticated" && (
             <Link
               href="/sign-in"
-              className="flex h-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-dark-green)] px-4 font-medium text-[var(--color-cream)] text-sm shadow-md transition-all hover:bg-[var(--color-dark-green)]/90 active:scale-95"
+              className="flex h-9 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-dark-green)] px-3 font-medium text-[var(--color-cream)] text-xs shadow-md transition-all hover:bg-[var(--color-dark-green)]/90 active:scale-95 sm:h-10 sm:px-4 sm:text-sm"
             >
               Sign In
             </Link>
@@ -190,7 +190,7 @@ export function FilterBar({
           {status === "authenticated" && (
             <Button
               onClick={() => signOut()}
-              className="flex h-10 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] px-4 font-medium text-[var(--color-dark-green)] text-sm shadow-md transition-all hover:bg-amber-100 active:scale-95"
+              className="flex h-9 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] px-3 font-medium text-[var(--color-dark-green)] text-xs shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:px-4 sm:text-sm"
               aria-label="Log Out"
             >
               Log Out
@@ -199,17 +199,17 @@ export function FilterBar({
         </div>
 
         {/* Mobile Search Input - shown on small screens only */}
-        <div className="relative mb-3 block md:hidden">
+        <div className="relative mb-2 block md:hidden">
           <Search
-            className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)] opacity-60"
-            size={18}
+            className="-translate-y-1/2 absolute top-1/2 left-2.5 text-[var(--color-dark-green)] opacity-60"
+            size={16}
           />
           <input
             type="text"
             placeholder="Search products..."
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-10 pl-10 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
+            className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2 pr-9 pl-9 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
           />
           {searchQuery && (
             <Button
@@ -222,9 +222,9 @@ export function FilterBar({
           )}
         </div>
 
-        <div className="mb-3 flex flex-col items-start justify-between gap-2 sm:flex-row sm:items-center">
+        <div className="mb-2 flex flex-col items-start justify-between gap-1.5 sm:mb-3 sm:flex-row sm:items-center sm:gap-2">
           <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-[var(--color-dark-green)] text-sm sm:text-lg">
+            <h2 className="font-semibold text-[var(--color-dark-green)] text-xs sm:text-lg">
               Filter by Store
             </h2>
             {selectedStore && (
@@ -247,17 +247,17 @@ export function FilterBar({
               </span>
             )}
           </div>
-          <div className="rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center">
+          <div className="hidden rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center sm:block">
             <p className="text-[var(--color-dark-green)] text-xs">
               Data resets every 24 hours at 10:00 AM
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-1.5 sm:gap-2">
+        <div className="flex flex-wrap gap-1 sm:gap-2">
           {/* All Stores Button */}
           <Button
             onClick={() => onStoreChange(null)}
-            className={`flex items-center gap-1.5 rounded-full px-3 py-1.5 font-medium text-xs outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 sm:text-sm ${
+            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 font-medium text-xs outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 sm:text-sm ${
               selectedStore === null
                 ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                 : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
@@ -272,13 +272,13 @@ export function FilterBar({
             <Button
               key={store.id}
               onClick={() => onStoreChange(store.filterValue)}
-              className={`flex items-center gap-1.5 rounded-full px-2 py-1.5 outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 ${
+              className={`flex items-center gap-1.5 rounded-full px-1.5 py-1 outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 ${
                 selectedStore === store.filterValue
                   ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                   : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
               }`}
             >
-              <div className="relative h-5 w-5 overflow-hidden rounded-full bg-white p-0.5 sm:h-6 sm:w-6">
+              <div className="relative h-4 w-4 overflow-hidden rounded-full bg-white p-0.5 sm:h-6 sm:w-6">
                 <Image
                   src={store.logo}
                   alt={store.name}
