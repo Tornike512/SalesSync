@@ -1,3 +1,8 @@
+## 1.10.0 (2025-12-19)
+
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([a8f14ad](https://github.com/Tornike512/SalesSync/commit/a8f14ad))
+* feat: add new store logos for Nikora and Agrohub, and update allowed image host ([d9c1fb9](https://github.com/Tornike512/SalesSync/commit/d9c1fb9))
+
 ## <small>1.9.1 (2025-12-19)</small>
 
 * chore(release): bump version to 1.9.0 and update changelog ([90189f6](https://github.com/Tornike512/SalesSync/commit/90189f6))
