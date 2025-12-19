@@ -1,3 +1,8 @@
+## <small>1.11.1 (2025-12-19)</small>
+
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([3f8049f](https://github.com/Tornike512/SalesSync/commit/3f8049f))
+* fix: adjust styling for FilterBar component for better responsiveness and visual consistency ([32be878](https://github.com/Tornike512/SalesSync/commit/32be878))
+
 ## 1.11.0 (2025-12-19)
 
 * feat: enhance category and product filtering with URL parameter synchronization ([c69fea0](https://github.com/Tornike512/SalesSync/commit/c69fea0))
