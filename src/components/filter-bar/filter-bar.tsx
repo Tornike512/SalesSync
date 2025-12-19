@@ -257,7 +257,7 @@ export function FilterBar({
           {/* All Stores Button */}
           <Button
             onClick={() => onStoreChange(null)}
-            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 font-medium text-xs outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 sm:text-sm ${
+            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1.5 font-medium text-xs outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 sm:text-sm ${
               selectedStore === null
                 ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                 : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
@@ -272,13 +272,13 @@ export function FilterBar({
             <Button
               key={store.id}
               onClick={() => onStoreChange(store.filterValue)}
-              className={`flex items-center gap-1.5 rounded-full px-1.5 py-1 outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 ${
+              className={`flex items-center gap-1.5 rounded-full p-1.5 outline-none transition-all focus:outline-none sm:gap-2 sm:p-2 ${
                 selectedStore === store.filterValue
                   ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                   : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
               }`}
             >
-              <div className="relative h-4 w-4 overflow-hidden rounded-full bg-white p-0.5 sm:h-6 sm:w-6">
+              <div className="relative h-5 w-5 overflow-hidden rounded-full bg-white p-0.5 sm:h-6 sm:w-6">
                 <Image
                   src={store.logo}
                   alt={store.name}
