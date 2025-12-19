@@ -1,3 +1,8 @@
+## <small>1.9.1 (2025-12-19)</small>
+
+* chore(release): bump version to 1.9.0 and update changelog ([90189f6](https://github.com/Tornike512/SalesSync/commit/90189f6))
+* fix: update filter label for 'day' option and change JSX setting in tsconfig ([bf93cc0](https://github.com/Tornike512/SalesSync/commit/bf93cc0))
+
 ## 1.9.0 (2025-12-19)
 
 * Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([89d6ecd](https://github.com/Tornike512/SalesSync/commit/89d6ecd))
