@@ -80,7 +80,7 @@ export function ProductGrid({
             <div className="flex flex-1 flex-col p-4">
               {/* Store Name */}
               <div className="mb-2 font-semibold text-[var(--foreground-100)]/70 text-sm uppercase">
-                {item.store_name}
+                {item.store_name.split(" ")[0]}
               </div>
 
               {/* Product Name */}
