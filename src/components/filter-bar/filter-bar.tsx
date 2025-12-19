@@ -12,6 +12,7 @@ import europroductLogo from "../../../public/images/europroduct.jpg";
 import goodwillLogo from "../../../public/images/goodwill.jpg";
 import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
+import onePriceLogo from "../../../public/images/one-price.png";
 import sparLogo from "../../../public/images/spar.jpeg";
 import { Button } from "../button";
 
@@ -71,6 +72,12 @@ const stores: Store[] = [
     name: "Carrefour",
     filterValue: "carrefour",
     logo: carrefourLogo,
+  },
+  {
+    id: "oneprice",
+    name: "One Price",
+    filterValue: "oneprice",
+    logo: onePriceLogo,
   },
 ];
 
@@ -240,7 +247,7 @@ export function FilterBar({
           </div>
           <div className="rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center">
             <p className="text-[var(--color-dark-green)] text-xs">
-              Data resets every 24 hours at 6:00 AM
+              Data resets every 24 hours at 10:00 AM
             </p>
           </div>
         </div>
