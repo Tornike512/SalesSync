@@ -7,11 +7,13 @@ import { useGetCart } from "@/hooks/use-get-cart";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
 import { useMobileSidebar } from "@/providers/mobile-sidebar-provider";
 import { useSession } from "@/providers/session-provider";
+import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
 import goodwillLogo from "../../../public/images/goodwill.jpg";
 import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
+import nikoraLogo from "../../../public/images/nikora.png";
 import onePriceLogo from "../../../public/images/one-price.png";
 import sparLogo from "../../../public/images/spar.jpeg";
 import { Button } from "../button";
@@ -55,18 +57,18 @@ const stores: Store[] = [
     filterValue: "magniti",
     logo: magnitiLogo,
   },
-  // {
-  //   id: "nikora",
-  //   name: "Nikora",
-  //   filterValue: "nikora",
-  //   logo: nikoraLogo,
-  // },
-  // {
-  //   id: "agrohub",
-  //   name: "Agrohub",
-  //   filterValue: "agrohub",
-  //   logo: agrohubLogo,
-  // },
+  {
+    id: "nikora",
+    name: "Nikora",
+    filterValue: "nikora",
+    logo: nikoraLogo,
+  },
+  {
+    id: "agrohub",
+    name: "Agrohub",
+    filterValue: "agrohub",
+    logo: agrohubLogo,
+  },
   {
     id: "carrefour",
     name: "Carrefour",

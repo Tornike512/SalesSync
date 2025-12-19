@@ -12,6 +12,10 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'images.deliveryhero.io',
+      },
+      {
+        protocol: 'https',
         hostname: 'imageproxy.wolt.com',
       },
       {
