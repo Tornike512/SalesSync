@@ -1,3 +1,9 @@
+## 1.11.0 (2025-12-19)
+
+* feat: enhance category and product filtering with URL parameter synchronization ([c69fea0](https://github.com/Tornike512/SalesSync/commit/c69fea0))
+* feat: wrap CategoryFilterProvider in Suspense for improved loading handling ([037192f](https://github.com/Tornike512/SalesSync/commit/037192f))
+* chore: update version to 1.8.0 in package.json and add changelog entry for new features ([6f152c3](https://github.com/Tornike512/SalesSync/commit/6f152c3))
+
 ## 1.10.0 (2025-12-19)
 
 * Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([a8f14ad](https://github.com/Tornike512/SalesSync/commit/a8f14ad))
