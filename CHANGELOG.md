@@ -1,3 +1,8 @@
+## <small>1.8.1 (2025-12-19)</small>
+
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([2260b80](https://github.com/Tornike512/SalesSync/commit/2260b80))
+* fix: update data reset time in FilterBar component ([7af861c](https://github.com/Tornike512/SalesSync/commit/7af861c))
+
 ## 1.8.0 (2025-12-18)
 
 * feat: add One Price logo to store logos and update related components ([edf00c5](https://github.com/Tornike512/SalesSync/commit/edf00c5))
