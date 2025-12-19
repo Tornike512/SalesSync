@@ -1,3 +1,7 @@
+## 1.8.0 (2025-12-18)
+
+* feat: add One Price logo to store logos and update related components ([edf00c5](https://github.com/Tornike512/SalesSync/commit/edf00c5))
+
 ## 1.7.0 (2025-12-18)
 
 * chore: update version to 1.6.0 in package.json and enhance changelog ([fa9ed99](https://github.com/Tornike512/SalesSync/commit/fa9ed99))
