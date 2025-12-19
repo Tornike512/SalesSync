@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import {
   createContext,
   type ReactNode,
+  Suspense,
   useContext,
   useEffect,
   useState,
@@ -20,7 +21,7 @@ const CategoryFilterContext = createContext<CategoryFilterContextType | null>(
   null,
 );
 
-export function CategoryFilterProvider({ children }: { children: ReactNode }) {
+function CategoryFilterProviderInner({ children }: { children: ReactNode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -77,6 +78,14 @@ export function CategoryFilterProvider({ children }: { children: ReactNode }) {
     >
       {children}
     </CategoryFilterContext.Provider>
+  );
+}
+
+export function CategoryFilterProvider({ children }: { children: ReactNode }) {
+  return (
+    <Suspense fallback={null}>
+      <CategoryFilterProviderInner>{children}</CategoryFilterProviderInner>
+    </Suspense>
   );
 }
 
