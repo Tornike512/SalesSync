@@ -229,7 +229,7 @@ export function FilterBar({
           </div>
           <div className="rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center">
             <p className="text-[var(--color-dark-green)] text-xs">
-              Data resets every 24 hours at 6:00 AM
+              Data resets every 24 hours at 10:00 AM
             </p>
           </div>
         </div>
