@@ -1,3 +1,8 @@
+## <small>1.11.2 (2025-12-19)</small>
+
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([3a89df8](https://github.com/Tornike512/SalesSync/commit/3a89df8))
+* fix: improve button padding and size for FilterBar component ([7bacd96](https://github.com/Tornike512/SalesSync/commit/7bacd96))
+
 ## <small>1.11.1 (2025-12-19)</small>
 
 * Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([3f8049f](https://github.com/Tornike512/SalesSync/commit/3f8049f))
