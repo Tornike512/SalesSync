@@ -1,3 +1,8 @@
+## 1.13.0 (2025-12-20)
+
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([8f3b59c](https://github.com/Tornike512/SalesSync/commit/8f3b59c))
+* feat: enhance Products component to clear search input on category change ([e0108ee](https://github.com/Tornike512/SalesSync/commit/e0108ee))
+
 ## 1.12.0 (2025-12-20)
 
 * Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([ea0d1e4](https://github.com/Tornike512/SalesSync/commit/ea0d1e4))
