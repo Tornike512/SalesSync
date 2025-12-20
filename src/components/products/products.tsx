@@ -26,6 +26,7 @@ import { useCategoryFilter } from "@/providers/category-filter-provider";
 import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
+import gvirilaLogo from "../../../public/images/Gvirila.jpg";
 import goodwillLogo from "../../../public/images/goodwill.jpg";
 import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
@@ -37,14 +38,15 @@ import { FilterBar } from "../filter-bar";
 
 const storeLogos: Record<string, StaticImageData> = {
   agrohub: agrohubLogo,
+  carrefour: carrefourLogo,
   europroduct: europroductLogo,
   goodwill: goodwillLogo,
+  gvirila: gvirilaLogo,
   ioli: ioliLogo,
   magniti: magnitiLogo,
   nikora: nikoraLogo,
   oneprice: onePriceLogo,
   spar: sparLogo,
-  carrefour: carrefourLogo,
 };
 
 const sortOptions: { value: SortOption; label: string; icon: LucideIcon }[] = [
