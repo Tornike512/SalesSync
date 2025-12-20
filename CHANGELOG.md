@@ -1,3 +1,8 @@
+## 1.12.0 (2025-12-20)
+
+* Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([ea0d1e4](https://github.com/Tornike512/SalesSync/commit/ea0d1e4))
+* feat: add Gvirila store logo and integrate into cart, filter bar, and products components ([26aeb6c](https://github.com/Tornike512/SalesSync/commit/26aeb6c))
+
 ## <small>1.11.2 (2025-12-19)</small>
 
 * Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([3a89df8](https://github.com/Tornike512/SalesSync/commit/3a89df8))
