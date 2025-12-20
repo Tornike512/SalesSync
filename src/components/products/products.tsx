@@ -1,5 +1,4 @@
 "use client";
-
 import {
   ArrowDown01,
   ArrowDown10,
@@ -12,8 +11,9 @@ import {
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+
 import { useAddCartItem } from "@/hooks/use-add-cart-item";
 import { useGetCart } from "@/hooks/use-get-cart";
 import {
@@ -23,6 +23,7 @@ import {
 } from "@/hooks/use-get-products";
 import { useSession } from "@/hooks/use-session";
 import { useCategoryFilter } from "@/providers/category-filter-provider";
+
 import agrohubLogo from "../../../public/images/agrohub.png";
 import carrefourLogo from "../../../public/images/carrefour.webp";
 import europroductLogo from "../../../public/images/europroduct.jpg";
@@ -33,6 +34,7 @@ import magnitiLogo from "../../../public/images/magniti.webp";
 import nikoraLogo from "../../../public/images/nikora.png";
 import onePriceLogo from "../../../public/images/one-price.png";
 import sparLogo from "../../../public/images/spar.jpeg";
+
 import { Button } from "../button";
 import { FilterBar } from "../filter-bar";
 
@@ -103,56 +105,81 @@ export function Products() {
   const [selectedSort, setSelectedSort] = useState<SortOption>(
     (searchParams.get("sort") as SortOption) || "discount_percent_desc",
   );
-  const [searchQuery, setSearchQuery] = useState(
-    searchParams.get("search") || "",
-  );
+  // Search query is not synced with URL
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Track previous category to detect category changes
+  const prevCategoryRef = useRef<string | null>(null);
 
   // Function to update URL params
-  const updateURLParams = (updates: Record<string, string | null>) => {
-    const params = new URLSearchParams(searchParams.toString());
+  const updateURLParams = useCallback(
+    (updates: Record<string, string | null>) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    for (const [key, value] of Object.entries(updates)) {
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
+      for (const [key, value] of Object.entries(updates)) {
+        if (value) {
+          params.set(key, value);
+        } else {
+          params.delete(key);
+        }
       }
-    }
 
-    router.replace(`?${params.toString()}`, { scroll: false });
-  };
+      router.replace(`?${params.toString()}`, { scroll: false });
+    },
+    [searchParams, router],
+  );
 
   // Handle store change
-  const handleStoreChange = (store: string | null) => {
-    setSelectedStore(store);
-    updateURLParams({ store });
-  };
+  const handleStoreChange = useCallback(
+    (store: string | null) => {
+      setSelectedStore(store);
+      updateURLParams({ store });
+    },
+    [updateURLParams],
+  );
 
   // Handle sort change
-  const handleSortChange = (sort: SortOption) => {
-    setSelectedSort(sort);
-    updateURLParams({ sort });
-  };
+  const handleSortChange = useCallback(
+    (sort: SortOption) => {
+      setSelectedSort(sort);
+      updateURLParams({ sort });
+    },
+    [updateURLParams],
+  );
 
-  // Handle search change
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
-    updateURLParams({ search: query || null });
-    if (query) {
-      setSelectedCategory(null);
+  // Handle search change (not synced to URL)
+  const handleSearchChange = useCallback(
+    (query: string) => {
+      setSearchQuery(query);
+      if (query) {
+        setSelectedCategory(null);
+      }
+    },
+    [setSelectedCategory],
+  );
+
+  // Clear search input when category changes
+  useEffect(() => {
+    const currentCategory = selectedCategory || selectedSubcategory;
+    const prevCategory = prevCategoryRef.current;
+
+    // Only clear if category actually changed and there's a search query
+    if (currentCategory !== prevCategory && currentCategory && searchQuery) {
+      setSearchQuery("");
+      updateURLParams({ search: null });
     }
-  };
+
+    prevCategoryRef.current = currentCategory;
+  }, [selectedCategory, selectedSubcategory, searchQuery, updateURLParams]);
 
   // Sync state with URL params when they change externally (e.g., browser back/forward)
   useEffect(() => {
     const store = searchParams.get("store");
     const sort = searchParams.get("sort") as SortOption;
-    const search = searchParams.get("search");
 
     setSelectedStore(store);
     setSelectedSort(sort || "discount_percent_desc");
-    setSearchQuery(search || "");
-  }, [searchParams]);
+  }, [searchParams.get]); // Use toString() to avoid multiple triggers
 
   const debouncedSearch = useDebounce(searchQuery, 300);
 
@@ -173,9 +200,7 @@ export function Products() {
   });
 
   const showCenterSpinner = isLoading || (isFetching && !isFetchingNextPage);
-
   const loaderRef = useRef<HTMLDivElement>(null);
-
   const products = data?.pages.flatMap((page) => page.products) ?? [];
   const total = data?.pages[0]?.total ?? 0;
 
@@ -268,6 +293,7 @@ function ProductCard({ product }: { product: Product }) {
     if (!storeName) return null;
     const name = storeName.toLowerCase();
     if (storeLogos[name]) return storeLogos[name];
+
     // Handle cases like "Carrefour Vekua" -> "carrefour"
     const firstWord = name.split(" ")[0];
     return storeLogos[firstWord] ?? null;
@@ -280,6 +306,7 @@ function ProductCard({ product }: { product: Product }) {
       router.push("/sign-in");
       return;
     }
+
     addToCart(
       { product_id: product.id, quantity },
       {
@@ -445,7 +472,6 @@ function SortDropdown({
           {sortOptions.map((option) => {
             const Icon = option.icon;
             const isSelected = option.value === selectedSort;
-
             return (
               <Button
                 key={option.value}
