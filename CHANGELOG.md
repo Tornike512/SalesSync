@@ -1,3 +1,7 @@
+## 1.15.0 (2025-12-22)
+
+* feat: normalize store names for logo matching in cart and products components ([cd8b3bf](https://github.com/Tornike512/SalesSync/commit/cd8b3bf))
+
 ## 1.14.0 (2025-12-22)
 
 * feat: update CORS configuration and improve store filter value ([df5b723](https://github.com/Tornike512/SalesSync/commit/df5b723))
