@@ -11,6 +11,7 @@ import { ProductGrid } from "./product-grid";
 
 interface YearViewProps {
   readonly items: readonly HistoryItem[];
+  readonly total: number;
   readonly onDeleteItem: (id: number) => void;
   readonly isDeletingItem: boolean;
 }
@@ -21,6 +22,7 @@ interface YearViewProps {
  */
 export function YearView({
   items,
+  total,
   onDeleteItem,
   isDeletingItem,
 }: YearViewProps) {

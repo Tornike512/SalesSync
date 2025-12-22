@@ -207,6 +207,7 @@ export function History() {
               {(selectedFilter === "year" || selectedFilter === "all") && (
                 <YearView
                   items={items}
+                  total={total}
                   onDeleteItem={deleteHistoryItem}
                   isDeletingItem={isDeletingItem}
                 />
@@ -230,7 +231,7 @@ export function History() {
                   Total Items
                 </span>
                 <span className="font-semibold text-[var(--foreground-100)]">
-                  {summary.totalQuantity}
+                  {total}
                 </span>
               </div>
 
