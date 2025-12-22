@@ -1,3 +1,8 @@
+## 1.18.0 (2025-12-22)
+
+* chore(release): bump version to 1.17.0 and update changelog ([742cd9f](https://github.com/Tornike512/SalesSync/commit/742cd9f))
+* feat: update item count calculations in MonthView, WeekView, and YearView components ([eff8998](https://github.com/Tornike512/SalesSync/commit/eff8998))
+
 ## 1.17.0 (2025-12-22)
 
 * refactor: remove scroll detection for FilterBar visibility in Products component ([146c12c](https://github.com/Tornike512/SalesSync/commit/146c12c))
