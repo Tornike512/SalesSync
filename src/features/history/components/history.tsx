@@ -52,11 +52,6 @@ export function History() {
     );
     const totalSaved = totalOriginal - totalSpent;
     const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
-    const avgDiscount =
-      items.length > 0
-        ? items.reduce((acc, item) => acc + item.discount_percent, 0) /
-          items.length
-        : 0;
     const storeBreakdown = items.reduce(
       (acc, item) => {
         acc[item.store_name] = (acc[item.store_name] || 0) + item.quantity;
@@ -70,7 +65,6 @@ export function History() {
       totalOriginal,
       totalSaved,
       totalQuantity,
-      avgDiscount,
       storeBreakdown,
     };
   }, [items]);
@@ -285,7 +279,7 @@ export function History() {
                   Avg. Discount
                 </span>
                 <span className="font-semibold text-[var(--color-orange)]">
-                  {summary.avgDiscount.toFixed(1)}%
+                  {(data?.average_discount_percent ?? 0).toFixed(1)}%
                 </span>
               </div>
 

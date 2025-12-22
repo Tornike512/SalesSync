@@ -19,6 +19,7 @@ export interface HistoryItem {
 export interface HistoryResponse {
   readonly total: number;
   readonly items: readonly HistoryItem[];
+  readonly average_discount_percent: number;
 }
 
 export type TimeFilter = "day" | "week" | "month" | "year" | "all";
