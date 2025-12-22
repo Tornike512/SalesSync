@@ -58,6 +58,11 @@ const storeLogos: Record<string, StaticImageData> = {
 function getStoreLogo(storeName: string): StaticImageData | null {
   const name = storeName.toLowerCase();
   if (storeLogos[name]) return storeLogos[name];
+
+  // Remove spaces and special characters for matching (e.g., "Ori Nabiji" -> "orinabiji")
+  const normalizedName = name.replace(/[\s-]/g, "");
+  if (storeLogos[normalizedName]) return storeLogos[normalizedName];
+
   const firstWord = name.split(" ")[0];
   return storeLogos[firstWord] ?? null;
 }

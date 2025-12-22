@@ -296,6 +296,10 @@ function ProductCard({ product }: { product: Product }) {
     const name = storeName.toLowerCase();
     if (storeLogos[name]) return storeLogos[name];
 
+    // Remove spaces and special characters for matching (e.g., "Ori Nabiji" -> "orinabiji")
+    const normalizedName = name.replace(/[\s-]/g, "");
+    if (storeLogos[normalizedName]) return storeLogos[normalizedName];
+
     // Handle cases like "Carrefour Vekua" -> "carrefour"
     const firstWord = name.split(" ")[0];
     return storeLogos[firstWord] ?? null;
