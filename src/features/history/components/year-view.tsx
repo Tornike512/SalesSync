@@ -41,7 +41,15 @@ export function YearView({
           const monthData = yearData.get(monthKey);
           if (!monthData) return acc;
           const days = Array.from(monthData.values());
-          return acc + days.reduce((sum, dayItems) => sum + dayItems.length, 0);
+          return (
+            acc +
+            days.reduce(
+              (sum, dayItems) =>
+                sum +
+                dayItems.reduce((total, item) => total + item.quantity, 0),
+              0,
+            )
+          );
         }, 0);
 
         return (
@@ -64,7 +72,11 @@ export function YearView({
                   b.localeCompare(a),
                 );
                 const monthItemCount = days.reduce((acc, dateKey) => {
-                  return acc + (monthData.get(dateKey)?.length ?? 0);
+                  const dayItems = monthData.get(dateKey) ?? [];
+                  return (
+                    acc +
+                    dayItems.reduce((total, item) => total + item.quantity, 0)
+                  );
                 }, 0);
 
                 return (
@@ -78,12 +90,16 @@ export function YearView({
                     <div className="space-y-3">
                       {days.map((dateKey) => {
                         const dayItems = monthData.get(dateKey) ?? [];
+                        const dayItemCount = dayItems.reduce(
+                          (total, item) => total + item.quantity,
+                          0,
+                        );
 
                         return (
                           <DropdownSection
                             key={dateKey}
                             title={formatDateKey(dateKey)}
-                            itemCount={dayItems.length}
+                            itemCount={dayItemCount}
                             defaultOpen={false}
                             level={2}
                           >

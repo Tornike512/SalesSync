@@ -30,13 +30,17 @@ export function WeekView({
     <div className="space-y-4">
       {dates.map((dateKey) => {
         const dayItems = groupedItems.get(dateKey) ?? [];
+        const dayItemCount = dayItems.reduce(
+          (total, item) => total + item.quantity,
+          0,
+        );
         const title = formatDayOfWeek(dateKey);
 
         return (
           <DropdownSection
             key={dateKey}
             title={title}
-            itemCount={dayItems.length}
+            itemCount={dayItemCount}
             defaultOpen={dayItems.length > 0}
           >
             {dayItems.length > 0 ? (
