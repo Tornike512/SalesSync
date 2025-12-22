@@ -1,3 +1,9 @@
+## 1.16.0 (2025-12-22)
+
+* chore(release): bump version to 1.15.0 and update changelog ([b67d44b](https://github.com/Tornike512/SalesSync/commit/b67d44b))
+* feat: add average discount percent to history response and update calculation in History component ([10608d2](https://github.com/Tornike512/SalesSync/commit/10608d2))
+* feat: implement scroll detection to hide/show FilterBar in Products component ([584f558](https://github.com/Tornike512/SalesSync/commit/584f558))
+
 ## 1.15.0 (2025-12-22)
 
 * feat: normalize store names for logo matching in cart and products components ([cd8b3bf](https://github.com/Tornike512/SalesSync/commit/cd8b3bf))
