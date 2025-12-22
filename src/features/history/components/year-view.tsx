@@ -22,7 +22,6 @@ interface YearViewProps {
  */
 export function YearView({
   items,
-  total,
   onDeleteItem,
   isDeletingItem,
 }: YearViewProps) {
