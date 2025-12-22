@@ -1,3 +1,8 @@
+## 1.14.0 (2025-12-22)
+
+* feat: update CORS configuration and improve store filter value ([df5b723](https://github.com/Tornike512/SalesSync/commit/df5b723))
+* chore: update package.json for version 1.12.0 release ([92f5e9a](https://github.com/Tornike512/SalesSync/commit/92f5e9a))
+
 ## 1.13.0 (2025-12-20)
 
 * Merge branch 'main' of https://github.com/Tornike512/sales-frontend-nextjs ([8f3b59c](https://github.com/Tornike512/SalesSync/commit/8f3b59c))
