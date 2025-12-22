@@ -1,3 +1,9 @@
+## 1.17.0 (2025-12-22)
+
+* refactor: remove scroll detection for FilterBar visibility in Products component ([146c12c](https://github.com/Tornike512/SalesSync/commit/146c12c))
+* refactor: remove unused total prop from YearView component ([51be247](https://github.com/Tornike512/SalesSync/commit/51be247))
+* feat: pass total items to YearView component and update display in History ([5c8b37f](https://github.com/Tornike512/SalesSync/commit/5c8b37f))
+
 ## 1.16.0 (2025-12-22)
 
 * chore(release): bump version to 1.15.0 and update changelog ([b67d44b](https://github.com/Tornike512/SalesSync/commit/b67d44b))
