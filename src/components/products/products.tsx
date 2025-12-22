@@ -113,6 +113,11 @@ export function Products() {
   // Track previous category to detect category changes
   const prevCategoryRef = useRef<string | null>(null);
 
+  // Scroll detection state
+  const [isFilterBarVisible, setIsFilterBarVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   // Function to update URL params
   const updateURLParams = useCallback(
     (updates: Record<string, string | null>) => {
@@ -206,6 +211,34 @@ export function Products() {
   const products = data?.pages.flatMap((page) => page.products) ?? [];
   const total = data?.pages[0]?.total ?? 0;
 
+  // Scroll direction detection
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+
+    const handleScroll = () => {
+      const currentScrollY = scrollContainer.scrollTop;
+      const scrollThreshold = 10; // Minimum scroll distance to trigger hide/show
+
+      if (Math.abs(currentScrollY - lastScrollY.current) < scrollThreshold) {
+        return;
+      }
+
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        // Scrolling down - hide FilterBar
+        setIsFilterBarVisible(false);
+      } else if (currentScrollY < lastScrollY.current) {
+        // Scrolling up - show FilterBar
+        setIsFilterBarVisible(true);
+      }
+
+      lastScrollY.current = currentScrollY;
+    };
+
+    scrollContainer.addEventListener("scroll", handleScroll, { passive: true });
+    return () => scrollContainer.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     const loader = loaderRef.current;
     if (!loader) return;
@@ -224,16 +257,23 @@ export function Products() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="flex h-screen flex-col bg-[var(--color-cream)]">
-      <FilterBar
-        selectedStore={selectedStore}
-        onStoreChange={handleStoreChange}
-        searchQuery={searchQuery}
-        onSearchChange={handleSearchChange}
-      />
+    <div className="relative flex h-[100svh] flex-col bg-[var(--color-cream)] md:h-screen">
+      <div
+        className="sticky top-0 z-40 transition-transform duration-300 ease-in-out"
+        style={{
+          transform: isFilterBarVisible ? "translateY(0)" : "translateY(-100%)",
+        }}
+      >
+        <FilterBar
+          selectedStore={selectedStore}
+          onStoreChange={handleStoreChange}
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+        />
+      </div>
 
       {/* Product Grid - Scrollable */}
-      <div className="flex-1 overflow-y-auto">
+      <div ref={scrollContainerRef} className="flex-1 overflow-y-auto">
         <div className="mx-auto max-w-7xl p-6">
           {error && <div className="text-red-500">Failed to load products</div>}
 
