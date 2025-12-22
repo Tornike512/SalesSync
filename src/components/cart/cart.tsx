@@ -37,6 +37,7 @@ import ioliLogo from "../../../public/images/ioli.jpg";
 import magnitiLogo from "../../../public/images/magniti.webp";
 import nikoraLogo from "../../../public/images/nikora.png";
 import onePriceLogo from "../../../public/images/one-price.png";
+import oriNabijiLogo from "../../../public/images/ori-nabiji.webp";
 import sparLogo from "../../../public/images/spar.jpeg";
 import { Button } from "../button";
 
@@ -50,6 +51,7 @@ const storeLogos: Record<string, StaticImageData> = {
   magniti: magnitiLogo,
   nikora: nikoraLogo,
   oneprice: onePriceLogo,
+  orinabiji: oriNabijiLogo,
   spar: sparLogo,
 };
 
