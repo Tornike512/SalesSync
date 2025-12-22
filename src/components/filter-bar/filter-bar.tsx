@@ -92,7 +92,7 @@ const stores: Store[] = [
   {
     id: "orinabiji",
     name: "Ori Nabiji",
-    filterValue: "orinabiji",
+    filterValue: "ori nabiji",
     logo: oriNabijiLogo,
   },
 ];

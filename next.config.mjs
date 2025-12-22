@@ -26,6 +26,11 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'wolt-menu-images-cdn.wolt.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.2nabiji.ge',
+        pathname: '/products/**',
+      },
     ],
   },
 };
