@@ -1,6 +1,13 @@
 "use client";
 
-import { Clock, Menu, Search, ShoppingCart, X } from "lucide-react";
+import {
+  ChevronDown,
+  Clock,
+  Menu,
+  Search,
+  ShoppingCart,
+  X,
+} from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -121,6 +128,7 @@ export function FilterBar({
     setSelectedSubcategory,
   } = useCategoryFilter();
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
 
   const cartItemCount = cart?.total_items ?? 0;
 
@@ -257,16 +265,11 @@ export function FilterBar({
           </div>
         )}
 
-        <div className="mb-2 flex flex-col items-start justify-between gap-1.5 sm:mb-3 sm:flex-row sm:items-center sm:gap-2">
+        <div className="mb-2 flex items-center justify-between gap-1.5 sm:mb-3 sm:gap-2">
           <div className="flex items-center gap-2">
             <h2 className="font-semibold text-[var(--color-dark-green)] text-xs sm:text-lg">
               Filter by Store
             </h2>
-            {selectedStore && (
-              <span className="rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs sm:hidden">
-                {stores.find((s) => s.filterValue === selectedStore)?.name}
-              </span>
-            )}
             {hasActiveCategoryFilter && (
               <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs sm:hidden">
                 <span className="max-w-24 truncate">
@@ -282,24 +285,114 @@ export function FilterBar({
               </span>
             )}
           </div>
+
+          {/* Mobile Store Dropdown */}
+          <div className="relative sm:hidden">
+            <Button
+              onClick={() => setIsStoreDropdownOpen(!isStoreDropdownOpen)}
+              className="flex items-center gap-1.5 rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] px-2.5 py-1.5 font-medium text-[var(--color-dark-green)] text-xs shadow-md transition-all hover:bg-amber-100 active:scale-95"
+            >
+              {selectedStore && (
+                <div className="relative h-4 w-4 shrink-0 overflow-hidden rounded-full bg-white">
+                  <Image
+                    src={
+                      stores.find((s) => s.filterValue === selectedStore)
+                        ?.logo ?? ""
+                    }
+                    alt=""
+                    fill
+                    className="rounded-full object-contain"
+                  />
+                </div>
+              )}
+              <span className="max-w-24 truncate">
+                {selectedStore
+                  ? stores.find((s) => s.filterValue === selectedStore)?.name
+                  : "All Stores"}
+              </span>
+              <ChevronDown
+                size={14}
+                className={`transition-transform ${isStoreDropdownOpen ? "rotate-180" : ""}`}
+              />
+            </Button>
+
+            {/* Backdrop to close dropdown */}
+            <div
+              className={`fixed inset-0 z-40 transition-opacity duration-200 ${
+                isStoreDropdownOpen
+                  ? "opacity-100"
+                  : "pointer-events-none opacity-0"
+              }`}
+              onClick={() => setIsStoreDropdownOpen(false)}
+            />
+            {/* Dropdown Menu */}
+            <div
+              className={`absolute right-0 z-50 mt-1 w-40 origin-top-right overflow-hidden rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] shadow-lg transition-all duration-200 ${
+                isStoreDropdownOpen
+                  ? "scale-100 opacity-100"
+                  : "pointer-events-none scale-95 opacity-0"
+              }`}
+            >
+              <div className="max-h-64 overflow-y-auto">
+                <Button
+                  onClick={() => {
+                    onStoreChange(null);
+                    setIsStoreDropdownOpen(false);
+                  }}
+                  className={`flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-all ${
+                    selectedStore === null
+                      ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
+                      : "text-[var(--color-dark-green)] hover:bg-[var(--color-dark-green)]/10"
+                  }`}
+                >
+                  All Stores
+                </Button>
+                {stores.map((store) => (
+                  <Button
+                    key={store.id}
+                    onClick={() => {
+                      onStoreChange(store.filterValue);
+                      setIsStoreDropdownOpen(false);
+                    }}
+                    className={`flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-all ${
+                      selectedStore === store.filterValue
+                        ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
+                        : "text-[var(--color-dark-green)] hover:bg-[var(--color-dark-green)]/10"
+                    }`}
+                  >
+                    <div className="relative h-4 w-4 shrink-0 overflow-hidden rounded-full bg-white">
+                      <Image
+                        src={store.logo}
+                        alt={store.name}
+                        fill
+                        className="rounded-full object-contain"
+                      />
+                    </div>
+                    <span className="truncate">{store.name}</span>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </div>
+
           <div className="hidden rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center sm:block">
             <p className="text-[var(--color-dark-green)] text-xs">
               Data resets every 24 hours at 10:00 AM
             </p>
           </div>
         </div>
-        <div className="flex flex-wrap gap-1 sm:gap-2">
+        {/* Store Filter Buttons - hidden on mobile, use dropdown instead */}
+        <div className="hidden flex-wrap gap-2 sm:flex">
           {/* All Stores Button */}
           <Button
             onClick={() => onStoreChange(null)}
-            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1.5 font-medium text-xs outline-none transition-all focus:outline-none sm:gap-2 sm:px-4 sm:py-2 sm:text-sm ${
+            className={`flex items-center gap-2 rounded-full px-4 py-2 font-medium text-sm outline-none transition-all focus:outline-none ${
               selectedStore === null
                 ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                 : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
             }`}
           >
-            All
-            <span className="hidden sm:inline"> Stores</span>
+            All Stores
           </Button>
 
           {/* Store Filter Buttons */}
@@ -307,13 +400,13 @@ export function FilterBar({
             <Button
               key={store.id}
               onClick={() => onStoreChange(store.filterValue)}
-              className={`flex items-center gap-1.5 rounded-full p-1.5 outline-none transition-all focus:outline-none sm:gap-2 sm:p-2 ${
+              className={`flex items-center gap-2 rounded-full p-2 outline-none transition-all focus:outline-none ${
                 selectedStore === store.filterValue
                   ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
                   : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
               }`}
             >
-              <div className="relative h-5 w-5 overflow-hidden rounded-full bg-white p-0.5 sm:h-6 sm:w-6">
+              <div className="relative h-6 w-6 overflow-hidden rounded-full bg-white p-0.5">
                 <Image
                   src={store.logo}
                   alt={store.name}
@@ -321,7 +414,7 @@ export function FilterBar({
                   className="rounded-full object-contain"
                 />
               </div>
-              <span className="hidden whitespace-nowrap font-medium text-sm sm:inline">
+              <span className="whitespace-nowrap font-medium text-sm">
                 {store.name}
               </span>
             </Button>
