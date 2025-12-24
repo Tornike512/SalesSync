@@ -1,3 +1,7 @@
+## <small>1.20.1 (2025-12-24)</small>
+
+* fix: remove max height restriction from FilterBar component for improved layout ([c6ca67c](https://github.com/Tornike512/SalesSync/commit/c6ca67c))
+
 ## 1.20.0 (2025-12-24)
 
 * chore(release): bump version to 1.19.2 and update changelog ([e1bb9d3](https://github.com/Tornike512/SalesSync/commit/e1bb9d3))
