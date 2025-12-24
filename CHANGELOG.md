@@ -1,3 +1,8 @@
+## <small>1.19.1 (2025-12-24)</small>
+
+* chore(release): bump version to 1.19.0 and update changelog ([6d625f6](https://github.com/Tornike512/SalesSync/commit/6d625f6))
+* fix: update layout and sidebar styles for better responsiveness ([4763979](https://github.com/Tornike512/SalesSync/commit/4763979))
+
 ## 1.19.0 (2025-12-24)
 
 * feat: sort categories hierarchy alphabetically in getCategoriesHierarchy function ([144ba03](https://github.com/Tornike512/SalesSync/commit/144ba03))
