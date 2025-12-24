@@ -1,3 +1,8 @@
+## <small>1.19.2 (2025-12-24)</small>
+
+* chore(release): bump version to 1.19.1 and update changelog ([26305a8](https://github.com/Tornike512/SalesSync/commit/26305a8))
+* fix: update layout height classes for consistent styling across components ([2835dad](https://github.com/Tornike512/SalesSync/commit/2835dad))
+
 ## <small>1.19.1 (2025-12-24)</small>
 
 * chore(release): bump version to 1.19.0 and update changelog ([6d625f6](https://github.com/Tornike512/SalesSync/commit/6d625f6))
