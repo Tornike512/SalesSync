@@ -15,7 +15,15 @@ async function getCategoriesHierarchy(): Promise<CategoryHierarchy> {
     throw new Error("Failed to fetch categories hierarchy");
   }
 
-  return response.json() as Promise<CategoryHierarchy>;
+  const data = (await response.json()) as CategoryHierarchy;
+  // Sort the top-level categories alphabetically
+  const sorted: CategoryHierarchy = {};
+  Object.keys(data)
+    .sort((a, b) => a.localeCompare(b))
+    .forEach((key) => {
+      sorted[key] = data[key];
+    });
+  return sorted;
 }
 
 export function useGetCategories() {
