@@ -1,3 +1,17 @@
+## 1.20.0 (2025-12-24)
+
+* chore(release): bump version to 1.19.2 and update changelog ([e1bb9d3](https://github.com/Tornike512/SalesSync/commit/e1bb9d3))
+* feat: add mobile search functionality to FilterBar component ([f9d77f6](https://github.com/Tornike512/SalesSync/commit/f9d77f6))
+* feat: add mobile store dropdown to FilterBar component ([6b1d8e4](https://github.com/Tornike512/SalesSync/commit/6b1d8e4))
+* feat: enhance FilterBar and Sidebar components for improved category filtering and mobile experience ([cc11b69](https://github.com/Tornike512/SalesSync/commit/cc11b69))
+* feat: enhance FilterBar component styling and conditional rendering for store filter ([07c3c1e](https://github.com/Tornike512/SalesSync/commit/07c3c1e))
+* feat: improve ProductCard layout and styling for better mobile experience ([a6adb0d](https://github.com/Tornike512/SalesSync/commit/a6adb0d))
+* feat: optimize category filter state management and URL synchronization ([0ce648a](https://github.com/Tornike512/SalesSync/commit/0ce648a))
+* feat: replace mobile search icon with input field in FilterBar component ([17e2c08](https://github.com/Tornike512/SalesSync/commit/17e2c08))
+* feat: reposition and enhance visibility of category filter in mobile FilterBar ([19c523b](https://github.com/Tornike512/SalesSync/commit/19c523b))
+* feat: restrict cart and history icons to authenticated users in FilterBar component ([d4e2513](https://github.com/Tornike512/SalesSync/commit/d4e2513))
+* fix: adjust margin for mobile layout in FilterBar component ([8d0c68b](https://github.com/Tornike512/SalesSync/commit/8d0c68b))
+
 ## <small>1.19.2 (2025-12-24)</small>
 
 * chore(release): bump version to 1.19.1 and update changelog ([26305a8](https://github.com/Tornike512/SalesSync/commit/26305a8))
