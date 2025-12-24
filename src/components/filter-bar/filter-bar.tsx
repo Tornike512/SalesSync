@@ -127,7 +127,6 @@ export function FilterBar({
     setSelectedCategory,
     setSelectedSubcategory,
   } = useCategoryFilter();
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
 
   const cartItemCount = cart?.total_items ?? 0;
@@ -177,21 +176,29 @@ export function FilterBar({
             )}
           </div>
 
-          {/* Spacer to push icons to the right on mobile */}
-          <div className="flex-1 md:hidden" />
-
-          {/* Mobile Search Icon Button */}
-          <Button
-            onClick={() => setIsMobileSearchOpen(!isMobileSearchOpen)}
-            className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] shadow-md transition-all active:scale-95 md:hidden ${
-              isMobileSearchOpen
-                ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
-                : "bg-[var(--color-cream)] text-[var(--color-dark-green)] hover:bg-amber-100"
-            }`}
-            aria-label={isMobileSearchOpen ? "Close search" : "Open search"}
-          >
-            {isMobileSearchOpen ? <X size={18} /> : <Search size={18} />}
-          </Button>
+          {/* Mobile Search Input */}
+          <div className="relative flex-1 md:hidden">
+            <Search
+              className="-translate-y-1/2 absolute top-1/2 left-2.5 text-[var(--color-dark-green)] opacity-60"
+              size={16}
+            />
+            <input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-1.5 pr-8 pl-8 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
+            />
+            {searchQuery && (
+              <Button
+                onClick={() => onSearchChange("")}
+                className="-translate-y-1/2 absolute top-1/2 right-2 flex h-5 w-5 items-center justify-center rounded-full text-[var(--color-dark-green)] opacity-60 transition-all hover:bg-[var(--color-dark-green)]/10 hover:opacity-100 active:scale-95"
+                aria-label="Clear search"
+              >
+                <X size={14} />
+              </Button>
+            )}
+          </div>
 
           {/* Cart Icon - only for authenticated users */}
           {status === "authenticated" && (
@@ -239,33 +246,7 @@ export function FilterBar({
           )}
         </div>
 
-        {/* Mobile Search Input - shown when search icon is clicked */}
-        {isMobileSearchOpen && (
-          <div className="relative mb-2 block md:hidden">
-            <Search
-              className="-translate-y-1/2 absolute top-1/2 left-2.5 text-[var(--color-dark-green)] opacity-60"
-              size={16}
-            />
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2 pr-9 pl-9 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
-            />
-            {searchQuery && (
-              <Button
-                onClick={() => onSearchChange("")}
-                className="-translate-y-1/2 absolute top-1/2 right-3 flex h-5 w-5 items-center justify-center rounded-full text-[var(--color-dark-green)] opacity-60 transition-all hover:bg-[var(--color-dark-green)]/10 hover:opacity-100 active:scale-95"
-                aria-label="Clear search"
-              >
-                <X size={16} />
-              </Button>
-            )}
-          </div>
-        )}
-
-        <div className="mb-2 flex items-center justify-between gap-1.5 sm:mb-3 sm:gap-2">
+        <div className="flex items-center justify-between gap-1.5 sm:gap-2">
           <div className="flex items-center gap-2">
             <h2 className="font-semibold text-[var(--color-dark-green)] text-xs sm:text-lg">
               Filter by Store
