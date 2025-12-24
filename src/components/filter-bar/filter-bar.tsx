@@ -187,7 +187,7 @@ export function FilterBar({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-1.5 pr-8 pl-8 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
+              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2 pr-8 pl-8 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
             />
             {searchQuery && (
               <Button
@@ -247,11 +247,12 @@ export function FilterBar({
         </div>
 
         <div className="flex items-center justify-between gap-1.5 sm:gap-2">
-          <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-[var(--color-dark-green)] text-xs sm:text-lg">
-              Filter by Store
-            </h2>
-            {hasActiveCategoryFilter && (
+          {/* Filter by Store text and category badge - only shown when category is selected */}
+          {hasActiveCategoryFilter ? (
+            <div className="flex items-center gap-2">
+              <h2 className="font-semibold text-[var(--color-dark-green)] text-xs sm:text-lg">
+                Filter by Store
+              </h2>
               <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs sm:hidden">
                 <span className="max-w-24 truncate">
                   {selectedSubcategory || selectedCategory}
@@ -264,8 +265,10 @@ export function FilterBar({
                   <X size={12} />
                 </Button>
               </span>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="sm:hidden" />
+          )}
 
           {/* Mobile Store Dropdown */}
           <div className="relative sm:hidden">
