@@ -108,7 +108,7 @@ export function ForgotPassword() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-gradient-to-br from-[var(--color-cream)] via-[var(--color-sage)] to-[var(--color-yellow)]">
+    <div className="relative flex min-h-svh items-center justify-center bg-gradient-to-br from-[var(--color-cream)] via-[var(--color-sage)] to-[var(--color-yellow)]">
       <GoBackLink />
       <div className="w-full max-w-md px-4">
         <div className="rounded-2xl bg-[var(--color-yellow)] p-8 shadow-xl">
