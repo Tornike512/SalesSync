@@ -242,31 +242,8 @@ export function FilterBar({
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-1.5 sm:gap-2">
-          {/* Filter by Store text and category badge - only shown when category is selected */}
-          {hasActiveCategoryFilter ? (
-            <div className="flex items-center gap-2">
-              <h2 className="font-semibold text-[var(--color-dark-green)] text-xs sm:text-lg">
-                Filter by Store
-              </h2>
-              <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs sm:hidden">
-                <span className="max-w-24 truncate">
-                  {selectedSubcategory || selectedCategory}
-                </span>
-                <Button
-                  onClick={handleClearCategoryFilter}
-                  className="flex items-center justify-center transition-all hover:opacity-70 active:scale-95"
-                  aria-label="Clear category filter"
-                >
-                  <X size={12} />
-                </Button>
-              </span>
-            </div>
-          ) : (
-            <div className="sm:hidden" />
-          )}
-
-          {/* Mobile Store Dropdown */}
+        <div className="mb-2 flex items-center justify-between gap-1.5 sm:gap-2">
+          {/* Mobile Store Dropdown - on left for mobile */}
           <div className="relative sm:hidden">
             <Button
               onClick={() => setIsStoreDropdownOpen(!isStoreDropdownOpen)}
@@ -309,7 +286,7 @@ export function FilterBar({
             />
             {/* Dropdown Menu */}
             <div
-              className={`absolute right-0 z-50 mt-1 w-40 origin-top-right overflow-hidden rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] shadow-lg transition-all duration-200 ${
+              className={`absolute left-0 z-50 mt-1 w-40 origin-top-left overflow-hidden rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] shadow-lg transition-all duration-200 ${
                 isStoreDropdownOpen
                   ? "scale-100 opacity-100"
                   : "pointer-events-none scale-95 opacity-0"
@@ -356,6 +333,29 @@ export function FilterBar({
               </div>
             </div>
           </div>
+
+          {/* Filter by Store text and category badge - on right for mobile, only shown when category is selected */}
+          {hasActiveCategoryFilter ? (
+            <div className="flex items-center gap-2 sm:hidden">
+              <h2 className="font-semibold text-[var(--color-dark-green)] text-xs">
+                Filter by
+              </h2>
+              <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs">
+                <span className="max-w-24 truncate">
+                  {selectedSubcategory || selectedCategory}
+                </span>
+                <Button
+                  onClick={handleClearCategoryFilter}
+                  className="flex items-center justify-center transition-all hover:opacity-70 active:scale-95"
+                  aria-label="Clear category filter"
+                >
+                  <X size={12} />
+                </Button>
+              </span>
+            </div>
+          ) : (
+            <div className="sm:hidden" />
+          )}
 
           <div className="hidden rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center sm:block">
             <p className="text-[var(--color-dark-green)] text-xs">
