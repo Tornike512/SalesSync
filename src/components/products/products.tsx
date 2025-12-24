@@ -234,7 +234,7 @@ export function Products() {
 
       {/* Product Grid - Scrollable */}
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-7xl p-6">
+        <div className="mx-auto max-w-7xl p-2">
           {error && <div className="text-red-500">Failed to load products</div>}
 
           {!error && (
@@ -257,7 +257,7 @@ export function Products() {
                   </div>
                 )}
 
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 xl:grid-cols-4">
                   {products.map((product, index) => (
                     <ProductCard
                       key={`${product.id}-${index}`}
@@ -341,7 +341,7 @@ function ProductCard({ product }: { product: Product }) {
     <div className="relative flex flex-col overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
       {/* Store Logo Badge */}
       {storeLogo && (
-        <div className="absolute top-2 right-3 h-10 w-10 overflow-hidden rounded-full bg-white shadow-md">
+        <div className="absolute top-1.5 right-1.5 h-7 w-7 overflow-hidden rounded-full bg-white shadow-md sm:top-2 sm:right-3 sm:h-10 sm:w-10">
           <Image
             src={storeLogo}
             alt="Store"
@@ -353,7 +353,7 @@ function ProductCard({ product }: { product: Product }) {
 
       {/* Cart Quantity Badge */}
       {cartQuantity > 0 && (
-        <div className="absolute top-2 left-3 flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-orange)] font-bold text-white text-xs shadow-md">
+        <div className="absolute top-1.5 left-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-orange)] font-bold text-[10px] text-white shadow-md sm:top-2 sm:left-3 sm:h-7 sm:w-7 sm:text-xs">
           {cartQuantity}
         </div>
       )}
@@ -375,46 +375,46 @@ function ProductCard({ product }: { product: Product }) {
       </div>
 
       {/* Product Info */}
-      <div className="flex flex-1 flex-col p-4">
-        <h3 className="mb-2 line-clamp-2 font-semibold text-[var(--color-dark-green)] text-base">
+      <div className="flex flex-1 flex-col p-2 sm:p-4">
+        <h3 className="mb-1 line-clamp-2 font-semibold text-[var(--color-dark-green)] text-xs sm:mb-2 sm:text-base">
           {product.name}
         </h3>
 
         {/* Pricing */}
-        <div className="mt-auto mb-2 flex items-baseline gap-2">
-          <span className="font-bold text-2xl text-[var(--color-orange)]">
+        <div className="mt-auto mb-1 flex items-baseline gap-1 sm:mb-2 sm:gap-2">
+          <span className="font-bold text-[var(--color-orange)] text-base sm:text-2xl">
             ₾{(product.current_price ?? 0).toFixed(2)}
           </span>
-          <span className="text-[var(--color-dark-green)] text-sm line-through opacity-60">
+          <span className="text-[10px] text-[var(--color-dark-green)] line-through opacity-60 sm:text-sm">
             ₾{(product.original_price ?? 0).toFixed(2)}
           </span>
         </div>
 
         {/* Discount Badge */}
-        <div className="mb-3">
-          <span className="rounded-full bg-[var(--color-orange)] px-3 py-1 font-bold text-white text-xs">
+        <div className="mb-2 sm:mb-3">
+          <span className="rounded-full bg-[var(--color-orange)] px-2 py-0.5 font-bold text-[10px] text-white sm:px-3 sm:py-1 sm:text-xs">
             {product.discount_percent ?? 0}% OFF
           </span>
         </div>
 
         {/* Quantity Controls & Cart */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1 sm:gap-2">
           {/* Quantity Selector */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5 sm:gap-1">
             <Button
               onClick={decrementQuantity}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 sm:h-8 sm:w-8"
             >
-              <Minus size={14} />
+              <Minus size={12} className="sm:h-3.5 sm:w-3.5" />
             </Button>
-            <span className="min-w-[1.5rem] text-center font-bold text-[var(--color-dark-green)] text-lg">
+            <span className="min-w-[1.25rem] text-center font-bold text-[var(--color-dark-green)] text-sm sm:min-w-[1.5rem] sm:text-lg">
               {quantity}
             </span>
             <Button
               onClick={incrementQuantity}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95"
+              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 sm:h-8 sm:w-8"
             >
-              <Plus size={14} />
+              <Plus size={12} className="sm:h-3.5 sm:w-3.5" />
             </Button>
           </div>
 
@@ -422,7 +422,7 @@ function ProductCard({ product }: { product: Product }) {
           <Button
             onClick={handleAddToCart}
             disabled={isPending}
-            className="flex-1 whitespace-nowrap rounded-full bg-[var(--color-yellow)] px-3 py-2 font-semibold text-[var(--color-dark-green)] text-sm shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
+            className="flex-1 whitespace-nowrap rounded-full bg-[var(--color-yellow)] px-2 py-1.5 font-semibold text-[var(--color-dark-green)] text-xs shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50 sm:px-3 sm:py-2 sm:text-sm"
           >
             Add to cart
           </Button>
