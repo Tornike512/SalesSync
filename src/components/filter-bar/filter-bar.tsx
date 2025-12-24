@@ -295,7 +295,7 @@ export function FilterBar({
                   : "pointer-events-none scale-95 opacity-0"
               }`}
             >
-              <div className="max-h-64 overflow-y-auto">
+              <div>
                 <Button
                   onClick={() => {
                     onStoreChange(null);
