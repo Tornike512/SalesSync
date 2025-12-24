@@ -14,10 +14,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn("h-full")}>
+    <html lang="en" className={cn("min-h-full")}>
       <body
         className={cn(
-          "h-full bg-background-100 font-roboto text-foreground-100",
+          "min-h-full bg-background-100 font-roboto text-foreground-100",
         )}
       >
         <AppProviders>{children}</AppProviders>

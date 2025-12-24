@@ -204,7 +204,7 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="sidebar-scroll relative z-10 hidden w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)] md:block">
+      <aside className="sidebar-scroll sticky top-0 z-10 hidden h-dvh w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)] md:block">
         <div className="p-6">{sidebarContent}</div>
       </aside>
 
