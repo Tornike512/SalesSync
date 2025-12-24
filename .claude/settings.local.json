@@ -9,7 +9,8 @@
       "Bash(npm run build:*)",
       "Bash(findstr:*)",
       "Bash(pnpm lint:fix:*)",
-      "Bash(test:*)"
+      "Bash(test:*)",
+      "Bash(npm run lint:fix:*)"
     ]
   }
 }

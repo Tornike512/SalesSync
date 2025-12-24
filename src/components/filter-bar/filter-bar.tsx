@@ -121,19 +121,15 @@ export function FilterBar({
   const { open } = useMobileSidebar();
   const { status, signOut } = useSession();
   const { data: cart } = useGetCart();
-  const {
-    selectedCategory,
-    selectedSubcategory,
-    setSelectedCategory,
-    setSelectedSubcategory,
-  } = useCategoryFilter();
+  const { selectedCategory, selectedSubcategory, setSelectedCategory } =
+    useCategoryFilter();
   const [isStoreDropdownOpen, setIsStoreDropdownOpen] = useState(false);
 
   const cartItemCount = cart?.total_items ?? 0;
 
   const handleClearCategoryFilter = () => {
+    // Only call setSelectedCategory - it already clears subcategory and updates URL
     setSelectedCategory(null);
-    setSelectedSubcategory(null);
   };
 
   const hasActiveCategoryFilter = selectedCategory !== null;
@@ -301,7 +297,9 @@ export function FilterBar({
             </Button>
 
             {/* Backdrop to close dropdown */}
-            <div
+            <button
+              type="button"
+              aria-label="Close store dropdown"
               className={`fixed inset-0 z-40 transition-opacity duration-200 ${
                 isStoreDropdownOpen
                   ? "opacity-100"

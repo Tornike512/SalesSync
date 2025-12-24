@@ -7,6 +7,7 @@ import {
   Suspense,
   useContext,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -32,6 +33,9 @@ function CategoryFilterProviderInner({ children }: { children: ReactNode }) {
     searchParams.get("subcategory"),
   );
 
+  // Track if we're doing a programmatic update to prevent useEffect from overwriting
+  const isProgrammaticUpdate = useRef(false);
+
   // Function to update URL params
   const updateURLParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -44,7 +48,9 @@ function CategoryFilterProviderInner({ children }: { children: ReactNode }) {
       }
     }
 
-    router.replace(`?${params.toString()}`, { scroll: false });
+    isProgrammaticUpdate.current = true;
+    const queryString = params.toString();
+    router.replace(queryString ? `?${queryString}` : "/", { scroll: false });
   };
 
   const handleSetSelectedCategory = (category: string | null) => {
@@ -60,6 +66,12 @@ function CategoryFilterProviderInner({ children }: { children: ReactNode }) {
 
   // Sync state with URL params when they change externally (e.g., browser back/forward)
   useEffect(() => {
+    // Skip if this is a programmatic update (we already set the state)
+    if (isProgrammaticUpdate.current) {
+      isProgrammaticUpdate.current = false;
+      return;
+    }
+
     const category = searchParams.get("category");
     const subcategory = searchParams.get("subcategory");
 

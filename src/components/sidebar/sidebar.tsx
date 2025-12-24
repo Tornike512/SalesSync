@@ -51,8 +51,8 @@ export function Sidebar() {
   };
 
   const handleClearFilter = () => {
+    // Only call setSelectedCategory - it already clears subcategory and updates URL
     setSelectedCategory(null);
-    setSelectedSubcategory(null);
     setExpandedCategories(new Set());
   };
 
