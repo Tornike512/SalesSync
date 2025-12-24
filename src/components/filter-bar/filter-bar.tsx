@@ -242,7 +242,7 @@ export function FilterBar({
           )}
         </div>
 
-        <div className="mb-2 flex items-center justify-between gap-1.5 sm:gap-2">
+        <div className="flex items-center justify-between gap-1.5 sm:mb-2 sm:gap-2">
           {/* Mobile Store Dropdown - on left for mobile */}
           <div className="relative sm:hidden">
             <Button
