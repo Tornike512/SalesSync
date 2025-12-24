@@ -1,3 +1,7 @@
+## 1.19.0 (2025-12-24)
+
+* feat: sort categories hierarchy alphabetically in getCategoriesHierarchy function ([144ba03](https://github.com/Tornike512/SalesSync/commit/144ba03))
+
 ## 1.18.0 (2025-12-22)
 
 * chore(release): bump version to 1.17.0 and update changelog ([742cd9f](https://github.com/Tornike512/SalesSync/commit/742cd9f))
