@@ -181,7 +181,7 @@ export function Products() {
 
     setSelectedStore(store);
     setSelectedSort(sort || "discount_percent_desc");
-  }, [searchParams.get]); // Use toString() to avoid multiple triggers
+  }, [searchParams]);
 
   const debouncedSearch = useDebounce(searchQuery, 300);
 
@@ -473,31 +473,35 @@ function SortDropdown({
         />
       </Button>
 
-      {isOpen && (
-        <div className="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-lg border-2 border-[var(--color-dark-green)] bg-white shadow-lg">
-          {sortOptions.map((option) => {
-            const Icon = option.icon;
-            const isSelected = option.value === selectedSort;
-            return (
-              <Button
-                key={option.value}
-                onClick={() => {
-                  onSortChange(option.value);
-                  setIsOpen(false);
-                }}
-                className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors ${
-                  isSelected
-                    ? "bg-[var(--color-sage)] font-semibold text-[var(--color-dark-green)]"
-                    : "text-[var(--color-dark-green)] hover:bg-[var(--color-cream)]"
-                }`}
-              >
-                <Icon size={18} />
-                <span>{option.label}</span>
-              </Button>
-            );
-          })}
-        </div>
-      )}
+      <div
+        className={`absolute right-0 z-50 mt-2 w-56 origin-top-right overflow-hidden rounded-lg border-2 border-[var(--color-dark-green)] bg-white shadow-lg transition-all duration-200 ${
+          isOpen
+            ? "scale-100 opacity-100"
+            : "pointer-events-none scale-95 opacity-0"
+        }`}
+      >
+        {sortOptions.map((option) => {
+          const Icon = option.icon;
+          const isSelected = option.value === selectedSort;
+          return (
+            <Button
+              key={option.value}
+              onClick={() => {
+                onSortChange(option.value);
+                setIsOpen(false);
+              }}
+              className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors ${
+                isSelected
+                  ? "bg-[var(--color-sage)] font-semibold text-[var(--color-dark-green)]"
+                  : "text-[var(--color-dark-green)] hover:bg-[var(--color-cream)]"
+              }`}
+            >
+              <Icon size={18} />
+              <span>{option.label}</span>
+            </Button>
+          );
+        })}
+      </div>
     </div>
   );
 }

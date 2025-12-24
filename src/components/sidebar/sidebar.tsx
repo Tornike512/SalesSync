@@ -2,7 +2,7 @@
 
 import { ChevronDown, ChevronRight, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GithubIcon } from "@/assets/github-icon";
 import { SaleSyncIcon } from "@/assets/salesync-icon";
 import { getCategoryIcon } from "@/config/categories";
@@ -56,7 +56,23 @@ export function Sidebar() {
     setExpandedCategories(new Set());
   };
 
-  const hasActiveFilter = selectedCategory !== null;
+  const hasActiveFilter =
+    selectedCategory !== null || selectedSubcategory !== null;
+
+  // Expand the parent category when subcategory is loaded from URL
+  useEffect(() => {
+    if (selectedSubcategory && categories) {
+      // Find which category contains this subcategory
+      for (const [category, subcategories] of Object.entries(categories)) {
+        if (subcategories.includes(selectedSubcategory)) {
+          setExpandedCategories(new Set([category]));
+          break;
+        }
+      }
+    } else if (selectedCategory) {
+      setExpandedCategories(new Set([selectedCategory]));
+    }
+  }, [selectedCategory, selectedSubcategory, categories]);
 
   const sidebarContent = (
     <>
@@ -165,7 +181,6 @@ export function Sidebar() {
                       <div className="mt-1 ml-6 space-y-1 border-foreground-200 border-l pl-4">
                         {subcategories.map((subcategory) => {
                           const isSubcategoryActive =
-                            isCategoryActive &&
                             selectedSubcategory === subcategory;
 
                           return (

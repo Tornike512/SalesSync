@@ -132,7 +132,8 @@ export function FilterBar({
     setSelectedCategory(null);
   };
 
-  const hasActiveCategoryFilter = selectedCategory !== null;
+  const hasActiveCategoryFilter =
+    selectedCategory !== null || selectedSubcategory !== null;
 
   return (
     <div className="z-30 shrink-0 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-2 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] sm:p-4">
@@ -196,11 +197,11 @@ export function FilterBar({
             )}
           </div>
 
-          {/* Cart Icon - only for authenticated users */}
+          {/* Cart Icon - only for authenticated users, hidden on mobile */}
           {status === "authenticated" && (
             <Link
               href="/cart"
-              className="relative flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:w-10"
+              className="relative hidden h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:flex sm:h-10 sm:w-10"
             >
               <ShoppingCart size={18} className="sm:h-5 sm:w-5" />
               {cartItemCount > 0 && (
@@ -211,11 +212,11 @@ export function FilterBar({
             </Link>
           )}
 
-          {/* History Icon - only for authenticated users */}
+          {/* History Icon - only for authenticated users, hidden on mobile */}
           {status === "authenticated" && (
             <Link
               href="/history"
-              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:w-10"
+              className="hidden h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:flex sm:h-10 sm:w-10"
               aria-label="View History"
             >
               <Clock size={18} className="sm:h-5 sm:w-5" />
@@ -242,8 +243,10 @@ export function FilterBar({
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-1.5 sm:mb-2 sm:gap-2">
-          {/* Mobile Store Dropdown - on left for mobile */}
+        <div
+          className={`flex items-center justify-between gap-1.5 sm:mb-2 sm:gap-2 ${hasActiveCategoryFilter && status !== "authenticated" ? "" : ""}`}
+        >
+          {/* Mobile Store Dropdown */}
           <div className="relative sm:hidden">
             <Button
               onClick={() => setIsStoreDropdownOpen(!isStoreDropdownOpen)}
@@ -334,28 +337,55 @@ export function FilterBar({
             </div>
           </div>
 
-          {/* Filter by Store text and category badge - on right for mobile, only shown when category is selected */}
-          {hasActiveCategoryFilter ? (
-            <div className="flex items-center gap-2 sm:hidden">
-              <h2 className="font-semibold text-[var(--color-dark-green)] text-xs">
-                Filter by
-              </h2>
-              <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs">
-                <span className="max-w-24 truncate">
-                  {selectedSubcategory || selectedCategory}
+          {/* Right side content for mobile */}
+          <div className="flex items-center gap-2 sm:hidden">
+            {/* Filter by Store text and category badge - only shown when category is selected AND user is NOT authenticated */}
+            {hasActiveCategoryFilter && status !== "authenticated" && (
+              <>
+                <h2 className="font-semibold text-[var(--color-dark-green)] text-xs">
+                  Filter by
+                </h2>
+                <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs">
+                  <span className="max-w-20 truncate">
+                    {selectedSubcategory || selectedCategory}
+                  </span>
+                  <Button
+                    onClick={handleClearCategoryFilter}
+                    className="flex items-center justify-center transition-all hover:opacity-70 active:scale-95"
+                    aria-label="Clear category filter"
+                  >
+                    <X size={12} />
+                  </Button>
                 </span>
-                <Button
-                  onClick={handleClearCategoryFilter}
-                  className="flex items-center justify-center transition-all hover:opacity-70 active:scale-95"
-                  aria-label="Clear category filter"
-                >
-                  <X size={12} />
-                </Button>
-              </span>
-            </div>
-          ) : (
-            <div className="sm:hidden" />
-          )}
+              </>
+            )}
+
+            {/* Mobile Cart Icon */}
+            {status === "authenticated" && (
+              <Link
+                href="/cart"
+                className="relative flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95"
+              >
+                <ShoppingCart size={16} />
+                {cartItemCount > 0 && (
+                  <span className="-top-1.5 -right-1.5 absolute flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-orange)] px-0.5 font-bold text-[10px] text-white">
+                    {cartItemCount > 99 ? "99+" : cartItemCount}
+                  </span>
+                )}
+              </Link>
+            )}
+
+            {/* Mobile History Icon */}
+            {status === "authenticated" && (
+              <Link
+                href="/history"
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95"
+                aria-label="View History"
+              >
+                <Clock size={16} />
+              </Link>
+            )}
+          </div>
 
           <div className="hidden rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center sm:block">
             <p className="text-[var(--color-dark-green)] text-xs">
@@ -363,6 +393,27 @@ export function FilterBar({
             </p>
           </div>
         </div>
+
+        {/* Mobile: Category filter on separate line when authenticated */}
+        {hasActiveCategoryFilter && status === "authenticated" && (
+          <div className="mt-2 flex items-center gap-2 sm:hidden">
+            <h2 className="font-semibold text-[var(--color-dark-green)] text-xs">
+              Filter by
+            </h2>
+            <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs">
+              <span className="max-w-32 truncate">
+                {selectedSubcategory || selectedCategory}
+              </span>
+              <Button
+                onClick={handleClearCategoryFilter}
+                className="flex items-center justify-center transition-all hover:opacity-70 active:scale-95"
+                aria-label="Clear category filter"
+              >
+                <X size={12} />
+              </Button>
+            </span>
+          </div>
+        )}
         {/* Store Filter Buttons - hidden on mobile, use dropdown instead */}
         <div className="hidden flex-wrap gap-2 sm:flex">
           {/* All Stores Button */}
