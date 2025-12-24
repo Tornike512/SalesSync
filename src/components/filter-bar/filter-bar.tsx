@@ -185,27 +185,31 @@ export function FilterBar({
             {isMobileSearchOpen ? <X size={18} /> : <Search size={18} />}
           </Button>
 
-          {/* Cart Icon */}
-          <Link
-            href="/cart"
-            className="relative flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:w-10"
-          >
-            <ShoppingCart size={18} className="sm:h-5 sm:w-5" />
-            {cartItemCount > 0 && (
-              <span className="-top-2 -right-2 absolute flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-orange)] px-1 font-bold text-white text-xs">
-                {cartItemCount > 99 ? "99+" : cartItemCount}
-              </span>
-            )}
-          </Link>
+          {/* Cart Icon - only for authenticated users */}
+          {status === "authenticated" && (
+            <Link
+              href="/cart"
+              className="relative flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:w-10"
+            >
+              <ShoppingCart size={18} className="sm:h-5 sm:w-5" />
+              {cartItemCount > 0 && (
+                <span className="-top-2 -right-2 absolute flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-orange)] px-1 font-bold text-white text-xs">
+                  {cartItemCount > 99 ? "99+" : cartItemCount}
+                </span>
+              )}
+            </Link>
+          )}
 
-          {/* History Icon */}
-          <Link
-            href="/history"
-            className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:w-10"
-            aria-label="View History"
-          >
-            <Clock size={18} className="sm:h-5 sm:w-5" />
-          </Link>
+          {/* History Icon - only for authenticated users */}
+          {status === "authenticated" && (
+            <Link
+              href="/history"
+              className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 sm:h-10 sm:w-10"
+              aria-label="View History"
+            >
+              <Clock size={18} className="sm:h-5 sm:w-5" />
+            </Link>
+          )}
 
           {status === "unauthenticated" && (
             <Link
