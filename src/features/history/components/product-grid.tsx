@@ -56,6 +56,7 @@ export function ProductGrid({
                 src={item.product_image_url}
                 alt={item.product_name}
                 fill
+                unoptimized
                 className={`object-cover transition-transform group-hover:scale-105 ${
                   !item.is_available ? "grayscale" : ""
                 }`}
