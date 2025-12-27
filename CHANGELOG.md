@@ -1,3 +1,7 @@
+## <small>1.20.3 (2025-12-27)</small>
+
+* fix: update responsive styles for various components to improve layout on larger screens ([43d9754](https://github.com/Tornike512/SalesSync/commit/43d9754))
+
 ## <small>1.20.2 (2025-12-25)</small>
 
 * fix: add unoptimized attribute to image components for performance improvement ([a7618bf](https://github.com/Tornike512/SalesSync/commit/a7618bf))
