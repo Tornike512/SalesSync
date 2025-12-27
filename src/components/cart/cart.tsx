@@ -59,7 +59,6 @@ function getStoreLogo(storeName: string): StaticImageData | null {
   const name = storeName.toLowerCase();
   if (storeLogos[name]) return storeLogos[name];
 
-  // Remove spaces and special characters for matching (e.g., "Ori Nabiji" -> "orinabiji")
   const normalizedName = name.replace(/[\s-]/g, "");
   if (storeLogos[normalizedName]) return storeLogos[normalizedName];
 
@@ -80,7 +79,6 @@ function groupItemsByStore(items: CartItem[]): GroupedItems {
   }, {} as GroupedItems);
 }
 
-// Context to track pending debounced updates
 interface PendingUpdatesContextValue {
   readonly pendingCount: number;
   readonly registerPending: () => void;
@@ -104,7 +102,6 @@ export function Cart() {
   const { mutate: addToHistory, isPending: isAddingToHistory } =
     useAddHistory();
 
-  // State for tracking pending debounced updates
   const [pendingCount, setPendingCount] = useState(0);
 
   const registerPending = useCallback((): void => {
@@ -128,27 +125,25 @@ export function Cart() {
 
   if (status === "loading" || isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--color-cream)]">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
+      <div className="flex min-h-screen items-center justify-center bg-[var(--background-100)]">
+        <div className="h-10 w-10 animate-spin rounded-full border-3 border-[var(--background-300)] border-t-[var(--accent-primary)]" />
       </div>
     );
   }
 
   if (status === "unauthenticated") {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-[var(--color-cream)]">
-        <ShoppingBag
-          size={64}
-          className="text-[var(--color-dark-green)] opacity-30"
-        />
-        <h1 className="font-bold text-2xl text-[var(--color-dark-green)]">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-[var(--background-100)] p-4">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--background-200)]">
+          <ShoppingBag size={40} className="text-[var(--foreground-300)]" />
+        </div>
+        <h1 className="font-bold font-display text-2xl text-[var(--foreground-100)]">
           Sign in to view your cart
         </h1>
-        <Link
-          href="/sign-in"
-          className="rounded-full bg-[var(--color-yellow)] px-6 py-3 font-semibold text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-yellow)]/80"
-        >
-          Sign In
+        <Link href="/sign-in">
+          <Button variant="primary" size="lg" className="rounded-full px-8">
+            Sign In
+          </Button>
         </Link>
       </div>
     );
@@ -156,23 +151,23 @@ export function Cart() {
 
   if (!cart || cart.items.length === 0) {
     return (
-      <div className="min-h-screen bg-[var(--color-cream)]">
+      <div className="min-h-screen bg-[var(--background-100)]">
         <div className="mx-auto max-w-7xl p-4 lg:p-6">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <Link
                 href="/"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-white text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-cream)] active:scale-95"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--foreground-200)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
               >
                 <ArrowLeft size={20} />
               </Link>
-              <h1 className="font-bold text-2xl text-[var(--color-dark-green)] lg:text-3xl">
+              <h1 className="font-bold font-display text-2xl text-[var(--foreground-100)] lg:text-3xl">
                 Shopping Cart
               </h1>
             </div>
             <Link
               href="/history"
-              className="flex shrink-0 items-center gap-2 rounded-full border-2 border-[var(--color-dark-green)] bg-white px-4 py-2 font-semibold text-[var(--color-dark-green)] text-sm transition-all hover:bg-[var(--color-cream)] active:scale-95"
+              className="flex shrink-0 items-center gap-2 rounded-xl bg-[var(--background-200)] px-4 py-2.5 font-medium text-[var(--foreground-100)] text-sm transition-all hover:bg-[var(--background-300)]"
             >
               <Clock size={16} />
               <span className="hidden lg:inline">View History</span>
@@ -182,67 +177,82 @@ export function Cart() {
 
           <div className="flex flex-col gap-6 lg:flex-row">
             {/* Left side - Empty state */}
-            <div className="flex flex-1 flex-col items-center justify-center gap-4 rounded-xl border-2 border-[var(--color-dark-green)] border-dashed bg-white p-6 text-center lg:p-12">
-              <ShoppingBag
-                size={64}
-                className="text-[var(--color-dark-green)] opacity-30"
-              />
-              <h2 className="font-bold text-2xl text-[var(--color-dark-green)]">
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 rounded-xl border border-[var(--background-300)] border-dashed bg-white p-8 text-center lg:p-16">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[var(--background-200)]">
+                <ShoppingBag
+                  size={40}
+                  className="text-[var(--foreground-300)]"
+                />
+              </div>
+              <h2 className="font-display font-semibold text-[var(--foreground-100)] text-xl">
                 Your cart is empty
               </h2>
-              <p className="text-[var(--color-dark-green)] opacity-60">
+              <p className="text-[var(--foreground-200)] text-sm">
                 Start shopping to add items to your cart
               </p>
-              <Link
-                href="/"
-                className="rounded-full bg-[var(--color-yellow)] px-6 py-3 font-semibold text-[var(--color-dark-green)] shadow-md transition-all hover:bg-[var(--color-yellow)]/80"
-              >
-                Browse Products
+              <Link href="/">
+                <Button
+                  variant="primary"
+                  size="md"
+                  className="rounded-full px-6"
+                >
+                  Browse Products
+                </Button>
               </Link>
             </div>
 
             {/* Right side - Order summary with zero values */}
             <div className="lg:w-80">
-              <div className="sticky top-6 rounded-xl border-2 border-[var(--color-dark-green)] bg-white p-6 shadow-lg">
-                <h2 className="mb-4 font-bold text-[var(--color-dark-green)] text-lg">
+              <div className="sticky top-6 rounded-xl border border-[var(--background-300)] bg-white p-6 shadow-[var(--shadow-sm)]">
+                <h2 className="mb-4 font-display font-semibold text-[var(--foreground-100)] text-lg">
                   Order Summary
                 </h2>
 
-                <div className="space-y-3">
-                  <div className="flex justify-between text-[var(--color-dark-green)]">
-                    <span className="opacity-70">Original Price</span>
-                    <span className="line-through opacity-50">₾0.00</span>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-[var(--foreground-200)]">
+                      Original Price
+                    </span>
+                    <span className="text-[var(--foreground-300)] line-through">
+                      ₾0.00
+                    </span>
                   </div>
 
-                  <div className="flex justify-between text-[var(--color-dark-green)]">
-                    <span className="opacity-70">Sale Price</span>
-                    <span className="font-semibold">₾0.00</span>
+                  <div className="flex justify-between">
+                    <span className="text-[var(--foreground-200)]">
+                      Sale Price
+                    </span>
+                    <span className="font-medium text-[var(--foreground-100)]">
+                      ₾0.00
+                    </span>
                   </div>
 
-                  <div className="border-[var(--color-sage)] border-t pt-3">
-                    <div className="flex justify-between text-[var(--color-dark-green)]">
-                      <span className="font-semibold">You Save</span>
-                      <span className="font-bold text-[var(--color-orange)]">
+                  <div className="border-[var(--background-300)] border-t pt-3">
+                    <div className="flex justify-between">
+                      <span className="font-medium text-[var(--foreground-100)]">
+                        You Save
+                      </span>
+                      <span className="font-semibold text-[var(--accent-sage)]">
                         ₾0.00
                       </span>
                     </div>
                     <div className="mt-1 text-right">
-                      <span className="rounded-full bg-[var(--color-orange)] px-2 py-0.5 font-bold text-white text-xs">
+                      <span className="rounded-full bg-[var(--accent-coral-soft)] px-2 py-0.5 font-semibold text-[var(--accent-coral)] text-xs">
                         0% OFF
                       </span>
                     </div>
                   </div>
 
-                  <div className="border-[var(--color-dark-green)] border-t-2 pt-4">
+                  <div className="border-[var(--background-300)] border-t pt-4">
                     <div className="flex justify-between">
-                      <span className="font-bold text-[var(--color-dark-green)] text-lg">
+                      <span className="font-semibold text-[var(--foreground-100)]">
                         Total
                       </span>
-                      <span className="font-bold text-[var(--color-orange)] text-xl">
+                      <span className="font-bold font-display text-[var(--foreground-100)] text-xl">
                         ₾0.00
                       </span>
                     </div>
-                    <p className="mt-1 text-[var(--color-dark-green)] text-xs opacity-50">
+                    <p className="mt-1 text-[var(--foreground-300)] text-xs">
                       0 items
                     </p>
                   </div>
@@ -250,11 +260,12 @@ export function Cart() {
 
                 <Button
                   disabled
-                  className="mt-6 w-full rounded-full bg-[var(--color-yellow)] py-3 font-bold text-[var(--color-dark-green)] shadow-md transition-all disabled:cursor-not-allowed disabled:opacity-50"
+                  variant="primary"
+                  className="mt-6 w-full rounded-xl py-3"
                 >
                   Add to History
                 </Button>
-                <p className="mt-2 text-center text-[var(--color-dark-green)] text-xs opacity-60">
+                <p className="mt-2 text-center text-[var(--foreground-300)] text-xs">
                   Adding to history will clear your cart
                 </p>
               </div>
@@ -315,24 +326,24 @@ export function Cart() {
       : 0;
 
   return (
-    <div className="min-h-screen bg-[var(--color-cream)]">
+    <div className="min-h-screen bg-[var(--background-100)]">
       <div className="mx-auto max-w-7xl p-4 lg:p-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-white text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-cream)] active:scale-95"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--foreground-200)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
             >
               <ArrowLeft size={20} />
             </Link>
-            <h1 className="font-bold text-2xl text-[var(--color-dark-green)] lg:text-3xl">
+            <h1 className="font-bold font-display text-2xl text-[var(--foreground-100)] lg:text-3xl">
               Shopping Cart
             </h1>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
             <Link
               href="/history"
-              className="flex items-center gap-2 rounded-full border-2 border-[var(--color-dark-green)] bg-white px-4 py-2 font-semibold text-[var(--color-dark-green)] text-sm transition-all hover:bg-[var(--color-cream)] active:scale-95"
+              className="flex items-center gap-2 rounded-xl bg-[var(--background-200)] px-4 py-2.5 font-medium text-[var(--foreground-100)] text-sm transition-all hover:bg-[var(--background-300)]"
             >
               <Clock size={16} />
               <span className="hidden lg:inline">View History</span>
@@ -341,7 +352,9 @@ export function Cart() {
             <Button
               onClick={handleClearCart}
               disabled={isClearingCart}
-              className="flex items-center gap-2 rounded-full border-2 border-red-500 bg-white px-4 py-2 font-semibold text-red-500 text-sm transition-all hover:bg-red-50 active:scale-95 disabled:opacity-50"
+              variant="danger"
+              size="md"
+              className="rounded-xl"
             >
               <Trash2 size={16} />
               <span className="hidden lg:inline">Clear Cart</span>
@@ -354,13 +367,13 @@ export function Cart() {
           {/* Left side - Store groups */}
           <div className="flex-1 space-y-4">
             {unavailableCount > 0 && (
-              <div className="rounded-xl border-2 border-amber-500 bg-amber-50 p-4 shadow-md">
+              <div className="rounded-xl border border-amber-200 bg-amber-50 p-4">
                 <div className="flex items-start gap-3">
-                  <div className="rounded-full bg-amber-500 p-1.5 text-white">
+                  <div className="shrink-0 rounded-full bg-amber-500 p-1.5 text-white">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
+                      width="18"
+                      height="18"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -376,14 +389,13 @@ export function Cart() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-bold text-amber-900">
+                    <h3 className="font-semibold text-amber-900 text-sm">
                       {unavailableCount}{" "}
                       {unavailableCount === 1 ? "item" : "items"} no longer
                       available
                     </h3>
-                    <p className="mt-1 text-amber-800 text-sm">
-                      Some products in your cart are currently unavailable and
-                      cannot be purchased.
+                    <p className="mt-0.5 text-amber-700 text-sm">
+                      Some products in your cart are currently unavailable.
                     </p>
                   </div>
                 </div>
@@ -402,60 +414,66 @@ export function Cart() {
 
           {/* Right side - Order summary */}
           <div className="lg:w-80">
-            <div className="sticky top-6 rounded-xl border-2 border-[var(--color-dark-green)] bg-white p-6 shadow-lg">
+            <div className="sticky top-6 rounded-xl border border-[var(--background-300)] bg-white p-6 shadow-[var(--shadow-sm)]">
               <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-bold text-[var(--color-dark-green)] text-lg">
+                <h2 className="font-display font-semibold text-[var(--foreground-100)] text-lg">
                   Order Summary
                 </h2>
                 {hasPendingUpdates && (
                   <Loader2
-                    size={20}
-                    className="animate-spin text-[var(--color-dark-green)]"
+                    size={18}
+                    className="animate-spin text-[var(--accent-primary)]"
                   />
                 )}
               </div>
 
               <div
-                className={`space-y-3 transition-opacity ${hasPendingUpdates ? "opacity-50" : "opacity-100"}`}
+                className={`space-y-3 text-sm transition-opacity ${hasPendingUpdates ? "opacity-50" : "opacity-100"}`}
               >
-                <div className="flex justify-between text-[var(--color-dark-green)]">
-                  <span className="opacity-70">Original Price</span>
-                  <span className="line-through opacity-50">
+                <div className="flex justify-between">
+                  <span className="text-[var(--foreground-200)]">
+                    Original Price
+                  </span>
+                  <span className="text-[var(--foreground-300)] line-through">
                     ₾{totalOriginalPrice.toFixed(2)}
                   </span>
                 </div>
 
-                <div className="flex justify-between text-[var(--color-dark-green)]">
-                  <span className="opacity-70">Sale Price</span>
-                  <span className="font-semibold">
+                <div className="flex justify-between">
+                  <span className="text-[var(--foreground-200)]">
+                    Sale Price
+                  </span>
+                  <span className="font-medium text-[var(--foreground-100)]">
                     ₾{totalCurrentPrice.toFixed(2)}
                   </span>
                 </div>
 
-                <div className="border-[var(--color-sage)] border-t pt-3">
-                  <div className="flex justify-between text-[var(--color-dark-green)]">
-                    <span className="font-semibold">You Save</span>
-                    <span className="font-bold text-[var(--color-orange)]">
+                <div className="border-[var(--background-300)] border-t pt-3">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-[var(--foreground-100)]">
+                      You Save
+                    </span>
+                    <span className="font-semibold text-[var(--accent-sage)]">
                       ₾{totalSavings.toFixed(2)}
                     </span>
                   </div>
                   <div className="mt-1 text-right">
-                    <span className="rounded-full bg-[var(--color-orange)] px-2 py-0.5 font-bold text-white text-xs">
+                    <span className="rounded-full bg-[var(--accent-coral-soft)] px-2 py-0.5 font-semibold text-[var(--accent-coral)] text-xs">
                       {savingsPercent}% OFF
                     </span>
                   </div>
                 </div>
 
-                <div className="border-[var(--color-dark-green)] border-t-2 pt-4">
-                  <div className="flex justify-between">
-                    <span className="font-bold text-[var(--color-dark-green)] text-lg">
+                <div className="border-[var(--background-300)] border-t pt-4">
+                  <div className="flex items-baseline justify-between">
+                    <span className="font-semibold text-[var(--foreground-100)]">
                       Total
                     </span>
-                    <span className="font-bold text-[var(--color-orange)] text-xl">
+                    <span className="font-bold font-display text-[var(--foreground-100)] text-xl">
                       ₾{totalCurrentPrice.toFixed(2)}
                     </span>
                   </div>
-                  <p className="mt-1 text-[var(--color-dark-green)] text-xs opacity-50">
+                  <p className="mt-1 text-[var(--foreground-300)] text-xs">
                     {cart.total_items} item{cart.total_items !== 1 ? "s" : ""}
                   </p>
                 </div>
@@ -466,11 +484,12 @@ export function Cart() {
                 disabled={
                   isAddingToHistory || isClearingCart || hasPendingUpdates
                 }
-                className="mt-6 w-full rounded-full bg-[var(--color-yellow)] py-3 font-bold text-[var(--color-dark-green)] shadow-md transition-all disabled:cursor-not-allowed disabled:opacity-50 [&:not(:disabled)]:hover:bg-[var(--color-yellow)]/80 [&:not(:disabled)]:active:scale-95"
+                variant="primary"
+                className="mt-6 w-full rounded-xl py-3"
               >
                 {isAddingToHistory ? "Adding..." : "Add to History"}
               </Button>
-              <p className="mt-2 text-center text-[var(--color-dark-green)] text-xs opacity-60">
+              <p className="mt-2 text-center text-[var(--foreground-300)] text-xs">
                 Adding to history will clear your cart
               </p>
             </div>
@@ -494,37 +513,37 @@ function StoreGroup({
   const displayName = storeName.split(" ")[0];
 
   return (
-    <div className="overflow-hidden rounded-xl border-2 border-[var(--color-dark-green)] bg-white shadow-md">
+    <div className="overflow-hidden rounded-xl border border-[var(--background-300)] bg-white shadow-[var(--shadow-sm)]">
       {/* Store header - clickable */}
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full cursor-pointer items-center justify-between p-4 transition-colors hover:bg-[var(--color-cream)]"
+        className="flex w-full cursor-pointer items-center justify-between p-4 transition-colors hover:bg-[var(--background-100)]"
       >
         <div className="flex items-center gap-3">
           {logo && (
-            <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white shadow-md">
+            <div className="relative h-10 w-10 overflow-hidden rounded-full bg-white shadow-[var(--shadow-sm)]">
               <Image
                 src={logo}
                 alt={storeName}
                 fill
-                className="object-contain"
+                className="object-contain p-0.5"
               />
             </div>
           )}
           <div className="text-left">
-            <h3 className="font-bold text-[var(--color-dark-green)] text-lg">
+            <h3 className="font-semibold text-[var(--foreground-100)]">
               {displayName}
             </h3>
-            <p className="text-[var(--color-dark-green)] text-sm opacity-60">
+            <p className="text-[var(--foreground-200)] text-sm">
               {itemCount} item{itemCount !== 1 ? "s" : ""}
             </p>
           </div>
         </div>
 
         <ChevronDown
-          size={24}
-          className={`text-[var(--color-dark-green)] transition-transform ${
+          size={20}
+          className={`text-[var(--foreground-300)] transition-transform ${
             isOpen ? "rotate-180" : ""
           }`}
         />
@@ -537,8 +556,8 @@ function StoreGroup({
         }`}
       >
         <div className="overflow-hidden">
-          <div className="border-[var(--color-sage)] border-t p-4">
-            <div className="space-y-4">
+          <div className="border-[var(--background-300)] border-t p-4">
+            <div className="space-y-3">
               {items.map((item) => (
                 <CartItemCard key={item.id} item={item} />
               ))}
@@ -561,14 +580,12 @@ function CartItemCard({ item }: { item: CartItem }) {
   const hasChangedRef = useRef(false);
   const isPendingRegisteredRef = useRef(false);
 
-  // Sync local quantity with server quantity when item.quantity changes from server
   useEffect(() => {
     if (!hasChangedRef.current) {
       setLocalQuantity(item.quantity);
     }
   }, [item.quantity]);
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (debounceTimeoutRef.current) {
@@ -582,7 +599,6 @@ function CartItemCard({ item }: { item: CartItem }) {
   }, [unregisterPending]);
 
   const handleDelete = (): void => {
-    // Unregister pending if we're deleting while a debounce is active
     if (isPendingRegisteredRef.current) {
       unregisterPending();
       isPendingRegisteredRef.current = false;
@@ -594,7 +610,6 @@ function CartItemCard({ item }: { item: CartItem }) {
     if (isUnavailable) return;
 
     if (newQuantity < 1) {
-      // If quantity goes below 1, delete the item immediately
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current);
         debounceTimeoutRef.current = null;
@@ -611,18 +626,15 @@ function CartItemCard({ item }: { item: CartItem }) {
     setLocalQuantity(newQuantity);
     hasChangedRef.current = true;
 
-    // Register pending on first change (if not already registered)
     if (!isPendingRegisteredRef.current) {
       registerPending();
       isPendingRegisteredRef.current = true;
     }
 
-    // Clear existing timeout
     if (debounceTimeoutRef.current) {
       clearTimeout(debounceTimeoutRef.current);
     }
 
-    // Set new timeout to send request after 1 second
     debounceTimeoutRef.current = setTimeout(() => {
       updateItem(
         { itemId: item.id, quantity: newQuantity },
@@ -652,7 +664,7 @@ function CartItemCard({ item }: { item: CartItem }) {
 
   return (
     <div
-      className={`flex gap-4 rounded-lg p-3 ${isUnavailable ? "bg-gray-100" : "bg-[var(--color-cream)]"}`}
+      className={`flex gap-4 rounded-xl p-3 ${isUnavailable ? "bg-[var(--background-200)]" : "bg-[var(--background-100)]"}`}
     >
       {/* Product Image */}
       <div
@@ -667,13 +679,13 @@ function CartItemCard({ item }: { item: CartItem }) {
             className="object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-[var(--color-dark-green)] text-xs opacity-50">
+          <div className="flex h-full w-full items-center justify-center text-[var(--foreground-300)] text-xs">
             No Image
           </div>
         )}
         {isUnavailable && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/40">
-            <span className="rounded bg-red-500 px-2 py-0.5 font-bold text-white text-xs">
+            <span className="rounded bg-[var(--accent-coral)] px-1.5 py-0.5 font-semibold text-[10px] text-white">
               UNAVAILABLE
             </span>
           </div>
@@ -684,61 +696,61 @@ function CartItemCard({ item }: { item: CartItem }) {
       <div className="flex flex-1 flex-col justify-between">
         <div>
           <h4
-            className={`line-clamp-2 font-semibold text-sm ${isUnavailable ? "text-gray-500 line-through" : "text-[var(--color-dark-green)]"}`}
+            className={`line-clamp-2 font-medium text-sm ${isUnavailable ? "text-[var(--foreground-300)] line-through" : "text-[var(--foreground-100)]"}`}
           >
             {item.product_name}
           </h4>
           {isUnavailable ? (
-            <div className="mt-1 flex items-center gap-1.5">
-              <span className="rounded-full bg-red-100 px-2 py-0.5 font-semibold text-red-700 text-xs">
+            <div className="mt-1">
+              <span className="rounded-full bg-[var(--accent-coral-soft)] px-2 py-0.5 text-[var(--accent-coral)] text-xs">
                 This item is no longer available
               </span>
             </div>
           ) : (
             <div className="mt-1 flex flex-wrap items-baseline gap-2">
-              <span className="font-bold text-[var(--color-orange)]">
+              <span className="font-bold font-display text-[var(--foreground-100)]">
                 ₾{item.current_price.toFixed(2)}
               </span>
-              <span className="text-[var(--color-dark-green)] text-xs line-through opacity-50">
+              <span className="text-[var(--foreground-300)] text-xs line-through">
                 ₾{item.original_price.toFixed(2)}
               </span>
-              <span className="rounded-full bg-[var(--color-orange)] px-1.5 py-0.5 font-bold text-white text-xs">
+              <span className="rounded-full bg-[var(--accent-coral-soft)] px-1.5 py-0.5 font-semibold text-[var(--accent-coral)] text-xs">
                 -{item.discount_percent}%
               </span>
             </div>
           )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-between">
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
           {/* Quantity Controls */}
           {isUnavailable ? (
-            <div className="flex items-center gap-2 opacity-50">
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-300">
-                <Minus size={14} className="text-gray-500" />
+            <div className="flex items-center gap-1 rounded-full bg-[var(--background-300)] p-0.5 opacity-50">
+              <div className="flex h-7 w-7 items-center justify-center">
+                <Minus size={14} className="text-[var(--foreground-300)]" />
               </div>
-              <span className="min-w-[1.5rem] text-center font-bold text-gray-500">
+              <span className="min-w-[1.5rem] text-center font-semibold text-[var(--foreground-300)] text-sm">
                 {localQuantity}
               </span>
-              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gray-300">
-                <Plus size={14} className="text-gray-500" />
+              <div className="flex h-7 w-7 items-center justify-center">
+                <Plus size={14} className="text-[var(--foreground-300)]" />
               </div>
             </div>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 rounded-full bg-[var(--background-200)] p-0.5">
               <Button
                 onClick={handleDecrement}
                 disabled={isPending}
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
+                className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--foreground-200)] transition-all hover:bg-white hover:text-[var(--foreground-100)] active:scale-95 disabled:opacity-50"
               >
                 <Minus size={14} />
               </Button>
-              <span className="min-w-[1.5rem] text-center font-bold text-[var(--color-dark-green)]">
+              <span className="min-w-[1.5rem] text-center font-semibold text-[var(--foreground-100)] text-sm">
                 {localQuantity}
               </span>
               <Button
                 onClick={handleIncrement}
                 disabled={isPending}
-                className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50"
+                className="flex h-7 w-7 items-center justify-center rounded-full text-[var(--foreground-200)] transition-all hover:bg-white hover:text-[var(--foreground-100)] active:scale-95 disabled:opacity-50"
               >
                 <Plus size={14} />
               </Button>
@@ -747,14 +759,14 @@ function CartItemCard({ item }: { item: CartItem }) {
 
           <div className="flex items-center gap-3">
             {!isUnavailable && (
-              <span className="font-bold text-[var(--color-dark-green)]">
+              <span className="font-bold font-display text-[var(--foreground-100)]">
                 ₾{item.subtotal.toFixed(2)}
               </span>
             )}
             <Button
               onClick={handleDelete}
               disabled={isPending}
-              className="rounded-full p-1.5 text-red-500 transition-colors hover:bg-red-100 disabled:opacity-50"
+              className="rounded-full p-2 text-[var(--accent-coral)] transition-colors hover:bg-[var(--accent-coral-soft)] disabled:opacity-50"
               title="Remove from cart"
             >
               <Trash2 size={16} />

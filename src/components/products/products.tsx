@@ -100,20 +100,16 @@ export function Products() {
   const { selectedCategory, selectedSubcategory, setSelectedCategory } =
     useCategoryFilter();
 
-  // Initialize state from URL params
   const [selectedStore, setSelectedStore] = useState<string | null>(
     searchParams.get("store"),
   );
   const [selectedSort, setSelectedSort] = useState<SortOption>(
     (searchParams.get("sort") as SortOption) || "discount_percent_desc",
   );
-  // Search query is not synced with URL
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Track previous category to detect category changes
   const prevCategoryRef = useRef<string | null>(null);
 
-  // Function to update URL params
   const updateURLParams = useCallback(
     (updates: Record<string, string | null>) => {
       const params = new URLSearchParams(searchParams.toString());
@@ -131,7 +127,6 @@ export function Products() {
     [searchParams, router],
   );
 
-  // Handle store change
   const handleStoreChange = useCallback(
     (store: string | null) => {
       setSelectedStore(store);
@@ -140,7 +135,6 @@ export function Products() {
     [updateURLParams],
   );
 
-  // Handle sort change
   const handleSortChange = useCallback(
     (sort: SortOption) => {
       setSelectedSort(sort);
@@ -149,7 +143,6 @@ export function Products() {
     [updateURLParams],
   );
 
-  // Handle search change (not synced to URL)
   const handleSearchChange = useCallback(
     (query: string) => {
       setSearchQuery(query);
@@ -160,12 +153,10 @@ export function Products() {
     [setSelectedCategory],
   );
 
-  // Clear search input when category changes
   useEffect(() => {
     const currentCategory = selectedCategory || selectedSubcategory;
     const prevCategory = prevCategoryRef.current;
 
-    // Only clear if category actually changed and there's a search query
     if (currentCategory !== prevCategory && currentCategory && searchQuery) {
       setSearchQuery("");
       updateURLParams({ search: null });
@@ -174,7 +165,6 @@ export function Products() {
     prevCategoryRef.current = currentCategory;
   }, [selectedCategory, selectedSubcategory, searchQuery, updateURLParams]);
 
-  // Sync state with URL params when they change externally (e.g., browser back/forward)
   useEffect(() => {
     const store = searchParams.get("store");
     const sort = searchParams.get("sort") as SortOption;
@@ -224,7 +214,7 @@ export function Products() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="flex h-[100svh] flex-col bg-[var(--color-cream)] lg:h-screen">
+    <div className="flex h-[100svh] flex-col bg-[var(--background-100)] lg:h-screen">
       <FilterBar
         selectedStore={selectedStore}
         onStoreChange={handleStoreChange}
@@ -234,15 +224,26 @@ export function Products() {
 
       {/* Product Grid - Scrollable */}
       <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-7xl p-2">
-          {error && <div className="text-red-500">Failed to load products</div>}
+        <div className="mx-auto max-w-7xl p-4 lg:p-6">
+          {error && (
+            <div className="rounded-lg bg-[var(--accent-coral-soft)] p-4 text-[var(--accent-coral)]">
+              Failed to load products
+            </div>
+          )}
 
           {!error && (
             <>
-              <div className="mb-4 flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-                <div className="text-[var(--color-dark-green)] text-sm">
-                  Showing {products.length} of {total} product
-                  {total !== 1 ? "s" : ""}
+              <div className="mb-4 flex flex-col gap-3 lg:mb-6 lg:flex-row lg:items-center lg:justify-between">
+                <div className="text-[var(--foreground-200)] text-sm">
+                  Showing{" "}
+                  <span className="font-medium text-[var(--foreground-100)]">
+                    {products.length}
+                  </span>{" "}
+                  of{" "}
+                  <span className="font-medium text-[var(--foreground-100)]">
+                    {total}
+                  </span>{" "}
+                  product{total !== 1 ? "s" : ""}
                 </div>
                 <SortDropdown
                   selectedSort={selectedSort}
@@ -252,12 +253,12 @@ export function Products() {
 
               <div className="relative min-h-[400px]">
                 {showCenterSpinner && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-[var(--color-cream)]/80">
-                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
+                  <div className="absolute inset-0 z-10 flex items-center justify-center bg-[var(--background-100)]/80 backdrop-blur-[1px]">
+                    <div className="h-10 w-10 animate-spin rounded-full border-3 border-[var(--background-300)] border-t-[var(--accent-primary)]" />
                   </div>
                 )}
 
-                <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
+                <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 lg:gap-6 xl:grid-cols-4">
                   {products.map((product, index) => (
                     <ProductCard
                       key={`${product.id}-${index}`}
@@ -270,7 +271,7 @@ export function Products() {
               {/* Infinite scroll loader */}
               <div ref={loaderRef} className="flex justify-center py-8">
                 {isFetchingNextPage && (
-                  <div className="h-8 w-8 animate-spin rounded-full border-4 border-[var(--color-sage)] border-t-[var(--color-yellow)]" />
+                  <div className="h-8 w-8 animate-spin rounded-full border-3 border-[var(--background-300)] border-t-[var(--accent-primary)]" />
                 )}
               </div>
             </>
@@ -296,11 +297,9 @@ function ProductCard({ product }: { product: Product }) {
     const name = storeName.toLowerCase();
     if (storeLogos[name]) return storeLogos[name];
 
-    // Remove spaces and special characters for matching (e.g., "Ori Nabiji" -> "orinabiji")
     const normalizedName = name.replace(/[\s-]/g, "");
     if (storeLogos[normalizedName]) return storeLogos[normalizedName];
 
-    // Handle cases like "Carrefour Vekua" -> "carrefour"
     const firstWord = name.split(" ")[0];
     return storeLogos[firstWord] ?? null;
   };
@@ -338,84 +337,84 @@ function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <div className="relative flex flex-col overflow-hidden rounded-lg bg-[var(--color-sage)] shadow-md transition-shadow hover:shadow-xl">
+    <div className="card-hover group relative flex flex-col overflow-hidden rounded-xl bg-white shadow-[var(--shadow-sm)]">
       {/* Store Logo Badge */}
       {storeLogo && (
-        <div className="absolute top-1.5 right-1.5 h-7 w-7 overflow-hidden rounded-full bg-white shadow-md lg:top-2 lg:right-3 lg:h-10 lg:w-10">
+        <div className="absolute top-2 right-2 z-10 h-8 w-8 overflow-hidden rounded-full bg-white shadow-[var(--shadow-md)] lg:top-3 lg:right-3 lg:h-10 lg:w-10">
           <Image
             src={storeLogo}
             alt="Store"
             fill
-            className="z-11 rounded-full object-contain shadow-md"
+            className="rounded-full object-contain p-0.5"
           />
         </div>
       )}
 
       {/* Cart Quantity Badge */}
       {cartQuantity > 0 && (
-        <div className="absolute top-1.5 left-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--color-orange)] font-bold text-[10px] text-white shadow-md lg:top-2 lg:left-3 lg:h-7 lg:w-7 lg:text-xs">
+        <div className="absolute top-2 left-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-primary)] font-semibold text-[10px] text-white shadow-[var(--shadow-sm)] lg:top-3 lg:left-3 lg:h-7 lg:w-7 lg:text-xs">
           {cartQuantity}
         </div>
       )}
 
       {/* Product Image */}
-      <div className="relative aspect-square overflow-hidden bg-white">
+      <div className="relative aspect-square overflow-hidden bg-[var(--background-100)]">
         {product.image_url !== null ? (
           <Image
             src={product.image_url}
             alt={product.name}
             fill
             unoptimized
-            className="object-cover"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-[var(--color-dark-green)] opacity-50">
+          <div className="flex h-full w-full items-center justify-center text-[var(--foreground-300)]">
             No Image
           </div>
         )}
       </div>
 
       {/* Product Info */}
-      <div className="flex flex-1 flex-col p-2 lg:p-4">
-        <h3 className="mb-1 line-clamp-2 font-semibold text-[var(--color-dark-green)] text-xs lg:mb-2 lg:text-base">
+      <div className="flex flex-1 flex-col p-3 lg:p-4">
+        <h3 className="mb-2 line-clamp-2 font-medium text-[var(--foreground-100)] text-xs lg:text-sm">
           {product.name}
         </h3>
 
         {/* Pricing */}
-        <div className="mt-auto mb-1 flex items-baseline gap-1 lg:mb-2 lg:gap-2">
-          <span className="font-bold text-[var(--color-orange)] text-base lg:text-2xl">
+        <div className="mt-auto mb-2 flex items-baseline gap-2 lg:mb-3">
+          <span className="font-bold font-display text-[var(--foreground-100)] text-lg lg:text-2xl">
             ₾{(product.current_price ?? 0).toFixed(2)}
           </span>
-          <span className="text-[10px] text-[var(--color-dark-green)] line-through opacity-60 lg:text-sm">
+          <span className="text-[11px] text-[var(--foreground-300)] line-through lg:text-sm">
             ₾{(product.original_price ?? 0).toFixed(2)}
           </span>
         </div>
 
         {/* Discount Badge */}
-        <div className="mb-2 lg:mb-3">
-          <span className="rounded-full bg-[var(--color-orange)] px-2 py-0.5 font-bold text-[10px] text-white lg:px-3 lg:py-1 lg:text-xs">
+        <div className="mb-3 lg:mb-4">
+          <span className="inline-flex items-center rounded-full bg-[var(--accent-coral-soft)] px-2 py-0.5 font-semibold text-[10px] text-[var(--accent-coral)] lg:px-2.5 lg:py-1 lg:text-xs">
             {product.discount_percent ?? 0}% OFF
           </span>
         </div>
 
         {/* Quantity Controls & Cart */}
-        <div className="flex flex-wrap items-center gap-1 lg:gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Quantity Selector */}
-          <div className="flex items-center gap-0.5 lg:gap-1">
+          <div className="flex items-center gap-1 rounded-full bg-[var(--background-200)] p-0.5">
             <Button
               onClick={decrementQuantity}
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 lg:h-8 lg:w-8"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[var(--foreground-200)] transition-all hover:bg-white hover:text-[var(--foreground-100)] active:scale-95 lg:h-8 lg:w-8"
             >
-              <Minus size={12} className="lg:h-3.5 lg:w-3.5" />
+              <Minus size={14} />
             </Button>
-            <span className="min-w-[1.25rem] text-center font-bold text-[var(--color-dark-green)] text-sm lg:min-w-[1.5rem] lg:text-lg">
+            <span className="min-w-[1.5rem] text-center font-semibold text-[var(--foreground-100)] text-sm lg:min-w-[2rem] lg:text-base">
               {quantity}
             </span>
             <Button
               onClick={incrementQuantity}
-              className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--color-yellow)] text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 lg:h-8 lg:w-8"
+              className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[var(--foreground-200)] transition-all hover:bg-white hover:text-[var(--foreground-100)] active:scale-95 lg:h-8 lg:w-8"
             >
-              <Plus size={12} className="lg:h-3.5 lg:w-3.5" />
+              <Plus size={14} />
             </Button>
           </div>
 
@@ -423,7 +422,8 @@ function ProductCard({ product }: { product: Product }) {
           <Button
             onClick={handleAddToCart}
             disabled={isPending}
-            className="flex-1 whitespace-nowrap rounded-full bg-[var(--color-yellow)] px-2 py-1.5 font-semibold text-[var(--color-dark-green)] text-xs shadow-md transition-all hover:bg-[var(--color-yellow)]/80 active:scale-95 disabled:opacity-50 lg:px-3 lg:py-2 lg:text-sm"
+            variant="primary"
+            className="flex-1 whitespace-nowrap rounded-full px-3 py-2 font-semibold text-xs lg:text-sm"
           >
             Add to cart
           </Button>
@@ -464,44 +464,53 @@ function SortDropdown({
     <div ref={dropdownRef} className="relative">
       <Button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 rounded-lg border-2 border-[var(--color-dark-green)] bg-white px-3 py-2 font-medium text-[var(--color-dark-green)] text-sm transition-colors hover:bg-[var(--color-sage)]"
+        className="flex items-center gap-2 rounded-xl border border-[var(--background-300)] bg-white px-4 py-2.5 text-[var(--foreground-100)] text-sm transition-all hover:border-[var(--foreground-300)] hover:shadow-[var(--shadow-sm)]"
       >
-        <SelectedIcon size={16} />
-        <span>{selectedOption?.label}</span>
+        <SelectedIcon size={16} className="text-[var(--foreground-200)]" />
+        <span className="font-medium">{selectedOption?.label}</span>
         <ChevronDown
           size={16}
-          className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
+          className={`text-[var(--foreground-300)] transition-transform ${isOpen ? "rotate-180" : ""}`}
         />
       </Button>
 
       <div
-        className={`absolute right-0 z-50 mt-2 w-56 origin-top-right overflow-hidden rounded-lg border-2 border-[var(--color-dark-green)] bg-white shadow-lg transition-all duration-200 ${
+        className={`absolute right-0 z-50 mt-2 w-56 origin-top-right overflow-hidden rounded-xl border border-[var(--background-300)] bg-white shadow-[var(--shadow-lg)] transition-all duration-200 ${
           isOpen
             ? "scale-100 opacity-100"
             : "pointer-events-none scale-95 opacity-0"
         }`}
       >
-        {sortOptions.map((option) => {
-          const Icon = option.icon;
-          const isSelected = option.value === selectedSort;
-          return (
-            <Button
-              key={option.value}
-              onClick={() => {
-                onSortChange(option.value);
-                setIsOpen(false);
-              }}
-              className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors ${
-                isSelected
-                  ? "bg-[var(--color-sage)] font-semibold text-[var(--color-dark-green)]"
-                  : "text-[var(--color-dark-green)] hover:bg-[var(--color-cream)]"
-              }`}
-            >
-              <Icon size={18} />
-              <span>{option.label}</span>
-            </Button>
-          );
-        })}
+        <div className="py-1">
+          {sortOptions.map((option) => {
+            const Icon = option.icon;
+            const isSelected = option.value === selectedSort;
+            return (
+              <Button
+                key={option.value}
+                onClick={() => {
+                  onSortChange(option.value);
+                  setIsOpen(false);
+                }}
+                className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-all ${
+                  isSelected
+                    ? "bg-[var(--accent-primary-soft)] font-medium text-[var(--accent-primary)]"
+                    : "text-[var(--foreground-100)] hover:bg-[var(--background-200)]"
+                }`}
+              >
+                <Icon
+                  size={18}
+                  className={
+                    isSelected
+                      ? "text-[var(--accent-primary)]"
+                      : "text-[var(--foreground-300)]"
+                  }
+                />
+                <span>{option.label}</span>
+              </Button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

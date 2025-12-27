@@ -35,7 +35,6 @@ interface Store {
   logo: StaticImageData;
 }
 
-// Partial match, case-insensitive filtering
 const stores: Store[] = [
   {
     id: "europroduct",
@@ -128,7 +127,6 @@ export function FilterBar({
   const cartItemCount = cart?.total_items ?? 0;
 
   const handleClearCategoryFilter = () => {
-    // Only call setSelectedCategory - it already clears subcategory and updates URL
     setSelectedCategory(null);
   };
 
@@ -136,23 +134,24 @@ export function FilterBar({
     selectedCategory !== null || selectedSubcategory !== null;
 
   return (
-    <div className="z-30 shrink-0 border-[var(--color-dark-green)] border-b-2 bg-[var(--color-yellow)] p-2 shadow-[4px_5px_12px_rgba(24,58,29,0.15)] lg:p-4">
+    <div className="z-30 shrink-0 border-[var(--background-300)] border-b bg-white p-3 shadow-[var(--shadow-sm)] lg:p-4">
       <div className="mx-auto max-w-7xl">
-        {/* Top row: Menu, Category Filter, Icons, Auth */}
-        <div className="relative mb-2 flex items-center gap-2 lg:mb-4 lg:gap-3">
+        {/* Top row: Menu, Search, Icons, Auth */}
+        <div className="relative mb-3 flex items-center gap-3 lg:mb-4">
           {/* Mobile Menu Button */}
           <Button
             onClick={open}
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 lg:hidden"
+            variant="ghost"
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--foreground-200)] hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)] lg:hidden"
             aria-label="Open categories menu"
           >
-            <Menu size={20} />
+            <Menu size={22} />
           </Button>
 
           {/* Search Input - shown on md+ */}
           <div className="relative hidden flex-1 lg:block">
             <Search
-              className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--color-dark-green)] opacity-60"
+              className="-translate-y-1/2 absolute top-1/2 left-4 text-[var(--foreground-300)]"
               size={18}
             />
             <input
@@ -160,12 +159,12 @@ export function FilterBar({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-10 pl-10 text-[var(--color-dark-green)] placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none lg:text-base"
+              className="w-full rounded-xl border border-[var(--background-300)] bg-[var(--background-100)] py-3 pr-10 pl-11 text-[var(--foreground-100)] placeholder-[var(--foreground-300)] transition-all focus:border-[var(--accent-primary)] focus:bg-white focus:shadow-[var(--shadow-sm)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary-soft)]"
             />
             {searchQuery && (
               <Button
                 onClick={() => onSearchChange("")}
-                className="-translate-y-1/2 absolute top-1/2 right-3 flex h-5 w-5 items-center justify-center rounded-full text-[var(--color-dark-green)] opacity-60 transition-all hover:bg-[var(--color-dark-green)]/10 hover:opacity-100 active:scale-95"
+                className="-translate-y-1/2 absolute top-1/2 right-3 flex h-6 w-6 items-center justify-center rounded-full text-[var(--foreground-300)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
                 aria-label="Clear search"
               >
                 <X size={16} />
@@ -176,7 +175,7 @@ export function FilterBar({
           {/* Mobile Search Input */}
           <div className="relative flex-1 lg:hidden">
             <Search
-              className="-translate-y-1/2 absolute top-1/2 left-2.5 text-[var(--color-dark-green)] opacity-60"
+              className="-translate-y-1/2 absolute top-1/2 left-3 text-[var(--foreground-300)]"
               size={16}
             />
             <input
@@ -184,12 +183,12 @@ export function FilterBar({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2 pr-8 pl-8 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
+              className="w-full rounded-xl border border-[var(--background-300)] bg-[var(--background-100)] py-2.5 pr-8 pl-9 text-[var(--foreground-100)] text-sm placeholder-[var(--foreground-300)] transition-all focus:border-[var(--accent-primary)] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary-soft)]"
             />
             {searchQuery && (
               <Button
                 onClick={() => onSearchChange("")}
-                className="-translate-y-1/2 absolute top-1/2 right-2 flex h-5 w-5 items-center justify-center rounded-full text-[var(--color-dark-green)] opacity-60 transition-all hover:bg-[var(--color-dark-green)]/10 hover:opacity-100 active:scale-95"
+                className="-translate-y-1/2 absolute top-1/2 right-2 flex h-5 w-5 items-center justify-center rounded-full text-[var(--foreground-300)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
                 aria-label="Clear search"
               >
                 <X size={14} />
@@ -201,11 +200,11 @@ export function FilterBar({
           {status === "authenticated" && (
             <Link
               href="/cart"
-              className="relative hidden h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 lg:flex lg:h-10 lg:w-10"
+              className="relative hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--foreground-200)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)] lg:flex"
             >
-              <ShoppingCart size={18} className="lg:h-5 lg:w-5" />
+              <ShoppingCart size={20} />
               {cartItemCount > 0 && (
-                <span className="-top-2 -right-2 absolute flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--color-orange)] px-1 font-bold text-white text-xs">
+                <span className="-top-1 -right-1 absolute flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--accent-coral)] px-1 font-semibold text-white text-xs">
                   {cartItemCount > 99 ? "99+" : cartItemCount}
                 </span>
               )}
@@ -216,17 +215,17 @@ export function FilterBar({
           {status === "authenticated" && (
             <Link
               href="/history"
-              className="hidden h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95 lg:flex lg:h-10 lg:w-10"
+              className="hidden h-10 w-10 shrink-0 items-center justify-center rounded-xl text-[var(--foreground-200)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)] lg:flex"
               aria-label="View History"
             >
-              <Clock size={18} className="lg:h-5 lg:w-5" />
+              <Clock size={20} />
             </Link>
           )}
 
           {status === "unauthenticated" && (
             <Link
               href="/sign-in"
-              className="flex h-9 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-dark-green)] px-3 font-medium text-[var(--color-cream)] text-xs shadow-md transition-all hover:bg-[var(--color-dark-green)]/90 active:scale-95 lg:h-10 lg:px-4 lg:text-sm"
+              className="flex h-10 shrink-0 items-center justify-center rounded-xl bg-[var(--accent-primary)] px-4 font-medium text-sm text-white transition-all hover:bg-[var(--accent-primary-hover)] active:scale-[0.98]"
             >
               Sign In
             </Link>
@@ -235,7 +234,9 @@ export function FilterBar({
           {status === "authenticated" && (
             <Button
               onClick={() => signOut()}
-              className="flex h-9 shrink-0 items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] px-3 font-medium text-[var(--color-dark-green)] text-xs shadow-md transition-all hover:bg-amber-100 active:scale-95 lg:h-10 lg:px-4 lg:text-sm"
+              variant="secondary"
+              size="md"
+              className="shrink-0 rounded-xl"
               aria-label="Log Out"
             >
               Log Out
@@ -243,17 +244,15 @@ export function FilterBar({
           )}
         </div>
 
-        <div
-          className={`flex items-center justify-between gap-1.5 lg:mb-2 lg:gap-2 ${hasActiveCategoryFilter && status !== "authenticated" ? "" : ""}`}
-        >
+        <div className={`flex items-center justify-between gap-2 lg:mb-3`}>
           {/* Mobile Store Dropdown */}
           <div className="relative lg:hidden">
             <Button
               onClick={() => setIsStoreDropdownOpen(!isStoreDropdownOpen)}
-              className="flex items-center gap-1.5 rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] px-2.5 py-1.5 font-medium text-[var(--color-dark-green)] text-xs shadow-md transition-all hover:bg-amber-100 active:scale-95"
+              className="flex items-center gap-2 rounded-xl border border-[var(--background-300)] bg-white px-3 py-2 text-[var(--foreground-100)] text-sm transition-all hover:bg-[var(--background-200)]"
             >
               {selectedStore && (
-                <div className="relative h-4 w-4 shrink-0 overflow-hidden rounded-full bg-white">
+                <div className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full bg-white shadow-sm">
                   <Image
                     src={
                       stores.find((s) => s.filterValue === selectedStore)
@@ -265,14 +264,14 @@ export function FilterBar({
                   />
                 </div>
               )}
-              <span className="max-w-24 truncate">
+              <span className="max-w-24 truncate font-medium">
                 {selectedStore
                   ? stores.find((s) => s.filterValue === selectedStore)?.name
                   : "All Stores"}
               </span>
               <ChevronDown
-                size={14}
-                className={`transition-transform ${isStoreDropdownOpen ? "rotate-180" : ""}`}
+                size={16}
+                className={`text-[var(--foreground-300)] transition-transform ${isStoreDropdownOpen ? "rotate-180" : ""}`}
               />
             </Button>
 
@@ -289,22 +288,22 @@ export function FilterBar({
             />
             {/* Dropdown Menu */}
             <div
-              className={`absolute left-0 z-50 mt-1 w-40 origin-top-left overflow-hidden rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] shadow-lg transition-all duration-200 ${
+              className={`absolute left-0 z-50 mt-2 w-44 origin-top-left overflow-hidden rounded-xl border border-[var(--background-300)] bg-white shadow-[var(--shadow-lg)] transition-all duration-200 ${
                 isStoreDropdownOpen
                   ? "scale-100 opacity-100"
                   : "pointer-events-none scale-95 opacity-0"
               }`}
             >
-              <div>
+              <div className="py-1">
                 <Button
                   onClick={() => {
                     onStoreChange(null);
                     setIsStoreDropdownOpen(false);
                   }}
-                  className={`flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-all ${
+                  className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm transition-all ${
                     selectedStore === null
-                      ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
-                      : "text-[var(--color-dark-green)] hover:bg-[var(--color-dark-green)]/10"
+                      ? "bg-[var(--accent-primary-soft)] font-medium text-[var(--accent-primary)]"
+                      : "text-[var(--foreground-100)] hover:bg-[var(--background-200)]"
                   }`}
                 >
                   All Stores
@@ -316,13 +315,13 @@ export function FilterBar({
                       onStoreChange(store.filterValue);
                       setIsStoreDropdownOpen(false);
                     }}
-                    className={`flex w-full items-center gap-2 px-3 py-2 text-left text-xs transition-all ${
+                    className={`flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm transition-all ${
                       selectedStore === store.filterValue
-                        ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
-                        : "text-[var(--color-dark-green)] hover:bg-[var(--color-dark-green)]/10"
+                        ? "bg-[var(--accent-primary-soft)] font-medium text-[var(--accent-primary)]"
+                        : "text-[var(--foreground-100)] hover:bg-[var(--background-200)]"
                     }`}
                   >
-                    <div className="relative h-4 w-4 shrink-0 overflow-hidden rounded-full bg-white">
+                    <div className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full bg-white shadow-sm">
                       <Image
                         src={store.logo}
                         alt={store.name}
@@ -341,34 +340,29 @@ export function FilterBar({
           <div className="flex items-center gap-2 lg:hidden">
             {/* Filter by Store text and category badge - only shown when category is selected AND user is NOT authenticated */}
             {hasActiveCategoryFilter && status !== "authenticated" && (
-              <>
-                <h2 className="font-semibold text-[var(--color-dark-green)] text-xs">
-                  Filter by
-                </h2>
-                <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs">
-                  <span className="max-w-20 truncate">
-                    {selectedSubcategory || selectedCategory}
-                  </span>
-                  <Button
-                    onClick={handleClearCategoryFilter}
-                    className="flex items-center justify-center transition-all hover:opacity-70 active:scale-95"
-                    aria-label="Clear category filter"
-                  >
-                    <X size={12} />
-                  </Button>
+              <span className="flex items-center gap-1.5 rounded-lg bg-[var(--accent-primary-soft)] px-2.5 py-1.5 text-[var(--accent-primary)] text-sm">
+                <span className="max-w-20 truncate font-medium">
+                  {selectedSubcategory || selectedCategory}
                 </span>
-              </>
+                <Button
+                  onClick={handleClearCategoryFilter}
+                  className="flex items-center justify-center rounded-full p-0.5 transition-all hover:bg-[var(--accent-primary)]/10"
+                  aria-label="Clear category filter"
+                >
+                  <X size={14} />
+                </Button>
+              </span>
             )}
 
             {/* Mobile Cart Icon */}
             {status === "authenticated" && (
               <Link
                 href="/cart"
-                className="relative flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95"
+                className="relative flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[var(--foreground-200)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
               >
-                <ShoppingCart size={16} />
+                <ShoppingCart size={18} />
                 {cartItemCount > 0 && (
-                  <span className="-top-1.5 -right-1.5 absolute flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--color-orange)] px-0.5 font-bold text-[10px] text-white">
+                  <span className="-top-1 -right-1 absolute flex h-4 min-w-4 items-center justify-center rounded-full bg-[var(--accent-coral)] px-1 font-semibold text-[10px] text-white">
                     {cartItemCount > 99 ? "99+" : cartItemCount}
                   </span>
                 )}
@@ -379,16 +373,16 @@ export function FilterBar({
             {status === "authenticated" && (
               <Link
                 href="/history"
-                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg border-2 border-[var(--color-dark-green)] bg-[var(--color-cream)] text-[var(--color-dark-green)] shadow-md transition-all hover:bg-amber-100 active:scale-95"
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-[var(--foreground-200)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
                 aria-label="View History"
               >
-                <Clock size={16} />
+                <Clock size={18} />
               </Link>
             )}
           </div>
 
-          <div className="hidden rounded-lg bg-[var(--color-dark-green)]/10 px-3 py-1.5 text-center lg:block">
-            <p className="text-[var(--color-dark-green)] text-xs">
+          <div className="hidden rounded-lg bg-[var(--background-200)] px-3 py-2 lg:block">
+            <p className="text-[var(--foreground-200)] text-xs">
               Data resets every 24 hours at 10:00 AM
             </p>
           </div>
@@ -397,32 +391,30 @@ export function FilterBar({
         {/* Mobile: Category filter on separate line when authenticated */}
         {hasActiveCategoryFilter && status === "authenticated" && (
           <div className="mt-2 flex items-center gap-2 lg:hidden">
-            <h2 className="font-semibold text-[var(--color-dark-green)] text-xs">
-              Filter by
-            </h2>
-            <span className="flex items-center gap-1 rounded-md bg-[var(--color-dark-green)] px-2 py-1 font-medium text-[var(--color-cream)] text-xs">
-              <span className="max-w-32 truncate">
+            <span className="flex items-center gap-1.5 rounded-lg bg-[var(--accent-primary-soft)] px-2.5 py-1.5 text-[var(--accent-primary)] text-sm">
+              <span className="max-w-32 truncate font-medium">
                 {selectedSubcategory || selectedCategory}
               </span>
               <Button
                 onClick={handleClearCategoryFilter}
-                className="flex items-center justify-center transition-all hover:opacity-70 active:scale-95"
+                className="flex items-center justify-center rounded-full p-0.5 transition-all hover:bg-[var(--accent-primary)]/10"
                 aria-label="Clear category filter"
               >
-                <X size={12} />
+                <X size={14} />
               </Button>
             </span>
           </div>
         )}
+
         {/* Store Filter Buttons - hidden on mobile, use dropdown instead */}
         <div className="hidden flex-wrap gap-2 lg:flex">
           {/* All Stores Button */}
           <Button
             onClick={() => onStoreChange(null)}
-            className={`flex items-center gap-2 rounded-full px-4 py-2 font-medium text-sm outline-none transition-all focus:outline-none ${
+            className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-all ${
               selectedStore === null
-                ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
-                : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
+                ? "bg-[var(--accent-primary)] font-medium text-white shadow-sm"
+                : "bg-[var(--background-200)] text-[var(--foreground-200)] hover:bg-[var(--background-300)] hover:text-[var(--foreground-100)]"
             }`}
           >
             All Stores
@@ -433,13 +425,13 @@ export function FilterBar({
             <Button
               key={store.id}
               onClick={() => onStoreChange(store.filterValue)}
-              className={`flex items-center gap-2 rounded-full p-2 outline-none transition-all focus:outline-none ${
+              className={`flex items-center gap-2 rounded-full py-2 pr-4 pl-2 text-sm transition-all ${
                 selectedStore === store.filterValue
-                  ? "bg-[var(--color-dark-green)] text-[var(--color-cream)]"
-                  : "bg-[var(--color-cream)] text-[var(--color-dark-green)] opacity-70 hover:opacity-100"
+                  ? "bg-[var(--accent-primary)] font-medium text-white shadow-sm"
+                  : "bg-[var(--background-200)] text-[var(--foreground-200)] hover:bg-[var(--background-300)] hover:text-[var(--foreground-100)]"
               }`}
             >
-              <div className="relative h-6 w-6 overflow-hidden rounded-full bg-white p-0.5">
+              <div className="relative h-6 w-6 overflow-hidden rounded-full bg-white p-0.5 shadow-sm">
                 <Image
                   src={store.logo}
                   alt={store.name}
@@ -447,9 +439,7 @@ export function FilterBar({
                   className="rounded-full object-contain"
                 />
               </div>
-              <span className="whitespace-nowrap font-medium text-sm">
-                {store.name}
-              </span>
+              <span className="whitespace-nowrap">{store.name}</span>
             </Button>
           ))}
         </div>
