@@ -45,31 +45,38 @@ export function SignIn() {
   };
 
   return (
-    <div className="relative flex min-h-svh items-center justify-center bg-gradient-to-br from-[var(--color-cream)] via-[var(--color-sage)] to-[var(--color-yellow)]">
+    <div className="relative flex min-h-svh items-center justify-center bg-[var(--background-100)]">
+      {/* Subtle gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent-primary-soft)] via-transparent to-[var(--background-200)] opacity-50" />
+
       <Link
         href="/"
-        className="absolute top-6 left-6 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[var(--color-dark-green)] bg-white text-[var(--color-dark-green)] transition-all hover:bg-[var(--color-cream)] active:scale-95"
+        className="absolute top-6 left-6 z-10 flex h-10 w-10 items-center justify-center rounded-xl text-[var(--foreground-200)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
       >
         <ArrowLeft size={20} />
       </Link>
-      <div className="w-full max-w-md px-4">
-        <div className="rounded-2xl bg-[var(--color-yellow)] p-8 shadow-xl">
-          <div className="flex justify-center">
-            <SaleSyncIcon width={48} height={48} />
+
+      <div className="relative z-10 w-full max-w-md px-4">
+        <div className="rounded-2xl border border-[var(--background-300)] bg-white p-8 shadow-[var(--shadow-xl)]">
+          <div className="mb-6 flex flex-col items-center gap-3">
+            <SaleSyncIcon width={48} height={48} className="rounded-xl" />
+            <h1 className="font-bold font-display text-2xl text-[var(--foreground-100)]">
+              Welcome back
+            </h1>
+            <p className="text-[var(--foreground-200)] text-sm">
+              Sign in to your account
+            </p>
           </div>
-          <h1 className="mb-6 text-center font-semibold text-2xl text-[var(--foreground-100)]">
-            Sign In
-          </h1>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             {error && (
-              <div className="rounded-lg bg-red-50 p-3 text-red-500 text-sm">
+              <div className="rounded-lg bg-[var(--accent-coral-soft)] p-3 text-[var(--accent-coral)] text-sm">
                 {error}
               </div>
             )}
 
             {/* Email */}
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1.5">
               <label
                 htmlFor="email"
                 className="font-medium text-[var(--foreground-100)] text-sm"
@@ -81,17 +88,17 @@ export function SignIn() {
                 type="email"
                 placeholder="Enter your email"
                 {...register("email")}
-                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+                className="rounded-xl border border-[var(--background-300)] bg-[var(--background-100)] px-4 py-3 text-[var(--foreground-100)] text-sm placeholder-[var(--foreground-300)] outline-none transition-all focus:border-[var(--accent-primary)] focus:bg-white focus:ring-2 focus:ring-[var(--accent-primary-soft)]"
               />
               {errors.email && (
-                <span className="text-red-500 text-xs">
+                <span className="text-[var(--accent-coral)] text-xs">
                   {errors.email.message}
                 </span>
               )}
             </div>
 
             {/* Password */}
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1.5">
               <label
                 htmlFor="password"
                 className="font-medium text-[var(--foreground-100)] text-sm"
@@ -103,10 +110,10 @@ export function SignIn() {
                 type="password"
                 placeholder="Enter your password"
                 {...register("password")}
-                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+                className="rounded-xl border border-[var(--background-300)] bg-[var(--background-100)] px-4 py-3 text-[var(--foreground-100)] text-sm placeholder-[var(--foreground-300)] outline-none transition-all focus:border-[var(--accent-primary)] focus:bg-white focus:ring-2 focus:ring-[var(--accent-primary-soft)]"
               />
               {errors.password && (
-                <span className="text-red-500 text-xs">
+                <span className="text-[var(--accent-coral)] text-xs">
                   {errors.password.message}
                 </span>
               )}
@@ -116,7 +123,7 @@ export function SignIn() {
             <div className="text-right">
               <Link
                 href={"/forgot-password"}
-                className="font-medium text-[var(--foreground-100)] text-sm underline-offset-4 hover:underline"
+                className="text-[var(--accent-primary)] text-sm hover:underline"
               >
                 Forgot password?
               </Link>
@@ -126,14 +133,18 @@ export function SignIn() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="mt-2 w-full rounded-lg bg-[var(--color-dark-green)] py-2 font-semibold text-[var(--background-100)] text-sm transition hover:opacity-90 disabled:opacity-60"
+              variant="primary"
+              className="mt-2 w-full rounded-xl py-3"
             >
               {isSubmitting ? "Signing in..." : "Sign In"}
             </Button>
 
-            <p className="text-center text-[var(--foreground-100)] text-xs">
+            <p className="text-center text-[var(--foreground-200)] text-sm">
               Don&apos;t have an account?{" "}
-              <Link href="/sign-up" className="font-bold hover:underline">
+              <Link
+                href="/sign-up"
+                className="font-semibold text-[var(--accent-primary)] hover:underline"
+              >
                 Sign Up
               </Link>
             </p>

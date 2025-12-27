@@ -54,7 +54,7 @@ export function Modal({
       // Unmount after animation completes
       const timer = setTimeout(() => {
         setShouldRender(false);
-      }, 300); // Match the duration-300 of the modal content
+      }, 300);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
@@ -77,10 +77,10 @@ export function Modal({
       )}
       onClick={handleBackdropClick}
     >
-      {/* Backdrop with blur */}
+      {/* Backdrop with subtle blur */}
       <div
         className={cn(
-          "absolute inset-0 bg-black/10 backdrop-blur-sm transition-opacity duration-200",
+          "absolute inset-0 bg-[var(--foreground-100)]/5 backdrop-blur-[2px] transition-opacity duration-200",
           shouldAnimate ? "opacity-100" : "opacity-0",
         )}
       />
@@ -89,7 +89,11 @@ export function Modal({
       <div
         ref={modalRef}
         className={cn(
-          "relative z-10 w-full max-w-lg rounded-lg border border-internal-background-300 bg-internal-background-200 shadow-xl transition-all duration-300",
+          "relative z-10 w-full max-w-lg",
+          "rounded-xl bg-white",
+          "border border-[var(--background-300)]",
+          "shadow-[var(--shadow-xl)]",
+          "transition-all duration-300",
           shouldAnimate
             ? "translate-y-0 scale-100 opacity-100"
             : "translate-y-4 scale-95 opacity-0",
@@ -98,16 +102,18 @@ export function Modal({
       >
         {/* Header */}
         {(title || showCloseButton) && (
-          <div className="flex items-center justify-between border-internal-background-300 border-b px-6 py-4">
+          <div className="flex items-center justify-between border-[var(--background-300)] border-b px-6 py-4">
             {title && (
-              <h2 className="font-semibold text-internal-foreground-100 text-xl">
+              <h2 className="font-display font-semibold text-[var(--foreground-100)] text-xl">
                 {title}
               </h2>
             )}
             {showCloseButton && (
               <Button
                 onClick={onClose}
-                className="ml-auto rounded-lg p-2 text-internal-foreground-200 transition-colors hover:bg-internal-background-300 hover:text-internal-foreground-100"
+                variant="ghost"
+                size="sm"
+                className="ml-auto rounded-full p-2 text-[var(--foreground-200)] hover:text-[var(--foreground-100)]"
                 aria-label="Close modal"
               >
                 <X className="h-5 w-5" />

@@ -25,33 +25,27 @@ export function Sidebar() {
   );
 
   const handleCategoryClick = (category: string) => {
-    // If clicking the same category that's already selected, deselect it
     if (selectedCategory === category && !selectedSubcategory) {
       setSelectedCategory(null);
       setExpandedCategories(new Set());
     } else {
       setSelectedCategory(category);
-      // Close all other categories, keep only the selected one expanded
       setExpandedCategories(new Set([category]));
     }
   };
 
   const handleSubcategoryClick = (category: string, subcategory: string) => {
     setSelectedCategory(category);
-    // If clicking the same subcategory, deselect it
     if (selectedSubcategory === subcategory) {
       setSelectedSubcategory(null);
     } else {
       setSelectedSubcategory(subcategory);
-      // Close all other categories, keep only the selected one expanded
       setExpandedCategories(new Set([category]));
     }
-    // Close mobile sidebar when subcategory is selected
     close();
   };
 
   const handleClearFilter = () => {
-    // Only call setSelectedCategory - it already clears subcategory and updates URL
     setSelectedCategory(null);
     setExpandedCategories(new Set());
   };
@@ -59,10 +53,8 @@ export function Sidebar() {
   const hasActiveFilter =
     selectedCategory !== null || selectedSubcategory !== null;
 
-  // Expand the parent category when subcategory is loaded from URL
   useEffect(() => {
     if (selectedSubcategory && categories) {
-      // Find which category contains this subcategory
       for (const [category, subcategories] of Object.entries(categories)) {
         if (subcategories.includes(selectedSubcategory)) {
           setExpandedCategories(new Set([category]));
@@ -77,10 +69,10 @@ export function Sidebar() {
   const sidebarContent = (
     <>
       {/* Logo */}
-      <div className="mb-6 flex items-center justify-between border-background-200 border-b pb-4">
-        <Link href="/" className="flex items-center gap-3">
-          <SaleSyncIcon width={40} height={40} className="rounded-md" />
-          <span className="font-bold text-foreground-100 text-xl">
+      <div className="mb-8 flex items-center justify-between border-[var(--background-300)] border-b pb-6">
+        <Link href="/" className="group flex items-center gap-3">
+          <SaleSyncIcon width={40} height={40} className="rounded-lg" />
+          <span className="font-bold font-display text-[var(--foreground-100)] text-xl transition-colors group-hover:text-[var(--accent-primary)]">
             SalesSync
           </span>
         </Link>
@@ -88,15 +80,17 @@ export function Sidebar() {
           href="https://github.com/Tornike512"
           target="_blank"
           rel="noopener noreferrer"
-          className="rounded-lg p-2 transition-all hover:bg-background-200"
+          className="rounded-lg p-2 text-[var(--foreground-200)] transition-all hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
           aria-label="Visit GitHub profile"
         >
-          <GithubIcon width={24} height={24} />
+          <GithubIcon width={22} height={22} />
         </Link>
       </div>
 
-      <div className="mb-6 flex items-center justify-between">
-        <h2 className="font-bold text-2xl text-foreground-100">Categories</h2>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="font-display font-semibold text-[var(--foreground-100)] text-lg">
+          Categories
+        </h2>
 
         {/* Clear filter button */}
         <div
@@ -109,7 +103,9 @@ export function Sidebar() {
           <div className="overflow-hidden">
             <Button
               onClick={handleClearFilter}
-              className="flex items-center gap-1 rounded-md bg-background-200 px-2 py-1 text-foreground-100 text-sm transition-all duration-200 hover:bg-foreground-200"
+              variant="ghost"
+              size="sm"
+              className="flex items-center gap-1.5 text-[var(--foreground-200)] hover:text-[var(--accent-coral)]"
             >
               <X size={14} />
               <span>Clear</span>
@@ -120,7 +116,10 @@ export function Sidebar() {
 
       <nav className="space-y-1">
         {isLoading ? (
-          <div className="text-foreground-100 opacity-70">Loading...</div>
+          <div className="flex items-center gap-3 px-3 py-4">
+            <div className="skeleton h-10 w-10 rounded-lg bg-[var(--background-200)]" />
+            <div className="skeleton h-4 w-24 rounded bg-[var(--background-200)]" />
+          </div>
         ) : (
           categories &&
           Object.entries(categories).map(([category, subcategories]) => {
@@ -133,38 +132,40 @@ export function Sidebar() {
               <div key={category}>
                 <Button
                   onClick={() => handleCategoryClick(category)}
-                  className={`flex w-full items-center gap-3 rounded-lg px-4 py-3 text-foreground-100 transition-all duration-200 ${
+                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-3 transition-all duration-200 ${
                     isCategoryActive && !selectedSubcategory
-                      ? "bg-background-200"
-                      : "bg-transparent hover:bg-background-200 hover:bg-opacity-70"
+                      ? "bg-[var(--accent-primary-soft)] text-[var(--accent-primary)]"
+                      : "text-[var(--foreground-100)] hover:bg-[var(--background-200)]"
                   }`}
                 >
                   <div
-                    className={`rounded-md p-2 ${
+                    className={`flex h-10 w-10 items-center justify-center rounded-lg transition-colors ${
                       isCategoryActive && !selectedSubcategory
-                        ? "bg-foreground-200"
-                        : "bg-[var(--color-yellow)]"
+                        ? "bg-[var(--accent-primary)] text-white"
+                        : "bg-[var(--background-200)] text-[var(--foreground-200)]"
                     }`}
                   >
-                    <Icon size={20} className="text-foreground-100" />
+                    <Icon size={20} />
                   </div>
 
                   <div className="flex-1 text-left">
-                    <div className="font-medium">{category}</div>
+                    <div className="font-medium text-sm">{category}</div>
                   </div>
 
                   {hasSubcategories && (
-                    <div className="text-foreground-100 opacity-70">
+                    <div
+                      className={`transition-colors ${
+                        isCategoryActive && !selectedSubcategory
+                          ? "text-[var(--accent-primary)]"
+                          : "text-[var(--foreground-300)]"
+                      }`}
+                    >
                       {isExpanded ? (
                         <ChevronDown size={18} />
                       ) : (
                         <ChevronRight size={18} />
                       )}
                     </div>
-                  )}
-
-                  {isCategoryActive && !selectedSubcategory && (
-                    <div className="h-8 w-1 rounded-full bg-foreground-200" />
                   )}
                 </Button>
 
@@ -178,7 +179,7 @@ export function Sidebar() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="mt-1 ml-6 space-y-1 border-foreground-200 border-l pl-4">
+                      <div className="mt-1 ml-5 space-y-0.5 border-[var(--background-300)] border-l pl-5">
                         {subcategories.map((subcategory) => {
                           const isSubcategoryActive =
                             selectedSubcategory === subcategory;
@@ -189,17 +190,17 @@ export function Sidebar() {
                               onClick={() =>
                                 handleSubcategoryClick(category, subcategory)
                               }
-                              className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-foreground-100 text-sm transition-all duration-200 ${
+                              className={`flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-sm transition-all duration-200 ${
                                 isSubcategoryActive
-                                  ? "bg-background-200"
-                                  : "bg-transparent hover:bg-background-200 hover:bg-opacity-70"
+                                  ? "bg-[var(--accent-primary-soft)] font-medium text-[var(--accent-primary)]"
+                                  : "text-[var(--foreground-200)] hover:bg-[var(--background-200)] hover:text-[var(--foreground-100)]"
                               }`}
                             >
                               <span className="flex-1 text-left">
                                 {subcategory}
                               </span>
                               {isSubcategoryActive && (
-                                <div className="h-5 w-1 rounded-full bg-foreground-200" />
+                                <div className="h-1.5 w-1.5 rounded-full bg-[var(--accent-primary)]" />
                               )}
                             </Button>
                           );
@@ -219,8 +220,8 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="sidebar-scroll sticky top-0 z-10 hidden h-dvh w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)] lg:block">
-        <div className="p-6">{sidebarContent}</div>
+      <aside className="sidebar-scroll sticky top-0 z-10 hidden h-dvh w-72 overflow-y-auto border-[var(--background-300)] border-r bg-white lg:block">
+        <div className="p-5">{sidebarContent}</div>
       </aside>
 
       {/* Mobile Sidebar Overlay */}
@@ -228,24 +229,25 @@ export function Sidebar() {
         <button
           type="button"
           aria-label="Close sidebar"
-          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+          className="fixed inset-0 z-40 bg-[var(--foreground-100)]/10 backdrop-blur-[2px] lg:hidden"
           onClick={close}
         />
       )}
 
       {/* Mobile Sidebar Drawer */}
       <aside
-        className={`sidebar-scroll fixed top-0 left-0 z-50 h-full w-80 max-w-[85vw] transform overflow-y-auto bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)] transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`sidebar-scroll fixed top-0 left-0 z-50 h-full w-72 max-w-[85vw] transform overflow-y-auto bg-white shadow-[var(--shadow-xl)] transition-transform duration-300 ease-in-out lg:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="p-6 pt-16">
+        <div className="p-5 pt-16">
           {/* Close Button */}
           <Button
             onClick={close}
-            className="absolute top-4 right-4 z-10 rounded-full p-2 text-foreground-100 hover:bg-background-200"
+            variant="ghost"
+            className="absolute top-4 right-4 z-10 rounded-full p-2 text-[var(--foreground-200)] hover:text-[var(--foreground-100)]"
           >
-            <X size={24} />
+            <X size={22} />
           </Button>
           {sidebarContent}
         </div>
