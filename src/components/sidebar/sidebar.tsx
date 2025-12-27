@@ -219,7 +219,7 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="sidebar-scroll sticky top-0 z-10 hidden h-dvh w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)] md:block">
+      <aside className="sidebar-scroll sticky top-0 z-10 hidden h-dvh w-80 overflow-y-auto border-background-200 border-r bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)] lg:block">
         <div className="p-6">{sidebarContent}</div>
       </aside>
 
@@ -228,14 +228,14 @@ export function Sidebar() {
         <button
           type="button"
           aria-label="Close sidebar"
-          className="fixed inset-0 z-40 bg-black/50 md:hidden"
+          className="fixed inset-0 z-40 bg-black/50 lg:hidden"
           onClick={close}
         />
       )}
 
       {/* Mobile Sidebar Drawer */}
       <aside
-        className={`sidebar-scroll fixed top-0 left-0 z-50 h-full w-80 max-w-[85vw] transform overflow-y-auto bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)] transition-transform duration-300 ease-in-out md:hidden ${
+        className={`sidebar-scroll fixed top-0 left-0 z-50 h-full w-80 max-w-[85vw] transform overflow-y-auto bg-background-100 shadow-[4px_0_12px_rgba(24,58,29,0.15)] transition-transform duration-300 ease-in-out lg:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >

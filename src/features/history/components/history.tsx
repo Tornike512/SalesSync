@@ -105,7 +105,7 @@ export function History() {
 
       {/* Filter Bar */}
       <div className="mb-6 flex flex-col gap-2">
-        <div className="flex items-center gap-2 text-[var(--foreground-100)]/70 text-sm sm:mb-0">
+        <div className="flex items-center gap-2 text-[var(--foreground-100)]/70 text-sm lg:mb-0">
           <Calendar className="size-4" />
           <span>Filter by:</span>
         </div>

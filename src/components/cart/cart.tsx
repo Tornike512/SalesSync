@@ -157,7 +157,7 @@ export function Cart() {
   if (!cart || cart.items.length === 0) {
     return (
       <div className="min-h-screen bg-[var(--color-cream)]">
-        <div className="mx-auto max-w-7xl p-4 sm:p-6">
+        <div className="mx-auto max-w-7xl p-4 lg:p-6">
           <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <Link
@@ -166,7 +166,7 @@ export function Cart() {
               >
                 <ArrowLeft size={20} />
               </Link>
-              <h1 className="font-bold text-2xl text-[var(--color-dark-green)] sm:text-3xl">
+              <h1 className="font-bold text-2xl text-[var(--color-dark-green)] lg:text-3xl">
                 Shopping Cart
               </h1>
             </div>
@@ -175,14 +175,14 @@ export function Cart() {
               className="flex shrink-0 items-center gap-2 rounded-full border-2 border-[var(--color-dark-green)] bg-white px-4 py-2 font-semibold text-[var(--color-dark-green)] text-sm transition-all hover:bg-[var(--color-cream)] active:scale-95"
             >
               <Clock size={16} />
-              <span className="hidden sm:inline">View History</span>
-              <span className="sm:hidden">History</span>
+              <span className="hidden lg:inline">View History</span>
+              <span className="lg:hidden">History</span>
             </Link>
           </div>
 
           <div className="flex flex-col gap-6 lg:flex-row">
             {/* Left side - Empty state */}
-            <div className="flex flex-1 flex-col items-center justify-center gap-4 rounded-xl border-2 border-[var(--color-dark-green)] border-dashed bg-white p-6 text-center sm:p-12">
+            <div className="flex flex-1 flex-col items-center justify-center gap-4 rounded-xl border-2 border-[var(--color-dark-green)] border-dashed bg-white p-6 text-center lg:p-12">
               <ShoppingBag
                 size={64}
                 className="text-[var(--color-dark-green)] opacity-30"
@@ -316,7 +316,7 @@ export function Cart() {
 
   return (
     <div className="min-h-screen bg-[var(--color-cream)]">
-      <div className="mx-auto max-w-7xl p-4 sm:p-6">
+      <div className="mx-auto max-w-7xl p-4 lg:p-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Link
@@ -325,7 +325,7 @@ export function Cart() {
             >
               <ArrowLeft size={20} />
             </Link>
-            <h1 className="font-bold text-2xl text-[var(--color-dark-green)] sm:text-3xl">
+            <h1 className="font-bold text-2xl text-[var(--color-dark-green)] lg:text-3xl">
               Shopping Cart
             </h1>
           </div>
@@ -335,8 +335,8 @@ export function Cart() {
               className="flex items-center gap-2 rounded-full border-2 border-[var(--color-dark-green)] bg-white px-4 py-2 font-semibold text-[var(--color-dark-green)] text-sm transition-all hover:bg-[var(--color-cream)] active:scale-95"
             >
               <Clock size={16} />
-              <span className="hidden sm:inline">View History</span>
-              <span className="sm:hidden">History</span>
+              <span className="hidden lg:inline">View History</span>
+              <span className="lg:hidden">History</span>
             </Link>
             <Button
               onClick={handleClearCart}
@@ -344,8 +344,8 @@ export function Cart() {
               className="flex items-center gap-2 rounded-full border-2 border-red-500 bg-white px-4 py-2 font-semibold text-red-500 text-sm transition-all hover:bg-red-50 active:scale-95 disabled:opacity-50"
             >
               <Trash2 size={16} />
-              <span className="hidden sm:inline">Clear Cart</span>
-              <span className="sm:hidden">Clear</span>
+              <span className="hidden lg:inline">Clear Cart</span>
+              <span className="lg:hidden">Clear</span>
             </Button>
           </div>
         </div>
