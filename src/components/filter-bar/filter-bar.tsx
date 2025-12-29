@@ -160,7 +160,7 @@ export function FilterBar({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-10 pl-10 text-[var(--color-dark-green)] placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none lg:text-base"
+              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2.5 pr-10 pl-10 text-[var(--color-dark-green)] text-base placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none lg:text-base"
             />
             {searchQuery && (
               <Button
@@ -184,7 +184,7 @@ export function FilterBar({
               placeholder="Search products..."
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2 pr-8 pl-8 text-[var(--color-dark-green)] text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
+              className="w-full rounded-lg border-2 border-[var(--color-dark-green)]/30 bg-[var(--color-cream)] py-2 pr-8 pl-8 text-[var(--color-dark-green)] text-base text-sm placeholder-[var(--color-dark-green)]/40 shadow-inner transition-all focus:border-[var(--color-dark-green)] focus:bg-white focus:shadow-md focus:outline-none"
             />
             {searchQuery && (
               <Button

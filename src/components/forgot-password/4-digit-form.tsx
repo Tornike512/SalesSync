@@ -114,7 +114,7 @@ export function FourDigitForm({
             onChange={(e) => handleCodeChange(0, e.target.value)}
             onKeyDown={(e) => handleKeyDown(0, e)}
             onPaste={handlePaste}
-            className="h-14 w-14 rounded-lg border-2 border-[var(--background-200)] bg-[var(--background-100)] text-center font-semibold text-2xl text-[var(--foreground-100)] outline-none focus:border-[var(--foreground-100)] focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+            className="h-14 w-14 rounded-lg border-2 border-[var(--background-200)] bg-[var(--background-100)] text-center font-semibold text-2xl text-[var(--foreground-100)] text-base outline-none focus:border-[var(--foreground-100)] focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
             aria-label="Digit 1"
           />
           <input
@@ -125,7 +125,7 @@ export function FourDigitForm({
             value={code[1]}
             onChange={(e) => handleCodeChange(1, e.target.value)}
             onKeyDown={(e) => handleKeyDown(1, e)}
-            className="h-14 w-14 rounded-lg border-2 border-[var(--background-200)] bg-[var(--background-100)] text-center font-semibold text-2xl text-[var(--foreground-100)] outline-none focus:border-[var(--foreground-100)] focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+            className="h-14 w-14 rounded-lg border-2 border-[var(--background-200)] bg-[var(--background-100)] text-center font-semibold text-2xl text-[var(--foreground-100)] text-base outline-none focus:border-[var(--foreground-100)] focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
             aria-label="Digit 2"
           />
           <input
@@ -136,7 +136,7 @@ export function FourDigitForm({
             value={code[2]}
             onChange={(e) => handleCodeChange(2, e.target.value)}
             onKeyDown={(e) => handleKeyDown(2, e)}
-            className="h-14 w-14 rounded-lg border-2 border-[var(--background-200)] bg-[var(--background-100)] text-center font-semibold text-2xl text-[var(--foreground-100)] outline-none focus:border-[var(--foreground-100)] focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+            className="h-14 w-14 rounded-lg border-2 border-[var(--background-200)] bg-[var(--background-100)] text-center font-semibold text-2xl text-[var(--foreground-100)] text-base outline-none focus:border-[var(--foreground-100)] focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
             aria-label="Digit 3"
           />
           <input
@@ -147,7 +147,7 @@ export function FourDigitForm({
             value={code[3]}
             onChange={(e) => handleCodeChange(3, e.target.value)}
             onKeyDown={(e) => handleKeyDown(3, e)}
-            className="h-14 w-14 rounded-lg border-2 border-[var(--background-200)] bg-[var(--background-100)] text-center font-semibold text-2xl text-[var(--foreground-100)] outline-none focus:border-[var(--foreground-100)] focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+            className="h-14 w-14 rounded-lg border-2 border-[var(--background-200)] bg-[var(--background-100)] text-center font-semibold text-2xl text-[var(--foreground-100)] text-base outline-none focus:border-[var(--foreground-100)] focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
             aria-label="Digit 4"
           />
         </div>
