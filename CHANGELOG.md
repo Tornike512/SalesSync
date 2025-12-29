@@ -1,3 +1,8 @@
+## <small>1.20.5 (2025-12-29)</small>
+
+* Merge branch 'main' of https://github.com/Tornike512/SalesSync ([157bcf6](https://github.com/Tornike512/SalesSync/commit/157bcf6))
+* fix: update text size for input fields in filter and forgot password components ([895f953](https://github.com/Tornike512/SalesSync/commit/895f953))
+
 ## <small>1.20.4 (2025-12-29)</small>
 
 * fix: update input styles to use text-base for better consistency across forms ([ff91940](https://github.com/Tornike512/SalesSync/commit/ff91940))
