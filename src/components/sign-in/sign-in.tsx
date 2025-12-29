@@ -81,7 +81,7 @@ export function SignIn() {
                 type="email"
                 placeholder="Enter your email"
                 {...register("email")}
-                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-base text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-lg outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
               />
               {errors.email && (
                 <span className="text-red-500 text-xs">
@@ -103,7 +103,7 @@ export function SignIn() {
                 type="password"
                 placeholder="Enter your password"
                 {...register("password")}
-                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-base text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+                className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-lg outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
               />
               {errors.password && (
                 <span className="text-red-500 text-xs">
