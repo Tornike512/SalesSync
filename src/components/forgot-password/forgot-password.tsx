@@ -138,7 +138,7 @@ export function ForgotPassword() {
                     type="email"
                     placeholder="name@example.com"
                     {...register("email")}
-                    className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-base text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+                    className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-lg text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {errors.email && (
                     <div className="flex items-center gap-1 text-red-500">
@@ -201,7 +201,7 @@ export function ForgotPassword() {
                     type="password"
                     placeholder="Enter new password"
                     {...registerReset("new_password")}
-                    className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-base text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+                    className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-lg text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {resetErrors.new_password && (
                     <div className="flex items-center gap-1 text-red-500">
@@ -225,7 +225,7 @@ export function ForgotPassword() {
                     type="password"
                     placeholder="Confirm new password"
                     {...registerReset("confirm_password")}
-                    className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-base text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
+                    className="rounded-lg border border-[var(--background-200)] bg-[var(--background-100)] px-4 py-2 text-[var(--foreground-100)] text-lg text-sm outline-none focus:ring-2 focus:ring-[var(--foreground-100)] focus:ring-offset-1"
                   />
                   {resetErrors.confirm_password && (
                     <div className="flex items-center gap-1 text-red-500">
