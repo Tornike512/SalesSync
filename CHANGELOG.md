@@ -1,3 +1,7 @@
+## <small>1.20.6 (2025-12-29)</small>
+
+* fix: remove redundant text size classes for input fields in forms ([f7f1338](https://github.com/Tornike512/SalesSync/commit/f7f1338))
+
 ## <small>1.20.5 (2025-12-29)</small>
 
 * Merge branch 'main' of https://github.com/Tornike512/SalesSync ([157bcf6](https://github.com/Tornike512/SalesSync/commit/157bcf6))
