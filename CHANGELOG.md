@@ -1,3 +1,7 @@
+## <small>1.20.4 (2025-12-29)</small>
+
+* fix: update input styles to use text-base for better consistency across forms ([ff91940](https://github.com/Tornike512/SalesSync/commit/ff91940))
+
 ## <small>1.20.3 (2025-12-27)</small>
 
 * fix: update responsive styles for various components to improve layout on larger screens ([43d9754](https://github.com/Tornike512/SalesSync/commit/43d9754))
